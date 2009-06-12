@@ -1,0 +1,24 @@
+.wiki_extensions_fn{
+    vertical-align:super;
+    font-size:x-small;
+}
+
+.wiki_extensions_fnlist{
+    /*
+    font-size:10px;
+    */
+}
+
+.wiki .wiki_extensions_fnlist ul li {
+list-style-type: none;
+list-style-image: none;
+}
+
+.wiki_ext_new_date {
+    font-weight: bold;
+}
+
+.wiki_ext_new_mark {
+    font-style: italic;
+    color: #ff0000;
+}
