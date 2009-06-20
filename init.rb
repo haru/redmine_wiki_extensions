@@ -23,6 +23,7 @@ require 'wiki_extensions_wiki_macro'
 require 'wiki_extensions_project_macro'
 require 'wiki_extensions_wiki_controller_patch'
 require 'wiki_extensions_new_macro'
+require 'wiki_extensions_tags_macro'
 
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'

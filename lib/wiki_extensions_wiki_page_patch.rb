@@ -24,7 +24,8 @@ module WikiExtensionsWikiPagePatch
 
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      
+      has_many :wiki_extensions_tag_relations, :dependent => :destroy
+      has_many :tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations
       class << self
         # I dislike alias method chain, it's not the most readable backtraces
         
@@ -41,7 +42,31 @@ end
 module InstanceMethodsForWikiExtension
   def wiki_extension_data
     @wiki_extension_data ||= {}
+  end  
+
+  def set_tags(tag_list = {})
+    tag_array = []
+    tag_list.each_value{|name|
+      next if name.blank?
+      tag_array << name.strip
+    }
+
+    tag_array = tag_array.uniq
+
+    wiki_extensions_tag_relations.each {|relation|
+      relation.destroy
+    }
+    
+    tag_array.each{|name|
+      tag = WikiExtensionsTag.find_or_create(self.project.id, name)
+      relation = WikiExtensionsTagRelation.new
+      relation.tag = tag
+      relation.wiki_page_id = self.id
+      relation.save
+    }
+    
   end
+  
 end
 
 WikiPage.send(:include, WikiExtensionsWikiPagePatch)

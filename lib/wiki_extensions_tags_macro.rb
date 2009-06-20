@@ -1,4 +1,3 @@
-/*
 # Wiki Extensions plugin for Redmine
 # Copyright (C) 2009  Haruyuki Iida
 #
@@ -15,24 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-*/
-function add_wiki_extension_sidebar() {
-    var sidebar = $('sidebar');
-    if (sidebar == null) {
-        return;
-    }
+require 'redmine'
 
-    var sidebar_area = $('wiki_extentions_sidebar');
-    sidebar_area.remove();
-    sidebar.insert(sidebar_area);
-    sidebar_area.show();
+module WikiExtensionsWikiMacro
+  Redmine::WikiFormatting::Macros.register do
+    desc "Displays tags.\n\n"+
+      "  @{{tags}}@\n"
+    macro :tags do |obj, args|
+      page = obj.page
+      return unless page
 
-}
-
-function add_wiki_extensions_tags_form() {
-    var tags_form = $('wiki_extensions_tag_form');
-    var wiki_form = $('wiki_form');
-    var content_comments = $('content_comments');
-    tags_form.parentNode.removeChild(tags_form);
-    new Insertion.After(content_comments.parentNode, tags_form);
-}
+      o = ""
+      page.tags.each{|tag|
+        o << tag.name
+        o << ','
+      }
+      return o
+    end
+  end
+end

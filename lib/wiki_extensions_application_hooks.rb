@@ -22,7 +22,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     controller = context[:controller]
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name
-    return unless action_name == 'index'
+    return unless action_name == 'index' or action_name == 'edit'
     baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
 
     
@@ -39,6 +39,9 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     controller = context[:controller]
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name
+    if action_name == 'edit'
+      return add_wiki_ext_tags_form context
+    end
     return unless action_name == 'index'
     @wiki = project.wiki
     return unless @wiki
@@ -47,9 +50,32 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     
     if @side_bar
       o << javascript_tag('add_wiki_extension_sidebar();')
-
     end
 
+    return o
+  end
+
+  private
+
+  def add_wiki_ext_tags_form(context)
+    project = context[:project]
+    controller = context[:controller]
+    page = controller.wiki_extensions_get_current_page
+    tags = page.tags
+
+    o = '<div id="wiki_extensions_tag_form"><p>'
+    o << "\n"
+    o << "<label>#{l(:label_wikiextensions_tags)}</label><br/>"
+    4.times { |i|
+      value = ''
+      value = 'value="' + tags[i].name  + '"' if tags[i]
+      o << '<span class="tag_field">'
+      o << '<input id="extension_tags[' + i.to_s + ']" type="text" size="20" name="extension[tags][' + i.to_s + ']" ' +
+        value + '/>'
+      o << '</span>'
+    }
+    o << "</p></div>\n"
+    o << javascript_tag('add_wiki_extensions_tags_form();')
     return o
   end
 end

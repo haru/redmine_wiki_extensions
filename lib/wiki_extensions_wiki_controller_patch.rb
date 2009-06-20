@@ -24,7 +24,7 @@ module WikiExtensionsWikiControllerPatch
 
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      
+      after_filter :wiki_extensions_save_tags, :only => :edit
       class << self
         # I dislike alias method chain, it's not the most readable backtraces
         
@@ -44,8 +44,22 @@ module InstanceMethodsForWikiExtensionWikiController
     super args
   end
 
+  def wiki_extensions_get_current_page
+    @page
+  end
   private
 
+  def wiki_extensions_save_tags
+    return true if request.get?
+      
+    extension = params[:extension]
+    return true unless extension
+    
+    tags = extension[:tags]
+
+    @page.set_tags(tags)
+  end
+  
   def wiki_extensions_add_fnlist
     text = @content.text
     text << "\n{{fnlist}}\n"

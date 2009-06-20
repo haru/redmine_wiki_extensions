@@ -22,3 +22,7 @@ list-style-image: none;
     font-style: italic;
     color: #ff0000;
 }
+
+#wiki_extensions_tag_form .tag_field {
+    margin-right: 1em;
+}
