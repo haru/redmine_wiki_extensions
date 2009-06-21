@@ -40,4 +40,8 @@ class WikiExtensionsTag < ActiveRecord::Base
   def page_count
     pages.length
   end
+
+  def <=> obj
+    self.name <=> obj.name
+  end
 end

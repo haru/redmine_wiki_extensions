@@ -24,10 +24,27 @@ module WikiExtensionsWikiMacro
       page = obj.page
       return unless page
 
-      o = ""
+      o = "<h3>Tags</h3>¥n"
       page.tags.each{|tag|
         o << tag.name
         o << ','
+      }
+      return o
+    end
+  end
+
+  Redmine::WikiFormatting::Macros.register do
+    desc "Displays tagcloud.\n\n"+
+      "  @{{tagcloud}}@\n"
+    macro :tagcloud do |obj, args|
+      page = obj.page
+      return unless page
+      project = page.project
+      o = "<h3>Tags</h3>"
+      tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
+      tags.sort.each{|tag|
+        o << "#{tag.name}(#{tag.page_count})"  
+        o << ' '
       }
       return o
     end
