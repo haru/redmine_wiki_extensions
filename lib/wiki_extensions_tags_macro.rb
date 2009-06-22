@@ -37,14 +37,17 @@ module WikiExtensionsWikiMacro
     desc "Displays tagcloud.\n\n"+
       "  @{{tagcloud}}@\n"
     macro :tagcloud do |obj, args|
+      classes = ['tag_level1', 'tag_level2', 'tag_level3', 'tag_level4', 'tag_level5']
       page = obj.page
       return unless page
       project = page.project
       o = "<h3>Tags</h3>"
       tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
+      max_count = tags.sort{|a, b| a.page_count <=> b.page_count}.last.page_count.to_f
       tags.sort.each{|tag|
-        o << link_to("#{tag.name}(#{tag.page_count})", :controller => 'wiki_extensions',
-              :action => 'tag', :id => project, :tag_id => tag.id)
+        index = ((tag.page_count / max_count) * (classes.size - 1)).round
+        o << link_to("#{tag.name}(#{tag.page_count})", {:controller => 'wiki_extensions',
+              :action => 'tag', :id => project, :tag_id => tag.id}, :class => classes[index])
         o << ' '
       }
       return o

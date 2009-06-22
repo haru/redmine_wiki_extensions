@@ -26,3 +26,23 @@ list-style-image: none;
 #wiki_extensions_tag_form .tag_field {
     margin-right: 1em;
 }
+
+.tag_level5{
+    font-size:xx-large;
+}
+
+.tag_level4{
+    font-size:x-large;
+}
+
+.tag_level3{
+    font-size:large;
+}
+
+.tag_level2{
+    font-size:small;
+}
+
+.tag_level1{
+    font-size:x-small;
+}
