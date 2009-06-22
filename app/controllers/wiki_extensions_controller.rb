@@ -1,5 +1,6 @@
 class WikiExtensionsController < ApplicationController
   unloadable
+  menu_item :wiki
   before_filter :find_project, :authorize, :find_user
 
   def add_comment
@@ -11,6 +12,11 @@ class WikiExtensionsController < ApplicationController
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
     redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+  end
+
+  def tag
+    tag_id = params[:tag_id].to_i
+    @tag = WikiExtensionsTag.find(tag_id)
   end
 
   private

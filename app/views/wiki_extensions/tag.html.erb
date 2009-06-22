@@ -1,0 +1,9 @@
+<h2><%=h @tag.name %> </h2>
+
+<ul>
+<% for page in @tag.pages %>
+  <li>
+    <%= link_to  page.title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title %>
+  </li>
+<% end %>
+</ul>

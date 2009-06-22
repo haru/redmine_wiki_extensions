@@ -66,13 +66,21 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     o = '<div id="wiki_extensions_tag_form"><p>'
     o << "\n"
     o << "<label>#{l(:label_wikiextensions_tags)}</label><br/>"
-    4.times { |i|
-      value = ''
-      value = 'value="' + tags[i].name  + '"' if tags[i]
-      o << '<span class="tag_field">'
-      o << '<input id="extension_tags[' + i.to_s + ']" type="text" size="20" name="extension[tags][' + i.to_s + ']" ' +
-        value + '/>'
-      o << '</span>'
+    i = 0
+    5.times{|line|
+      style = ''
+      style = 'style="display:none;"' if line > 0
+      o << "<div #{style}>"
+      4.times {
+        value = ''
+        value = 'value="' + tags[i].name  + '"' if tags[i]
+        o << '<span class="tag_field">'
+        o << '<input id="extension_tags[' + i.to_s + ']" type="text" size="20" name="extension[tags][' + i.to_s + ']" ' +
+          value + '/>'
+        o << '</span>'
+        i = i + 1
+      }
+      o << '</div>'
     }
     o << "</p></div>\n"
     o << javascript_tag('add_wiki_extensions_tags_form();')

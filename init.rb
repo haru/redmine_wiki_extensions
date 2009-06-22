@@ -34,6 +34,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
     permission :show_wiki_comment, {:wiki_extensions => [:show_comments]}, :public => true
+    permission :show_wiki_tags, {:wiki_extensions => [:tag]}, :public => true
     #menu :project_menu, :wiki_extensions, { :controller => 'wiki_extensions', :action => 'add_comment' }, :caption => 'Wiki Extensions', :param => :id
   end
   

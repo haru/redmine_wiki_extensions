@@ -24,7 +24,7 @@ module WikiExtensionsWikiMacro
       page = obj.page
       return unless page
 
-      o = "<h3>Tags</h3>¥n"
+      o = "<h3>Tags</h3>"
       page.tags.each{|tag|
         o << tag.name
         o << ','
@@ -43,7 +43,8 @@ module WikiExtensionsWikiMacro
       o = "<h3>Tags</h3>"
       tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
       tags.sort.each{|tag|
-        o << "#{tag.name}(#{tag.page_count})"  
+        o << link_to("#{tag.name}(#{tag.page_count})", :controller => 'wiki_extensions',
+              :action => 'tag', :id => project, :tag_id => tag.id)
         o << ' '
       }
       return o
