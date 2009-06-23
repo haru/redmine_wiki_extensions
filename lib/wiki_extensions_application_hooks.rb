@@ -62,15 +62,18 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     controller = context[:controller]
     page = controller.wiki_extensions_get_current_page
     tags = page.tags
+    baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
+    img = baseurl + "/images/add.png"
 
     o = '<div id="wiki_extensions_tag_form"><p>'
     o << "\n"
     o << "<label>#{l(:label_wikiextensions_tags)}</label><br/>"
     i = 0
-    5.times{|line|
+    maxline = 5
+    maxline.times{|line|
       style = ''
-      style = 'style="display:none;"' if line > 0
-      o << "<div #{style}>"
+      style = 'style="display:none;"' if line > (tags.length - 1) / 4
+      o << "<div #{style}" + ' id="tag_line_' + line.to_s + '" >'
       4.times {
         value = ''
         value = 'value="' + tags[i].name  + '"' if tags[i]
@@ -80,6 +83,12 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
         o << '</span>'
         i = i + 1
       }
+      nextline = line + 1
+      if (line < maxline - 1)
+        o << '<span style="cursor:pointer;">'
+        o << image_tag(img, :onclick => '$("tag_line_' + nextline.to_s + '").show()')
+        o << '</span>'
+      end
       o << '</div>'
     }
     o << "</p></div>\n"
