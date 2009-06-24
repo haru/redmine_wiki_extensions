@@ -36,3 +36,10 @@ function add_wiki_extensions_tags_form() {
     tags_form.parentNode.removeChild(tags_form);
     new Insertion.After(content_comments.parentNode, tags_form);
 }
+
+function set_tag_atuto_complete(taglist) {
+    var inputs = $$('.wikiext_tag_inputs');
+    for (var i = 0; i < inputs.length; i++) {
+        new Autocompleter.Local(inputs[i], "wikiext_taglist_complete", taglist, {});
+    }
+}

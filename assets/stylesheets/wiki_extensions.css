@@ -46,3 +46,18 @@ list-style-image: none;
 .tag_level1{
     font-size:x-small;
 }
+
+#wikiext_taglist_complete {
+    background-color: #E6E6FA;
+    padding: 0;
+}
+
+#wikiext_taglist_complete ul {
+    padding-left: 1em;
+    margin: 0;
+}
+
+#wikiext_taglist_complete li{
+    list-style-type: none;
+    margin: 0;
+}

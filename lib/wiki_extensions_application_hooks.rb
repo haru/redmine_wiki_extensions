@@ -66,7 +66,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     project = context[:project]
     controller = context[:controller]
     page = controller.wiki_extensions_get_current_page
-    tags = page.tags
+    tags = page.tags.sort{|a, b|a.name <=> b.name}
     baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
     img = baseurl + "/images/add.png"
 
@@ -84,7 +84,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
         value = 'value="' + tags[i].name  + '"' if tags[i]
         o << '<span class="tag_field">'
         o << '<input id="extension_tags[' + i.to_s + ']" type="text" size="20" name="extension[tags][' + i.to_s + ']" ' +
-          value + '/>'
+          value + ' class="wikiext_tag_inputs"/>'
         o << '</span>'
         i = i + 1
       }
@@ -94,10 +94,31 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
         o << image_tag(img, :onclick => '$("tag_line_' + nextline.to_s + '").show()')
         o << '</span>'
       end
+     
       o << '</div>'
     }
+    o << '<div id="wikiext_taglist_complete"></div>'
     o << "</p></div>\n"
-    o << javascript_tag('add_wiki_extensions_tags_form();')
+    #o << javascript_tag('add_wiki_extensions_tags_form();')
+    o << '<script type="text/javascript"> '
+    o << "\n"
+    o << '//<![CDATA'
+    o << "\n"
+    o << 'add_wiki_extensions_tags_form();'
+    o << "\n"
+    o << 'var taglist = [];'
+    o << "\n"
+    i = 0;
+    tags.each {|tag|
+      o << "taglist[#{i}] = '#{tag.name.gsub(/'/, "\\\\'")}';"
+      o << "\n"
+      i = i+1
+    }
+    o << 'set_tag_atuto_complete(taglist);'
+    o << "\n"
+    o << '//]]>'
+    o << "\n"
+    o << '</script>'
     return o
   end
 end
