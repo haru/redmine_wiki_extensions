@@ -45,13 +45,14 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     wiki = project.wiki
     return unless wiki
     page = wiki.find_page(page_name) if page_name
+    o = ''
     if action_name == 'edit' or (action_name == 'index' and page_name and page == nil)
       return add_wiki_ext_tags_form context
     end
     return unless action_name == 'index'
     
     @side_bar = wiki.find_page('SideBar')
-    o = ''
+    
     
     if @side_bar
       o << javascript_tag('add_wiki_extension_sidebar();')
@@ -109,7 +110,8 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     o << 'var taglist = [];'
     o << "\n"
     i = 0;
-    tags.each {|tag|
+    all_tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
+    all_tags.each {|tag|
       o << "taglist[#{i}] = '#{tag.name.gsub(/'/, "\\\\'")}';"
       o << "\n"
       i = i+1
