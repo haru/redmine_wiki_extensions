@@ -20,17 +20,17 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   def view_layouts_base_html_head(context = {})
     project = context[:project]
     controller = context[:controller]
-    return unless controller.class.name == 'WikiController'
-    action_name = controller.action_name
-    return unless action_name == 'index' or action_name == 'edit'
     baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
-
-    
     o = ""
-    o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
-    o << "\n"
     o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css")
-     
+   
+    return o unless controller.class.name == 'WikiController'
+    action_name = controller.action_name
+    return o unless action_name == 'index' or action_name == 'edit'
+       
+    o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
+    
+      
     return o
   end
   
@@ -39,13 +39,18 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     controller = context[:controller]
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name
-    if action_name == 'edit'
+    request = context[:request]
+    params = request.parameters if request
+    page_name = params[:page] if params
+    wiki = project.wiki
+    return unless wiki
+    page = wiki.find_page(page_name) if page_name
+    if action_name == 'edit' or (action_name == 'index' and page_name and page == nil)
       return add_wiki_ext_tags_form context
     end
     return unless action_name == 'index'
-    @wiki = project.wiki
-    return unless @wiki
-    @side_bar = @wiki.find_page('SideBar')
+    
+    @side_bar = wiki.find_page('SideBar')
     o = ''
     
     if @side_bar
