@@ -72,7 +72,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     maxline = 5
     maxline.times{|line|
       style = ''
-      style = 'style="display:none;"' if line > (tags.length - 1) / 4
+      style = 'style="display:none;"' if line != 0 and line > (tags.length - 1) / 4
       o << "<div #{style}" + ' id="tag_line_' + line.to_s + '" >'
       4.times {
         value = ''
