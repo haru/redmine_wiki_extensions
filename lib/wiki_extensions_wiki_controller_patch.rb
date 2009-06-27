@@ -66,13 +66,13 @@ module InstanceMethodsForWikiExtensionWikiController
   end
 
   def wiki_extensions_include_sidebar
-    return if @page.title == 'SideBar'
+    #return if @page.title == 'SideBar'
     side_bar = @wiki.find_page('SideBar')
     return unless side_bar
     text = @content.text
     text << "\n"
     text << "{{div_start_tag(wiki_extentions_sidebar)}}\n"
-    text << "{{include(SideBar)}}\n"
+    text << side_bar.content.text
     text << "{{div_end_tag}}\n"
     
   end
