@@ -24,6 +24,7 @@ module WikiExtensionsWikiMacro
       "Default of expire is 5."
     macro :new do |obj, args|
       return nil if args.length < 1
+      return nil unless WikiExtensionsUtil.is_enabled?(@project)
       date_string = args[0].strip
       expire = args[1].strip.to_i if args[1]
       expire = 5 unless expire

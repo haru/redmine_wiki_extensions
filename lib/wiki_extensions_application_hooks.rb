@@ -19,6 +19,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
 
   def view_layouts_base_html_head(context = {})
     project = context[:project]
+    return unless WikiExtensionsUtil.is_enabled?(project)
     controller = context[:controller]
     baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
     o = ""
@@ -36,6 +37,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   
   def view_layouts_base_body_bottom(context = { })
     project = context[:project]
+    return unless WikiExtensionsUtil.is_enabled?(project)
     controller = context[:controller]
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name

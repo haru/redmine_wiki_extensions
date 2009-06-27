@@ -21,6 +21,7 @@ module WikiExtensionsComments
     desc "Displays a comment form."
     macro :comment_form do |obj, args|
       return unless @project
+      return nil unless WikiExtensionsUtil.is_enabled?(@project)
       unless User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'add_comment'}, @project)
         return ''
       end

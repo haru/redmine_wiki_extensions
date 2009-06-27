@@ -22,6 +22,7 @@ module WikiExtensionsFootnote
       " \{{fn(word, description}}"
     macro :fn do |obj, args|
       return nil if args.length < 2
+      return nil unless WikiExtensionsUtil.is_enabled?(@project)
       word = args[0]
       description = args[1]
       page = obj.page
@@ -41,6 +42,7 @@ module WikiExtensionsFootnote
   Redmine::WikiFormatting::Macros.register do
     desc "Displays footnotes of the page."
     macro :fnlist do |obj, args|
+      return nil unless WikiExtensionsUtil.is_enabled?(@project)
       page = obj.page
       data = page.wiki_extension_data
       return '' if data[:footnotes].blank? or data[:footnotes].empty?
