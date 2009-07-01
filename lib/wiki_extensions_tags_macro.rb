@@ -45,6 +45,7 @@ module WikiExtensionsWikiMacro
       project = page.project
       o = "<h3>Tags</h3>"
       tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
+      return '' if tags.empty?
       max_count = tags.sort{|a, b| a.page_count <=> b.page_count}.last.page_count.to_f
       tags.sort.each{|tag|
         index = ((tag.page_count / max_count) * (classes.size - 1)).round
