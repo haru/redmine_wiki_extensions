@@ -24,7 +24,7 @@ module WikiExtensionsWikiMacro
       " @{{wiki(project_identifier, wiki_page)}}@\n" +
       " @{{wiki(project_identifier, wiki_page, alias)}}@\n"
     macro :wiki do |obj, args|
-      return nil unless WikiExtensionsUtil.is_enabled?(@project)
+      return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
       return nil if args.length < 2
       project_name = args[0].strip
       page_name = args[1].strip

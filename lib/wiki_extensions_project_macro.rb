@@ -24,12 +24,13 @@ module WikiExtensionsProjectMacro
       " \{{project(project_name, alias)}}\n" +
       " \{{project(project_identifire, alias}}\n"
     macro :project do |obj, args|
-      return nil unless WikiExtensionsUtil.is_enabled?(@project)
+      
       return nil if args.length < 1
       project_name = args[0].strip
       project = Project.find_by_name(project_name)
       project = Project.find_by_identifier(project_name) unless project
       return nil unless project
+      return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
       if (args[1])
         alias_name = args[1].strip
       else
