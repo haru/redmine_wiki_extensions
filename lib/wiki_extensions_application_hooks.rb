@@ -20,9 +20,22 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   def view_layouts_base_html_head(context = {})
     project = context[:project]
     return unless WikiExtensionsUtil.is_enabled?(project)
+    wiki = project.wiki
+    style_sheet = wiki.find_page('StyleSheet') if wiki
+    o = ""
+    if style_sheet
+      o << "\n"
+      o << '<style type="text/css">'
+      o << style_sheet.text
+
+      o << '</style>'
+      o << "\n"
+
+    end
+    
     controller = context[:controller]
     baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
-    o = ""
+    
     o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css")
    
     return o unless controller.class.name == 'WikiController'
@@ -30,8 +43,9 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     return o unless action_name == 'index' or action_name == 'edit'
        
     o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
+
     
-      
+          
     return o
   end
   

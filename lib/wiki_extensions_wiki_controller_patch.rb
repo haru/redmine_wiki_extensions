@@ -80,22 +80,3 @@ end
 
 WikiController.send(:include, WikiExtensionsWikiControllerPatch)
 
-module WikiExtensionsWikiMacro
-  Redmine::WikiFormatting::Macros.register do
-    desc "Displays a '<div class=" + '"' + 'class_name' + '">' + "'\n\n" +
-      " @{{div_start_tag(class_name)}}@"
-    macro :div_start_tag do |obj, args|
-      return '<div id="' + args[0].strip + '">'
-    end
-  end
-end
-
-module WikiExtensionsWikiMacro
-  Redmine::WikiFormatting::Macros.register do
-    desc "Displays a '</div>.'"
-    macro :div_end_tag do |obj, args|
-      return '</div>'
-    end
-  end
-end
-
