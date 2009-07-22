@@ -8,9 +8,6 @@ class WikiExtensionsTagRelationTest < Test::Unit::TestCase
     relation = WikiExtensionsTagRelation.new
     assert !relation.save
     
-    relation.errors.each{|error|
-      #p error
-    }
 
     tag = WikiExtensionsTag.find_or_create(1, 'bbb')
     relation.tag = tag
