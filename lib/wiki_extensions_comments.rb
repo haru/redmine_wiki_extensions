@@ -61,7 +61,11 @@ module WikiExtensionsComments
       comments.each{|comment|
         o << "<div>"
         o << "<h3>"
-        o << l(:label_added_time_by, comment.user, distance_of_time_in_words(Time.now, comment.updated_at))
+        if l(:this_is_gloc_lib) == 'this_is_gloc_lib'
+          o << l(:label_added_time_by, comment.user, distance_of_time_in_words(Time.now, comment.updated_at))
+        else
+          o << l(:label_added_time_by, :author => comment.user, :age => distance_of_time_in_words(Time.now, comment.updated_at))
+        end
         o << "</h3>\n"
         o << textilizable(comment, :comment)
         o << "</div>"

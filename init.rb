@@ -29,8 +29,10 @@ require 'wiki_extensions_div_macro'
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'
   author 'Haruyuki Iida'
-  description 'This is a plugin for Redmine'
-  version '0.0.5'
+  description 'This is a Wiki Extensions plugin for Redmine'
+  url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
+  version '0.0.6'
+  requires_redmine :version_or_higher => '0.8.3'
 
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
