@@ -24,8 +24,8 @@ class WikiControllerTest < ActionController::TestCase
     @request    = ActionController::TestRequest.new
     @response   = ActionController::TestResponse.new
     @request.env["HTTP_REFERER"] = '/'
-    project = Project.find(1)
-    @wiki = project.wiki
+    @project = Project.find(1)
+    @wiki = @project.wiki
     @page_name = 'macro_test'
     @page = @wiki.find_or_new_page(@page_name)
     @page.content = WikiContent.new
@@ -70,6 +70,37 @@ class WikiControllerTest < ActionController::TestCase
     get :index, :id => 1, :page => @page_name
     assert_response :success
 
+  end
+
+  def test_new
+    text = "{{new(#{Date.today.to_s})}}\n"
+    text << "{{new(#{(Date.today - 1).to_s})}}\n"
+    text << "{{new(#{(Date.today - 2).to_s})}}\n"
+    text << "{{new(2009-03-01, 4)}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
+  def test_project
+    text = "{{project(#{@project.name})}}\n"
+    text << "{{project(#{@project.id})}}\n"
+    text << "{{project(#{@project.name}, hoge)}}\n"
+    text << "{{project(#{@project.id}), bar}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
+  def test_tags
+    text = "{{tags}}\n"
+    text << "{{tagcloud}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
   end
 
   private
