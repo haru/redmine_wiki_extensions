@@ -17,7 +17,9 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class WikiControllerTest < ActionController::TestCase
-  fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis, :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments
+  fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis, 
+    :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments,
+    :wiki_extensions_comments, :wiki_extensions_tags
 
   def setup
     @controller = WikiController.new
@@ -31,6 +33,14 @@ class WikiControllerTest < ActionController::TestCase
     @page.content = WikiContent.new
     @page.content.text = 'test'
     @page.save!
+    side_bar = @wiki.find_or_new_page('SideBar')
+    side_bar.content = WikiContent.new
+    side_bar.content.text = 'test'
+    side_bar.save!
+    style_sheet = @wiki.find_or_new_page('StyleSheet')
+    style_sheet.content = WikiContent.new
+    style_sheet.content.text = 'test'
+    style_sheet.save!
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
     enabled_module.name = 'wiki_extensions'
@@ -95,12 +105,37 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   def test_tags
+    page = @wiki.find_or_new_page(@page_name)
+    page.tags << WikiExtensionsTag.find(1)
+    page.save!
     text = "{{tags}}\n"
     text << "{{tagcloud}}\n"
     setContent(text)
     @request.session[:user_id] = 1
     get :index, :id => 1, :page => @page_name
     assert_response :success
+  end
+
+  def test_wiki
+    text = ''
+    text << "{{wiki(#{@project.name}, #{@page_name})}}\n"
+    text << "{{wiki(#{@project.name}, #{@page_name}, foo)}}\n"
+    text << "{{wiki(#{@project.id}, #{@page_name})}}\n"
+    text << "{{wiki(#{@project.id}, #{@page_name}, bar)}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
+  def test_edit
+    @request.session[:user_id] = 1
+    get :edit, :id => 1, :page => @page_name
+    assert_response :success
+
+    post :edit, :id => 1, :page => @page_name, :content => {:text => 'aaa'},
+      :extension => {:tags =>{"0" => "aaa", "1" => "bbb"}}
+    assert_response :redirect
   end
 
   private
