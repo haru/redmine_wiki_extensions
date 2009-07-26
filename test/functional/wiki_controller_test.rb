@@ -39,17 +39,45 @@ class WikiControllerTest < ActionController::TestCase
   end
 
   def test_comment_form
-    page = @wiki.find_or_new_page(@page_name)
-    page.content.text = '{{comment_form}}'
-    page.content.text << "\n"
-    page.content.text << "{{comments}}"
-    page.save!
-    page.content.save!
+    text = '{{comment_form}}'
+    text << "\n"
+    text << "{{comments}}"
+    setContent(text)
     @request.session[:user_id] = 1
     get :index, :id => 1, :page => @page_name
     assert_response :success
 
   end
 
-  
+  def test_div
+    text = "{{div_start_tag(foo)}}\n"
+    text << "{{div_end_tag}}\n"
+    text << "{{div_start_tag(var, hoge)}}\n"
+    text << "{{div_end_tag}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+
+  end
+
+  def test_footnote
+    text = "{{fn(aaa,bbb)}}\n"
+    text << "{{fn(ccc,ddd)}}\n"
+    text << "{{fnlist}}\n"
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+
+  end
+
+  private
+
+  def setContent(text)
+    page = @wiki.find_or_new_page(@page_name)
+    page.content.text = text
+    page.save!
+    page.content.save!
+  end
 end
