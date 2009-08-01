@@ -29,6 +29,8 @@ module WikiExtensionsComments
       page = obj.page
       return unless page
       data = page.wiki_extension_data
+      num = rand(10000)
+      div_id = "add_comment_area_#{num}"
 
       url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id => @project)
       o = ""
@@ -36,12 +38,12 @@ module WikiExtensionsComments
       o << "\n"
       o << hidden_field_tag(:wiki_page_id, page.id)
       o << "\n"
-      o << text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => 'add_comment_area',:accesskey => accesskey(:edit),
+      o << text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => div_id,:accesskey => accesskey(:edit),
                    :class => 'wiki-edit')
       o << '<br/>'
       o << submit_tag(l(:label_comment_add))
       o << "\n"
-      o << wikitoolbar_for('add_comment_area')
+      o << wikitoolbar_for(div_id)
       o << '</form>'
       return o
     end

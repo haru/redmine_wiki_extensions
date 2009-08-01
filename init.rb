@@ -31,14 +31,13 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author 'Haruyuki Iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
-  version '0.0.6'
+  version '0.0.7'
   requires_redmine :version_or_higher => '0.8.3'
 
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
     permission :show_wiki_comment, {:wiki_extensions => [:show_comments]}, :public => true
     permission :show_wiki_tags, {:wiki_extensions => [:tag]}, :public => true
-    #menu :project_menu, :wiki_extensions, { :controller => 'wiki_extensions', :action => 'add_comment' }, :caption => 'Wiki Extensions', :param => :id
   end
   
 end

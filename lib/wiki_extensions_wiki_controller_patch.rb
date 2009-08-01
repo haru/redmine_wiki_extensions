@@ -39,6 +39,7 @@ module InstanceMethodsForWikiExtensionWikiController
   def render(args = {})
     if (args[:action] == 'show')
       wiki_extensions_add_fnlist
+      wiki_extensions_include_footer
       wiki_extensions_include_sidebar
     end
     super args
@@ -75,6 +76,18 @@ module InstanceMethodsForWikiExtensionWikiController
     text << "{{include(SideBar)}}\n"
     text << "{{div_end_tag}}\n"
     
+  end
+
+  def wiki_extensions_include_footer
+    return if @page.title == 'Footer'
+    footer = @wiki.find_page('Footer')
+    return unless footer
+    text = @content.text
+    text << "\n"
+    text << "{{div_start_tag(wiki_extentions_footer)}}\n"
+    text << "{{include(Footer)}}\n"
+    text << "{{div_end_tag}}\n"
+
   end
 end
 
