@@ -42,7 +42,7 @@ module WikiExtensionsRecentMacro
           o << "<h3>" + l_date(date) + "</h3>"
         end
         o << link_to(content.page.title, :controller => 'wiki', :action => 'index', :id => project, :page => content.page.title)
-        o << '</br>'
+        o << '<br/>'
       }
       return o
     end
