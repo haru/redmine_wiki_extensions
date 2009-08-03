@@ -33,17 +33,18 @@ module WikiExtensionsRecentMacro
         :joins => "left join #{WikiPage.table_name} on #{WikiPage.table_name}.id = #{WikiContent.table_name}.page_id ",
         :conditions => ["wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Date.today - days],
         :order => "#{WikiContent.table_name}.updated_on desc")
-      o = ''
+      o = '<div class="wiki_extensions_recent">'
       date = nil
       contents.each {|content|
         updated_on = Date.new(content.updated_on.year, content.updated_on.month, content.updated_on.day)
         if date != updated_on
           date = updated_on
-          o << "<h3>" + l_date(date) + "</h3>"
+          o << "<b>" + l_date(date) + "</b><br/>"
         end
         o << link_to(content.page.title, :controller => 'wiki', :action => 'index', :id => project, :page => content.page.title)
         o << '<br/>'
       }
+      o << '</div>'
       return o
     end
   end
