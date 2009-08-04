@@ -138,6 +138,17 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  def test_recent
+    text = ''
+    text << "{{recent}}\n"
+    text << "{{recent(10)}}\n"
+    
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
   private
 
   def setContent(text)
