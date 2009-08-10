@@ -39,7 +39,7 @@ module WikiExtensionsRecentMacro
         updated_on = Date.new(content.updated_on.year, content.updated_on.month, content.updated_on.day)
         if date != updated_on
           date = updated_on
-          o << "<b>" + l_date(date) + "</b><br/>"
+          o << "<b>" + format_date(date) + "</b><br/>"
         end
         o << link_to(content.page.title, :controller => 'wiki', :action => 'index', :id => project, :page => content.page.title)
         o << '<br/>'
