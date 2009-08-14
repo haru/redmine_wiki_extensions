@@ -37,10 +37,12 @@ end
 
 module InstanceMethodsForWikiExtensionWikiController
   def render(args = {})
-    if (args[:action] == 'show')
-      wiki_extensions_add_fnlist
-      wiki_extensions_include_footer
-      wiki_extensions_include_sidebar
+    if @project and WikiExtensionsUtil.is_enabled?(@project)
+      if (args[:action] == 'show')
+        wiki_extensions_add_fnlist
+        wiki_extensions_include_footer
+        wiki_extensions_include_sidebar
+      end
     end
     super args
   end

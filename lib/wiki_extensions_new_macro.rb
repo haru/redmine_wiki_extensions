@@ -34,7 +34,7 @@ module WikiExtensionsWikiMacro
       o = '<span class="wiki_ext_new_date">'
       o << '[' + format_date(date) + ']'
       if (today - date < expire)
-        o << '<span class="wiki_ext_new_mark">new'
+        o << '<span class="wiki_ext_new_mark">' + l(:label_wikiextensions_new)
         case today - date
         when -100 .. 0
           o << '!!!'
