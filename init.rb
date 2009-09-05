@@ -40,7 +40,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
 
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
-    permission :show_wiki_extension_tabs, {:wiki_extensions => [:forward]}, :public => true
+    permission :show_wiki_extension_tabs, {:wiki_extensions => [:forward_wiki_page]}, :public => true
     permission :show_wiki_comment, {:wiki_extensions => [:show_comments]}, :public => true
     permission :show_wiki_tags, {:wiki_extensions => [:tag]}, :public => true
     permission :wiki_extensions_settings, {:wiki_extensions_settings => [:show, :update]}
@@ -52,7 +52,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
     before = :wiki
     before = menulist[i - 1] if i > 0
 
-    menu :project_menu, menulist[i], { :controller => 'wiki_extensions', :action => 'forward', :menu_id => no },:after => before,
+    menu :project_menu, menulist[i], { :controller => 'wiki_extensions', :action => 'forward_wiki_page', :menu_id => no },:after => before,
     :caption => Proc.new{|proj| WikiExtensionsProjectMenu.title(proj.id, no)},
     :if => Proc.new{|proj| WikiExtensionsProjectMenu.enabled?(proj.id, no)}
   }

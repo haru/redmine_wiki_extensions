@@ -36,7 +36,7 @@ class WikiExtensionsController < ApplicationController
     @tag = WikiExtensionsTag.find(tag_id)
   end
 
-  def forward
+  def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsProjectMenu.find_or_create(@project.id, menu_id)
     redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => menu.page_name
