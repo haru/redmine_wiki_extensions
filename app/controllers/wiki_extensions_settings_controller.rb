@@ -21,16 +21,21 @@ class WikiExtensionsSettingsController < ApplicationController
 
   before_filter :find_project, :authorize, :find_user
 
-  def update   
+  def update    
     menus = params[:menus]
     setting = WikiExtensionsProjectSetting.find_or_create @project.id
-    setting.transaction do
-      menus.each_value {|menu|
-        menu_setting = WikiExtensionsProjectMenu.find_or_create(@project.id, menu[:menu_no].to_i)
-        menu_setting.attributes = menu
-        menu_setting.enabled = (menu[:enabled] == 'true')
-        menu_setting.save!
-      }
+    begin
+      setting.transaction do
+        menus.each_value {|menu|
+          menu_setting = WikiExtensionsProjectMenu.find_or_create(@project.id, menu[:menu_no].to_i)
+          menu_setting.attributes = menu
+          menu_setting.enabled = (menu[:enabled] == 'true')
+          menu_setting.save!
+        }
+      end
+      flash[:notice] = l(:notice_successful_update)
+    rescue
+      flash[:error] = "なんかエラー"
     end
     
     redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'

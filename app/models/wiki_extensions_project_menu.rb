@@ -21,11 +21,21 @@ class WikiExtensionsProjectMenu < ActiveRecord::Base
 
   def self.enabled?(pj_id, no)
     menu = find_or_create(pj_id, no)
+    return false if menu.page_name.empty?
     menu.enabled
   end
 
   def self.title(pj_id, no)
     menu = find_or_create(pj_id, no)
-    menu.title
+    return menu.title unless menu.title.empty?
+    return menu.page_name unless menu.page_name.empty?
+    return nil
+  end
+
+  def validate
+    return true unless enabled
+    #errors.add("title", "is empty") unless attribute_present?("title")
+    #errors.add("page_name", "is empty") unless attribute_present?("page_name")
+
   end
 end
