@@ -1,0 +1,19 @@
+<div id="wiki_extensions_settings">
+<%
+    @wiki_extensions_setting = WikiExtensionsProjectSetting.find_or_create(@project.id)
+%>
+
+<% labelled_tabular_form_for :setting, @wiki_extensions_setting,
+                             :url => {:controller => 'wiki_extensions_settings',
+                             :action => 'update', :id => @project, :tab => 'wiki_extensions',
+                             :partial => 'wiki_extensions_settings/update',
+                             :setting_id => @wiki_extensions_setting.id} do |f| %>
+    <%= error_messages_for 'wiki_extensions_setting' %>
+    <div class="box">
+      <b>プロジェクトメニューにタブを追加</b>
+      <%= render :partial => "wiki_extensions_settings/menu", :collection => @wiki_extensions_setting.menus, :as => :menu %>
+      
+    </div>
+    <%= submit_tag l(:button_update) %>
+<% end %>
+</div>

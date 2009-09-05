@@ -15,41 +15,34 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-class WikiExtensionsController < ApplicationController
+class WikiExtensionsSettingsController < ApplicationController
   unloadable
-  menu_item :wiki
+  layout 'base'
+
   before_filter :find_project, :authorize, :find_user
 
-  def add_comment
-
-    comment = WikiExtensionsComment.new
-    comment.wiki_page_id = params[:wiki_page_id].to_i
-    comment.user_id = @user.id
-    comment.comment = params[:comment]
-    comment.save
-    page = WikiPage.find(comment.wiki_page_id)
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
-  end
-
-  def tag
-    tag_id = params[:tag_id].to_i
-    @tag = WikiExtensionsTag.find(tag_id)
-  end
-
-  def forward
-    menu_id = params[:menu_id].to_i
-    menu = WikiExtensionsProjectMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => menu.page_name
+  def update   
+    menus = params[:menus]
+    setting = WikiExtensionsProjectSetting.find_or_create @project.id
+    setting.transaction do
+      menus.each_value {|menu|
+        menu_setting = WikiExtensionsProjectMenu.find_or_create(@project.id, menu[:menu_no].to_i)
+        menu_setting.attributes = menu
+        menu_setting.enabled = (menu[:enabled] == 'true')
+        menu_setting.save!
+      }
+    end
+    
+    redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'
   end
 
   private
   def find_project
     # @project variable must be set before calling the authorize filter
-    @project = Project.find(params[:id]) unless params[:id].blank?
+    @project = Project.find(params[:id])
   end
 
   def find_user
     @user = User.current
   end
-
 end
