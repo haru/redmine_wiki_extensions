@@ -20,16 +20,24 @@ class WikiExtensionsProjectMenu < ActiveRecord::Base
   end
 
   def self.enabled?(pj_id, no)
-    menu = find_or_create(pj_id, no)
-    return false if menu.page_name.empty?
-    menu.enabled
+    begin
+      menu = find_or_create(pj_id, no)
+      return false if menu.page_name == nil or menu.page_name.empty?
+      menu.enabled
+    rescue
+      return false
+    end
   end
 
   def self.title(pj_id, no)
-    menu = find_or_create(pj_id, no)
-    return menu.title unless menu.title.empty?
-    return menu.page_name unless menu.page_name.empty?
-    return nil
+    begin
+      menu = find_or_create(pj_id, no)
+      return menu.title if menu.tite and !menu.title.empty?
+      return menu.page_name unless menu.page_name.empty?
+      return nil
+    rescue
+      return nil
+    end
   end
 
   def validate
