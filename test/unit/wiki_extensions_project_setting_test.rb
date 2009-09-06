@@ -18,7 +18,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class WikiExtensionsProjectSettingTest < Test::Unit::TestCase
-  fixtures :wiki_extensions_project_settings
+  fixtures :wiki_extensions_project_settings, :wiki_extensions_project_menus
 
   def test_find_or_create
     assert(!WikiExtensionsProjectSetting.find(:first, :conditions => 'project_id = 5'))
