@@ -10,7 +10,7 @@
                              :setting_id => @wiki_extensions_setting.id} do |f| %>
     <%= error_messages_for 'wiki_extensions_setting' %>
     <div class="box">
-      <b>プロジェクトメニューにタブを追加</b>
+      <b><%=h l(:wiki_extensions_add_tab)%></b>
       <%= render :partial => "wiki_extensions_settings/menu", :collection => @wiki_extensions_setting.menus, :as => :menu %>
       
     </div>

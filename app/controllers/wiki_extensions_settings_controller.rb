@@ -35,7 +35,7 @@ class WikiExtensionsSettingsController < ApplicationController
       end
       flash[:notice] = l(:notice_successful_update)
     rescue
-      flash[:error] = "なんかエラー"
+      flash[:error] = "Updating failed."
     end
     
     redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'
