@@ -21,7 +21,12 @@ class WikiExtensionsTagTest < Test::Unit::TestCase
   fixtures :wiki_extensions_tags
 
   # Replace this with your real tests.
-  def test_truth
-    assert true
+  def test_equal
+    tag1 = WikiExtensionsTag.find(1)
+    tag2 = WikiExtensionsTag.find(2)
+    tag3 = WikiExtensionsTag.find(3)
+    assert(!(tag1 == tag2))
+    assert(!(tag2 == tag3))
+    assert(tag1 == WikiExtensionsTag.find(1))
   end
 end
