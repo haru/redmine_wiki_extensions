@@ -149,11 +149,32 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  def test_lastupdated_by
+    text = ''
+    text << "{{lastupdated_by}}\n"
+
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
+  def test_lastupdated_at
+    text = ''
+    text << "{{lastupdated_at}}\n"
+
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
   private
 
   def setContent(text)
     page = @wiki.find_or_new_page(@page_name)
     page.content.text = text
+    page.content.author_id = 1
     page.save!
     page.content.save!
   end
