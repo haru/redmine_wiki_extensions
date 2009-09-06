@@ -87,7 +87,7 @@ module InstanceMethodsForWikiExtensionWikiController
     text = @content.text
     text << "\n"
     text << "{{div_start_tag(wiki_extentions_footer)}}\n"
-    text << "{{include(Footer)}}\n"
+    text << footer.content.text
     text << "{{div_end_tag}}\n"
 
   end
