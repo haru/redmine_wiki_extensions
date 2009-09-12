@@ -1,6 +1,6 @@
 class CreateWikiExtensionsProjectMenus < ActiveRecord::Migration
   def self.up
-    create_table :wiki_extensions_project_menus do |t|
+    create_table :wiki_extensions_menus do |t|
 
       t.column :project_id, :integer
       t.column :menu_no, :integer
@@ -12,6 +12,6 @@ class CreateWikiExtensionsProjectMenus < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :wiki_extensions_project_menus
+    drop_table :wiki_extensions_menus
   end
 end

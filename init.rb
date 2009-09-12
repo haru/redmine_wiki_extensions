@@ -35,7 +35,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author 'Haruyuki Iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
-  version '0.0.9'
+  version '0.1.0'
   requires_redmine :version_or_higher => '0.8.3'
 
   project_module :wiki_extensions do
@@ -53,8 +53,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
     before = menulist[i - 1] if i > 0
 
     menu :project_menu, menulist[i], { :controller => 'wiki_extensions', :action => 'forward_wiki_page', :menu_id => no },:after => before,
-    :caption => Proc.new{|proj| WikiExtensionsProjectMenu.title(proj.id, no)},
-    :if => Proc.new{|proj| WikiExtensionsProjectMenu.enabled?(proj.id, no)}
+    :caption => Proc.new{|proj| WikiExtensionsMenu.title(proj.id, no)},
+    :if => Proc.new{|proj| WikiExtensionsMenu.enabled?(proj.id, no)}
   }
   
 end

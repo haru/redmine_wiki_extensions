@@ -17,20 +17,20 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiExtensionsProjectSettingTest < Test::Unit::TestCase
-  fixtures :wiki_extensions_project_settings, :wiki_extensions_project_menus
+class WikiExtensionsSettingTest < Test::Unit::TestCase
+  fixtures :wiki_extensions_settings, :wiki_extensions_menus
 
   def test_find_or_create
-    assert(!WikiExtensionsProjectSetting.find(:first, :conditions => 'project_id = 5'))
-    setting = WikiExtensionsProjectSetting.find_or_create(5)
+    assert(!WikiExtensionsSetting.find(:first, :conditions => 'project_id = 5'))
+    setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
-    assert(WikiExtensionsProjectSetting.find(:first, :conditions => 'project_id = 5'))
-    setting = WikiExtensionsProjectSetting.find_or_create(5)
+    assert(WikiExtensionsSetting.find(:first, :conditions => 'project_id = 5'))
+    setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
   end
 
   def test_menus
-    setting = WikiExtensionsProjectSetting.find_or_create(6)
+    setting = WikiExtensionsSetting.find_or_create(6)
     assert_equal(5, setting.menus.length)
   end
 end

@@ -23,11 +23,11 @@ class WikiExtensionsSettingsController < ApplicationController
 
   def update    
     menus = params[:menus]
-    setting = WikiExtensionsProjectSetting.find_or_create @project.id
+    setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
         menus.each_value {|menu|
-          menu_setting = WikiExtensionsProjectMenu.find_or_create(@project.id, menu[:menu_no].to_i)
+          menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
           menu_setting.attributes = menu
           menu_setting.enabled = (menu[:enabled] == 'true')
           menu_setting.save!

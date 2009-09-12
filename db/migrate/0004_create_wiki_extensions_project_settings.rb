@@ -1,6 +1,6 @@
 class CreateWikiExtensionsProjectSettings < ActiveRecord::Migration
   def self.up
-    create_table :wiki_extensions_project_settings do |t|
+    create_table :wiki_extensions_settings do |t|
 
       t.column :project_id, :integer
 
@@ -14,6 +14,6 @@ class CreateWikiExtensionsProjectSettings < ActiveRecord::Migration
   end
 
   def self.down
-    drop_table :wiki_extensions_project_settings
+    drop_table :wiki_extensions_settings
   end
 end

@@ -1,4 +1,4 @@
-class WikiExtensionsProjectMenu < ActiveRecord::Base
+class WikiExtensionsMenu < ActiveRecord::Base
   belongs_to :project
   validates_presence_of :project_id
   validates_presence_of :menu_no
@@ -7,10 +7,10 @@ class WikiExtensionsProjectMenu < ActiveRecord::Base
   #validates_uniqueness_of :title, :scope => :project_id
 
   def self.find_or_create(pj_id, no)
-    menu = WikiExtensionsProjectMenu.find(:first,
+    menu = WikiExtensionsMenu.find(:first,
       :conditions => ['project_id = ? and menu_no = ?', pj_id, no])
     unless menu
-      menu = WikiExtensionsProjectMenu.new
+      menu = WikiExtensionsMenu.new
       menu.project_id = pj_id
       menu.menu_no = no
       menu.enabled = false

@@ -1,6 +1,6 @@
 <div id="wiki_extensions_settings">
 <%
-    @wiki_extensions_setting = WikiExtensionsProjectSetting.find_or_create(@project.id)
+    @wiki_extensions_setting = WikiExtensionsSetting.find_or_create(@project.id)
 %>
 
 <% labelled_tabular_form_for :setting, @wiki_extensions_setting,

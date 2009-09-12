@@ -17,42 +17,42 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiExtensionsProjectMenuTest < Test::Unit::TestCase
-  fixtures :wiki_extensions_project_menus, :wiki_extensions_project_settings
+class WikiExtensionsMenuTest < Test::Unit::TestCase
+  fixtures :wiki_extensions_menus, :wiki_extensions_settings
 
   # Replace this with your real tests.
   def test_find_or_create
-    menu = WikiExtensionsProjectMenu.find_or_create(9, 3)
+    menu = WikiExtensionsMenu.find_or_create(9, 3)
     assert_equal(9, menu.project_id)
     assert_equal(3, menu.menu_no)
-    menu = WikiExtensionsProjectMenu.find_or_create(9, 3)
+    menu = WikiExtensionsMenu.find_or_create(9, 3)
     assert_equal(9, menu.project_id)
   end
 
   def test_title
-    menu = WikiExtensionsProjectMenu.find_or_create(10, 5)
-    assert(!WikiExtensionsProjectMenu.title(10, 5))
+    menu = WikiExtensionsMenu.find_or_create(10, 5)
+    assert(!WikiExtensionsMenu.title(10, 5))
     menu.page_name = "aaa"
     menu.save!
-    assert_equal("aaa", WikiExtensionsProjectMenu.title(10, 5))
+    assert_equal("aaa", WikiExtensionsMenu.title(10, 5))
     menu.title = "bbb"
     menu.save!
-    assert_equal("bbb", WikiExtensionsProjectMenu.title(10, 5))
-    assert(!WikiExtensionsProjectMenu.title(100, 5))
+    assert_equal("bbb", WikiExtensionsMenu.title(10, 5))
+    assert(!WikiExtensionsMenu.title(100, 5))
   end
 
   def test_enabled?
-    menu = WikiExtensionsProjectMenu.find_or_create(11, 5)
-    assert(!WikiExtensionsProjectMenu.enabled?(11, 5))
+    menu = WikiExtensionsMenu.find_or_create(11, 5)
+    assert(!WikiExtensionsMenu.enabled?(11, 5))
     menu.enabled = true
     menu.save!
-    assert(!WikiExtensionsProjectMenu.enabled?(11, 5))
+    assert(!WikiExtensionsMenu.enabled?(11, 5))
     menu.page_name = "aaa"
     menu.save!
-    assert(WikiExtensionsProjectMenu.enabled?(11, 5))
+    assert(WikiExtensionsMenu.enabled?(11, 5))
     menu.enabled = false
     menu.save!
-    assert(!WikiExtensionsProjectMenu.enabled?(11, 5))
-    assert(!WikiExtensionsProjectMenu.enabled?(111, 5))
+    assert(!WikiExtensionsMenu.enabled?(11, 5))
+    assert(!WikiExtensionsMenu.enabled?(111, 5))
   end
 end
