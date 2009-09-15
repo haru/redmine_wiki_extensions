@@ -25,7 +25,7 @@ module WikiExtensionsWikiMacro
       page = obj.page
       return unless page
 
-      o = "<h3>Tags</h3>"
+      o = '<h3>' + l(:label_wikiextensions_tags) + '</h3>'
       page.tags.each{|tag|
         o << tag.name
         o << ','
@@ -43,7 +43,7 @@ module WikiExtensionsWikiMacro
       page = obj.page
       return unless page
       project = page.project
-      o = "<h3>Tags</h3>"
+      o = '<h3>' + l(:label_wikiextensions_tags) + '</h3>'
       tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
       return '' if tags.empty?
       max_count = tags.sort{|a, b| a.page_count <=> b.page_count}.last.page_count.to_f

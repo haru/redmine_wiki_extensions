@@ -1,0 +1,7 @@
+# Russian strings go
+ru:
+  label_wikiextensions_tags: Метки
+  label_wikiextensions_new: Новое
+  wiki_extensions: Расширения Wiki
+  label_wikiextensions_tab: Вкладка
+  wiki_extensions_add_tab: "Добавить вкладку в меню проекта."
