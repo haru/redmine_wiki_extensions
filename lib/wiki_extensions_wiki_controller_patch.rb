@@ -29,8 +29,9 @@ module WikiExtensionsWikiControllerPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
       after_filter :wiki_extensions_save_tags, :only => :edit
+      alias_method_chain :render, :wiki_extensions
       class << self
-        # I dislike alias method chain, it's not the most readable backtraces
+        
         
       end
       
@@ -40,15 +41,15 @@ module WikiExtensionsWikiControllerPatch
 end
 
 module InstanceMethodsForWikiExtensionWikiController
-  def render(args = {})
-    if @project and WikiExtensionsUtil.is_enabled?(@project)
+  def render_with_wiki_extensions(args = nil)
+    if args and @project and WikiExtensionsUtil.is_enabled?(@project)
       if (args[:action] == 'show')
         wiki_extensions_add_fnlist
         wiki_extensions_include_footer
         wiki_extensions_include_sidebar
       end
     end
-    super args
+    render_without_wiki_extensions(args)
   end
 
   def wiki_extensions_get_current_page
