@@ -22,5 +22,6 @@ This plugin works only on production mode.
 === Language contributors
 
 ru.yml - Dim A
+fr.yml - Pascal Menut
 
 
