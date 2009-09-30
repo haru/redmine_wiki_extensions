@@ -17,10 +17,9 @@
 require 'redmine'
 
 module WikiExtensionsFootnote
-  @@preview_page = WikiPage.new
 
   def WikiExtensionsFootnote.preview_page
-    @@preview_page
+    @@preview_page ||= WikiPage.new
   end
 
   Redmine::WikiFormatting::Macros.register do
@@ -32,7 +31,7 @@ module WikiExtensionsFootnote
       word = args[0]
       description = args[1]
       page = obj.page if obj
-      page = @@preview_page unless page
+      page = WikiExtensionsFootnote.preview_page unless page
       data = page.wiki_extension_data
       data[:footnotes] ||= []
       data[:footnotes] << {'word' => word, 'description' => description}
@@ -52,7 +51,7 @@ module WikiExtensionsFootnote
     macro :fnlist do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       page = obj.page if obj
-      page = @@preview_page unless page
+      page = WikiExtensionsFootnote.preview_page unless page
       data = page.wiki_extension_data
       return '' if data[:footnotes].blank? or data[:footnotes].empty?
       o = '<div class="wiki_extensions_fnlist">'
@@ -65,7 +64,7 @@ module WikiExtensionsFootnote
       }
       o << '</ul>'
       o << '</div>'
-      @@preview_page.wiki_extension_data[:footnotes] = []
+      WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
       return o
     end
   end
