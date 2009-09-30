@@ -43,8 +43,10 @@ end
 module InstanceMethodsForWikiExtensionWikiController
   def render_with_wiki_extensions(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project)
-      if (args[:action] == 'show')
-        wiki_extensions_add_fnlist
+      if (args[:partial] == 'common/preview')
+        WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
+      elsif (args[:action] == 'show')
+        wiki_extensions_add_fnlist 
         wiki_extensions_include_footer
         wiki_extensions_include_sidebar
       end
