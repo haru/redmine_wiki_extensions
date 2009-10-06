@@ -15,20 +15,10 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
-require 'wiki_extensions_application_hooks'
-require 'wiki_extensions_wiki_page_patch'
-require 'wiki_extensions_footnote'
-require 'wiki_extensions_comments'
-require 'wiki_extensions_wiki_macro'
-require 'wiki_extensions_project_macro'
-require 'wiki_extensions_wiki_controller_patch'
-require 'wiki_extensions_new_macro'
-require 'wiki_extensions_tags_macro'
-require 'wiki_extensions_div_macro'
-require 'wiki_extensions_recent_macro'
-require 'wiki_extensions_lastupdated_by_macro'
-require 'wiki_extensions_lastupdated_at_macro'
-require 'wiki_extensions_projects_helper_patch'
+Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
+  next unless /\.rb$/ =~ file
+  require file
+end
 
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'
