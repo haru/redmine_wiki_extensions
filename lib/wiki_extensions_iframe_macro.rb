@@ -18,12 +18,16 @@
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Insert an iframe tag" + "'\n\n" +
-      " @{{iframe(url, height, width)}}@"
+      " @{{iframe(url, height, width)}}@" + "\n\n"
+    " @{{iframe(url, height, width, scroll)}}@"
     macro :iframe do |obj, args|
       return nil if args.length < 3
+      scrolling = 'auto'
+      scrolling = args[3].strip if args.length > 3
       url = /([a-zA-Z0-9]+:\/\/[-a-zA-Z0-9.?&=+@:_~\#%\/]+)/.match(args[0]).to_a[1]
       o = ''
-      o << '<iframe src="' + url + '" style="border: 0" width="' + args[1].strip + '" height="' + args[2].strip + '" frameborder="0"></iframe>'
+      o << '<iframe src="' + url + '" style="border: 0" width="' + args[1].strip + 
+        '" height="' + args[2].strip + '" frameborder="0" scrolling="' + scrolling + '"></iframe>'
 
       return o
     end
