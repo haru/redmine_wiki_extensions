@@ -23,5 +23,5 @@ This plugin works only on production mode.
 
 ru.yml - Dim A
 fr.yml - Pascal Menut
-
+de.yml -  Albrecht Backhaus
 
