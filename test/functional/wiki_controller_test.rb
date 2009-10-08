@@ -173,6 +173,17 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  def test_iframe
+    text = ''
+    text << "{{iframe(http://google.com, 200, 400)}}\n"
+    text << "{{iframe(http://google.com, 200, 400, no)}}\n"
+
+    setContent(text)
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
   private
 
   def setContent(text)
