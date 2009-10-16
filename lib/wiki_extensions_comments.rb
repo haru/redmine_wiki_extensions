@@ -62,6 +62,16 @@ module WikiExtensionsComments
       o = "<h2>#{l(:field_comments)}</h2>\n"
       comments.each{|comment|
         o << "<div>"
+        o << '<div class="contextual">'
+        if User.current.admin or User.current.id == comment.user.id
+        o << link_to_if_authorized(l(:button_edit), {:controller => 'wiki_extensions', :action => 'edit_comment', :id => @project, :comment_id => comment.id}, :class => "icon icon-edit")
+
+        o << link_to_if_authorized(l(:button_delete), {:controller => 'wiki_extensions',
+            :action => 'destroy_comment', :id => @project, :comment_id => comment.id},
+          :class => "icon icon-del", :confirm => l(:text_are_you_sure))
+        end
+        o << "\n"
+        o << "</div>\n"
         o << "<h3>"
         if l(:this_is_gloc_lib) == 'this_is_gloc_lib'
           o << l(:label_added_time_by, comment.user, distance_of_time_in_words(Time.now, comment.updated_at))
@@ -69,6 +79,7 @@ module WikiExtensionsComments
           o << l(:label_added_time_by, :author => comment.user, :age => distance_of_time_in_words(Time.now, comment.updated_at))
         end
         o << "</h3>\n"
+        
         o << textilizable(comment, :comment)
         o << "</div>"
       }

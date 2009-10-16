@@ -42,6 +42,22 @@ class WikiExtensionsController < ApplicationController
     redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => menu.page_name
   end
 
+  def destroy_comment
+    unless User.current.admin or User.current.id == comment.user.id
+      render_403 
+      return false
+    end
+    comment_id = params[:comment_id].to_i
+    comment = WikiExtensionsComment.find(comment_id)
+    page = WikiPage.find(comment.wiki_page_id)
+    comment.destroy
+    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+  end
+
+  def update_comment
+    
+  end
+
   private
   def find_project
     # @project variable must be set before calling the authorize filter
