@@ -43,19 +43,31 @@ class WikiExtensionsController < ApplicationController
   end
 
   def destroy_comment
+    comment_id = params[:comment_id].to_i
+    comment = WikiExtensionsComment.find(comment_id)
     unless User.current.admin or User.current.id == comment.user.id
       render_403 
       return false
     end
-    comment_id = params[:comment_id].to_i
-    comment = WikiExtensionsComment.find(comment_id)
+    
     page = WikiPage.find(comment.wiki_page_id)
     comment.destroy
     redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
   end
 
   def update_comment
-    
+    comment_id = params[:comment_id].to_i
+    comment = WikiExtensionsComment.find(comment_id)
+    unless User.current.admin or User.current.id == comment.user.id
+      render_403
+      return false
+    end
+ 
+    page = WikiPage.find(comment.wiki_page_id)
+    comment.comment = params[:comment]
+    comment.save
+    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+
   end
 
   private

@@ -31,7 +31,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
     permission :delete_wiki_comments, {:wiki_extensions => [:destroy_comment]}
-    permission :edit_wiki_comments, {:wiki_extensions => [:edit_comment]}
+    permission :edit_wiki_comments, {:wiki_extensions => [:update_comment]}
     permission :show_wiki_extension_tabs, {:wiki_extensions => [:forward_wiki_page]}, :public => true
     permission :show_wiki_comments, {:wiki_extensions => [:show_comments]}, :public => true
     permission :show_wiki_tags, {:wiki_extensions => [:tag]}, :public => true
