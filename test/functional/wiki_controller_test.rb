@@ -63,6 +63,19 @@ class WikiControllerTest < ActionController::TestCase
 
   end
 
+  def test_comments
+    text = "{{comments}}"
+    setContent(text)
+    comment = WikiExtensionsComment.new
+    comment.wiki_page_id = @page.id
+    comment.user_id = 1
+    comment.comment = "aaa"
+    comment.save!
+    @request.session[:user_id] = 1
+    get :index, :id => 1, :page => @page_name
+    assert_response :success
+  end
+
   def test_div
     text = "{{div_start_tag(foo)}}\n"
     text << "{{div_end_tag}}\n"

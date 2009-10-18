@@ -19,7 +19,7 @@ require File.dirname(__FILE__) + '/../test_helper'
 class WikiExtensionsControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis, 
     :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments,
-    :wiki_extensions_comments, :wiki_extensions_tags
+    :wiki_extensions_comments, :wiki_extensions_tags, :wiki_extensions_menus
 
   def setup
     @controller = WikiExtensionsController.new
@@ -58,5 +58,37 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     get :tag, :id => 1, :tag_id => 1
     #assert assigns[:tag]
   end
- 
+
+  def test_destroy_comment
+    comment = WikiExtensionsComment.new
+    comment.wiki_page_id = @page.id
+    comment.user_id = 1
+    comment.comment = "aaa"
+    comment.save!
+    @request.session[:user_id] = 1
+    post :destroy_comment, :id => 1, :comment_id => comment.id
+    assert_response :redirect
+    comment = WikiExtensionsComment.find(:first, :conditions => ['id = ?', comment.id])
+    assert_nil(comment)
+  end
+
+  def test_update_comment
+    comment = WikiExtensionsComment.new
+    comment.wiki_page_id = @page.id
+    comment.user_id = 1
+    comment.comment = "aaa"
+    comment.save!
+    message = "newcomment"
+    @request.session[:user_id] = 1
+    post :update_comment, :id => 1, :comment_id => comment.id, :comment => message
+    assert_response :redirect
+    comment = WikiExtensionsComment.find(comment.id)
+    assert_equal(message, comment.comment)
+  end
+
+  def test_forwad_wiki_page
+    @request.session[:user_id] = 1
+    get :forward_wiki_page, :id => 1, :menu_id => 1
+    assert_response :redirect
+  end
 end
