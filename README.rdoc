@@ -21,7 +21,7 @@ This plugin works only on production mode.
 
 === Language contributors
 
-ru.yml - Dim A
-fr.yml - Pascal Menut
-de.yml -  Albrecht Backhaus
-
+* ru.yml - Dim A
+* fr.yml - Pascal Menut
+* de.yml - Albrecht Backhaus
+* it.yml - earcar
