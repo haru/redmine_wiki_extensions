@@ -14,13 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-class RenameWikiExtensionsTables < ActiveRecord::Migration
-  def self.up
-    rename_table :wiki_extensions_project_menus, :wiki_extensions_menus if table_exists? :wiki_extensions_project_menus
-    rename_table :wiki_extensions_project_settings, :wiki_extensions_settings if table_exists? :wiki_extensions_project_settings
-  end
+require File.dirname(__FILE__) + '/../test_helper'
 
-  def self.down
+class WikiExtensionsCountTest < Test::Unit::TestCase
+  fixtures :wiki_extensions_counts, :projects, :wikis, :wiki_pages
+
+  def test_countup
+    assert_equal(0, WikiExtensionsCount.access_count(1))
+    WikiExtensionsCount.countup(1)
+    assert_equal(1, WikiExtensionsCount.access_count(1))
+    WikiExtensionsCount.countup(1)
+    assert_equal(2, WikiExtensionsCount.access_count(1))
+    WikiExtensionsCount.countup(1, Date.today - 2)
+    WikiExtensionsCount.countup(1, Date.today - 2)
+    WikiExtensionsCount.countup(1, Date.today - 2)
     
+    assert_equal(5, WikiExtensionsCount.access_count(1))
+    assert_equal(2, WikiExtensionsCount.access_count(1, Date.today))
   end
 end

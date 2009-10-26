@@ -14,13 +14,22 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-class RenameWikiExtensionsTables < ActiveRecord::Migration
+class CreateWikiExtensionsCounts < ActiveRecord::Migration
   def self.up
-    rename_table :wiki_extensions_project_menus, :wiki_extensions_menus if table_exists? :wiki_extensions_project_menus
-    rename_table :wiki_extensions_project_settings, :wiki_extensions_settings if table_exists? :wiki_extensions_project_settings
+    create_table :wiki_extensions_counts do |t|
+
+      t.column :project_id, :integer
+
+      t.column :page_id, :integer
+
+      t.column :date, :date
+
+      t.column :count, :integer
+
+    end
   end
 
   def self.down
-    
+    drop_table :wiki_extensions_counts
   end
 end
