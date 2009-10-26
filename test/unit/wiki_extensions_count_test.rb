@@ -20,16 +20,17 @@ class WikiExtensionsCountTest < Test::Unit::TestCase
   fixtures :wiki_extensions_counts, :projects, :wikis, :wiki_pages
 
   def test_countup
-    assert_equal(0, WikiExtensionsCount.access_count(1))
-    WikiExtensionsCount.countup(1)
-    assert_equal(1, WikiExtensionsCount.access_count(1))
-    WikiExtensionsCount.countup(1)
-    assert_equal(2, WikiExtensionsCount.access_count(1))
-    WikiExtensionsCount.countup(1, Date.today - 2)
-    WikiExtensionsCount.countup(1, Date.today - 2)
-    WikiExtensionsCount.countup(1, Date.today - 2)
+    page_id = 2
+    assert_equal(0, WikiExtensionsCount.access_count(page_id))
+    WikiExtensionsCount.countup(page_id)
+    assert_equal(1, WikiExtensionsCount.access_count(page_id))
+    WikiExtensionsCount.countup(page_id)
+    assert_equal(2, WikiExtensionsCount.access_count(page_id))
+    WikiExtensionsCount.countup(page_id, Date.today - 2)
+    WikiExtensionsCount.countup(page_id, Date.today - 2)
+    WikiExtensionsCount.countup(page_id, Date.today - 2)
     
-    assert_equal(5, WikiExtensionsCount.access_count(1))
-    assert_equal(2, WikiExtensionsCount.access_count(1, Date.today))
+    assert_equal(5, WikiExtensionsCount.access_count(page_id))
+    assert_equal(2, WikiExtensionsCount.access_count(page_id, Date.today))
   end
 end
