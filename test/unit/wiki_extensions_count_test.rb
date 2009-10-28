@@ -33,4 +33,10 @@ class WikiExtensionsCountTest < Test::Unit::TestCase
     assert_equal(5, WikiExtensionsCount.access_count(page_id))
     assert_equal(2, WikiExtensionsCount.access_count(page_id, Date.today))
   end
+
+  def test_popular
+    WikiExtensionsCount.countup(2)
+    list = WikiExtensionsCount.popular(1)
+    assert_equal(2, list.length)
+  end
 end

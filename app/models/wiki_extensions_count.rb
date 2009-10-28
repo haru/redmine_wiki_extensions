@@ -45,4 +45,8 @@ class WikiExtensionsCount < ActiveRecord::Base
     total = WikiExtensionsCount.sum(:count, :conditions => conditions)
   end
 
+  def self.popular(project_id)
+    WikiExtensionsCount.sum(:count, :group => :page_id,
+      :conditions => ['project_id = ?', project_id], :select => :page_id)
+  end
 end
