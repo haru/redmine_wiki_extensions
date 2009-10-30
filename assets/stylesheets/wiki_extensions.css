@@ -66,3 +66,7 @@ list-style-image: none;
     list-style-type: none;
     margin: 0;
 }
+
+#sidebar ol.wikiext-popularity {
+    padding-left: 15px;
+}

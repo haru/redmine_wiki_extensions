@@ -43,6 +43,9 @@ class WikiExtensionsCountTest < Test::Unit::TestCase
     assert_equal(2, list.length)
     assert_equal(4, list.to_a[0][1])
     assert_equal(2, list.to_a[1][1])
+    list = WikiExtensionsCount.popularity(1, 2)
+    assert_equal(1, list.length)
+    assert_equal(2, list.to_a[0][1])
     
   end
 end
