@@ -36,7 +36,13 @@ class WikiExtensionsCountTest < Test::Unit::TestCase
 
   def test_popular
     WikiExtensionsCount.countup(2)
-    list = WikiExtensionsCount.popular(1)
+    WikiExtensionsCount.countup(2, Date.today - 1)
+    WikiExtensionsCount.countup(2, Date.today - 2)
+    WikiExtensionsCount.countup(2, Date.today - 3)
+    list = WikiExtensionsCount.popularity(1)
     assert_equal(2, list.length)
+    assert_equal(4, list.to_a[0][1])
+    assert_equal(2, list.to_a[1][1])
+    
   end
 end

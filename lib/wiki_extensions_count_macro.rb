@@ -47,12 +47,27 @@ module WikiExtensionsCountMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays list of the popular pages.\n\n"+
-      "  @{{popular}}@\n"
-    macro :popular do |obj, args|
-      
-      count = WikiExtensionsCount.access_count(page.id)
-
-      return "#{count}"
+      "  @{{popularity}}@\n"
+    "  @{{popularity(max)}}@\n"
+    macro :popularity do |obj, args|
+      return nil unless obj
+      list = WikiExtensionsCount.popularity(@project.id)
+      max = 0
+      max = args[0].to_i if args.length
+      o = ''
+      o << '<ol class="popularity">'
+      cnt = 0
+      list.each{|value|
+        page = WikiPage.find(value[0])
+        o << '<li>'
+        o << link_to(page.title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title)
+        o << "(#{value[1]})"
+        o << '</li>'
+        cnt = cnt + 1
+        break if (cnt >= max and max > 0)
+      }
+      o << '</ol>'
+      return o
     end
   end
 end
