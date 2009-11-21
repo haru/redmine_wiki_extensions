@@ -36,6 +36,10 @@ module WikiExtensionsComments
       o = ""
       o << '<form method="post" action="' + url + '">'
       o << "\n"
+      if protect_against_forgery?
+        o << hidden_field_tag(:authenticity_token, form_authenticity_token)
+        o << "\n"
+      end
       o << hidden_field_tag(:wiki_page_id, page.id)
       o << "\n"
       o << text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => div_id,:accesskey => accesskey(:edit),
@@ -94,6 +98,10 @@ module WikiExtensionsComments
         url = url_for(:controller => 'wiki_extensions', :action => 'update_comment', :id => @project)
         
         o << '<form method="post" action="' + url + '">'
+        if protect_against_forgery?
+          o << hidden_field_tag(:authenticity_token, form_authenticity_token)
+          o << "\n"
+        end
         o << "\n"
         o << hidden_field_tag(:comment_id, comment.id)
         o << "\n"
