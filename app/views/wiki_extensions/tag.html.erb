@@ -3,7 +3,7 @@
 <ul>
 <% for page in @tag.pages.sort{|a, b| a.title <=> b.title} %>
   <li>
-    <%= link_to  page.title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title %>
+    <%= link_to  page.pretty_title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title %>
   </li>
 <% end %>
 </ul>
