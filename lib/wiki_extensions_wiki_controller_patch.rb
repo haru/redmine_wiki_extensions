@@ -72,7 +72,7 @@ module InstanceMethodsForWikiExtensionWikiController
   
   def wiki_extensions_add_fnlist
     text = @content.text
-    text << "\n{{fnlist}}\n"
+    text << "\n\n{{fnlist}}\n"
   end
 
   def wiki_extensions_include_sidebar    
