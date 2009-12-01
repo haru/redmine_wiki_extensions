@@ -81,9 +81,10 @@ module InstanceMethodsForWikiExtensionWikiController
     return if @page.title == side_bar.title
     text = @content.text
     text << "\n"
-    text << "{{div_start_tag(wiki_extentions_sidebar)}}\n"
+    text << '<div id="wiki_extentions_sidebar">'
+    text << "\n\n"
     text << "{{include(SideBar)}}\n"
-    text << "{{div_end_tag}}\n"
+    text << "</div>\n"
     
   end
 
@@ -93,9 +94,10 @@ module InstanceMethodsForWikiExtensionWikiController
     return unless footer
     text = @content.text
     text << "\n"
-    text << "{{div_start_tag(wiki_extentions_footer)}}\n"
+    text << '<div id="wiki_extentions_footer">'
+    text << "\n\n"
     text << footer.content.text
-    text << "{{div_end_tag}}\n"
+    text << "</div>"
 
   end
 end

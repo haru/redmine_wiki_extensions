@@ -19,6 +19,7 @@ begin
 require 'config/initializers/session_store.rb'
 rescue LoadError
 end
+require 'redcloth3'
 Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
   next unless /\.rb$/ =~ file
   require file
@@ -52,6 +53,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
     :caption => Proc.new{|proj| WikiExtensionsMenu.title(proj.id, no)},
     :if => Proc.new{|proj| WikiExtensionsMenu.enabled?(proj.id, no)}
   }
+
+  RedCloth3::ALLOWED_TAGS << "div"
   
 end
 
