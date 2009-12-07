@@ -97,7 +97,7 @@ module InstanceMethodsForWikiExtensionWikiController
     text << '<div id="wiki_extentions_footer">'
     text << "\n\n"
     text << footer.content.text
-    text << "</div>"
+    text << "\n\n</div>"
 
   end
 end
