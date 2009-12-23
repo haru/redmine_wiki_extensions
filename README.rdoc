@@ -25,3 +25,4 @@ This plugin works only on production mode.
 * fr.yml - Pascal Menut
 * de.yml - Albrecht Backhaus
 * it.yml - earcar
+* sv.yml - Henrik Jönsson
