@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2010  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiExtensionsCountTest < Test::Unit::TestCase
+class WikiExtensionsCountTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_counts, :projects, :wikis, :wiki_pages
 
   def test_countup

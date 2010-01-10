@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2010  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +17,7 @@
 
 require File.dirname(__FILE__) + '/../test_helper'
 
-class WikiExtensionsTagRelationTest < Test::Unit::TestCase
+class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_tag_relations
 
   # Replace this with your real tests.
