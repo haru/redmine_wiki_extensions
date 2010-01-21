@@ -1,0 +1,7 @@
+# Spanish strings go
+es:
+  label_wikiextensions_tags: Etiquetas
+  label_wikiextensions_new: Nueva
+  wiki_extensions: Extensiones de la Wiki
+  label_wikiextensions_tab: Pestaña
+  wiki_extensions_add_tab: "Añadir pestañas al menú del proyecto."
