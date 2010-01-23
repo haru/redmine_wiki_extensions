@@ -5,3 +5,7 @@ de:
   wiki_extensions: Wiki Erweiterungen
   label_wikiextensions_tab: Menüpunkt
   wiki_extensions_add_tab: "Menüpunkte zum Projektmenü hinzufügen:"
+  permission_add_wiki_comment: Add Wiki comments
+  permission_delete_wiki_comments: Delete Wiki comments
+  permission_edit_wiki_comments: Edit Wiki comments
+  permission_wiki_extensions_settings: Manage Wiki Extensions

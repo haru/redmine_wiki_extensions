@@ -5,3 +5,7 @@ fr:
   wiki_extensions: Extensions du Wiki
   label_wikiextensions_tab: Onglet
   wiki_extensions_add_tab: "Ajouter un onglet au menu du projet."
+  permission_add_wiki_comment: Add Wiki comments
+  permission_delete_wiki_comments: Delete Wiki comments
+  permission_edit_wiki_comments: Edit Wiki comments
+  permission_wiki_extensions_settings: Manage Wiki Extensions

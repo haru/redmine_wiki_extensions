@@ -4,3 +4,7 @@ ja:
   wiki_extensions: Wiki Extensions
   label_wikiextensions_tab: タブ
   wiki_extensions_add_tab: "プロジェクトメニューにタブを追加"
+  permission_add_wiki_comment: Wikiにコメントを追加
+  permission_delete_wiki_comments: Wikiのコメントを削除
+  permission_edit_wiki_comments: Wikiのコメントを編集
+  permission_wiki_extensions_settings: Wiki Extensions の管理

@@ -5,3 +5,7 @@ ru:
   wiki_extensions: Расширения Wiki
   label_wikiextensions_tab: Вкладка
   wiki_extensions_add_tab: "Добавить вкладку в меню проекта."
+  permission_add_wiki_comment: Add Wiki comments
+  permission_delete_wiki_comments: Delete Wiki comments
+  permission_edit_wiki_comments: Edit Wiki comments
+  permission_wiki_extensions_settings: Manage Wiki Extensions
