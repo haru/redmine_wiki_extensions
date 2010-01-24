@@ -63,7 +63,10 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     page = wiki.find_page(page_name) if page_name
     o = ''
     if action_name == 'edit' or (action_name == 'index' and page_name and page == nil)
-      return add_wiki_ext_tags_form context
+      o = ''
+      o << add_wiki_ext_tags_form(context)
+      o << add_auto_preview(context)
+      return o
     end
     return unless action_name == 'index'
     
@@ -137,6 +140,14 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     o << '//]]>'
     o << "\n"
     o << '</script>'
+    o << "\n"
     return o
   end
+
+  def add_auto_preview(context)
+    o = ''
+    o << javascript_tag("setWikiAutoPreview();")
+    return o
+  end
+  
 end

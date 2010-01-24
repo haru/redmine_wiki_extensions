@@ -43,3 +43,17 @@ function set_tag_atuto_complete(taglist) {
         new Autocompleter.Local(inputs[i], "wikiext_taglist_complete", taglist, {});
     }
 }
+
+function setWikiAutoPreview() {
+    new Field.Observer('content_text',2, function(){
+        new Ajax.Updater('preview', 'preview', {
+            asynchronous:true,
+            evalScripts:true,
+            method:'post',
+            //onComplete:function(request){Element.scrollTo('preview')},
+            //parameters:Form.serialize('wiki_form') + '&amp;authenticity_token=' + encodeURIComponent(key)
+             parameters:Form.serialize('wiki_form')
+
+        });
+    });
+}
