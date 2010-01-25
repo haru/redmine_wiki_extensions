@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2010  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -145,8 +145,15 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   end
 
   def add_auto_preview(context)
+    project = context[:project]
+    setting = WikiExtensionsSetting.find_or_create(project.id)
+    return '' unless setting.auto_preview_enabled
+    request = context[:request]
+    params = request.parameters if request
+    page_name = params[:page] if params
+    url = url_for :controller => 'wiki', :action => 'preview', :id => project, :page => page_name
     o = ''
-    o << javascript_tag("setWikiAutoPreview();")
+    o << javascript_tag("setWikiAutoPreview('#{url}');")
     return o
   end
   

@@ -1,6 +1,6 @@
 /*
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2010  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -44,9 +44,9 @@ function set_tag_atuto_complete(taglist) {
     }
 }
 
-function setWikiAutoPreview() {
+function setWikiAutoPreview(url) {
     new Field.Observer('content_text',2, function(){
-        new Ajax.Updater('preview', 'preview', {
+        new Ajax.Updater('preview', url, {
             asynchronous:true,
             evalScripts:true,
             method:'post',

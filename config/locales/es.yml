@@ -9,3 +9,5 @@ es:
   permission_delete_wiki_comments: Delete Wiki comments
   permission_edit_wiki_comments: Edit Wiki comments
   permission_wiki_extensions_settings: Manage Wiki Extensions
+ 
+  field_auto_preview_enabled: Enable auto preview

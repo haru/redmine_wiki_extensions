@@ -8,3 +8,5 @@ ja:
   permission_delete_wiki_comments: Wikiのコメントを削除
   permission_edit_wiki_comments: Wikiのコメントを編集
   permission_wiki_extensions_settings: Wiki Extensions の管理
+
+  field_auto_preview_enabled: オートプレビューを有効にする
