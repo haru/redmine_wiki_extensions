@@ -20,6 +20,7 @@ class WikiExtensionsIssueHooks < Redmine::Hook::ViewListener
   
   def view_issues_form_details_bottom(context = { })
     project = context[:project]
+    return unless WikiExtensionsUtil.is_enabled?(project)
     setting = WikiExtensionsSetting.find_or_create(project.id)
     return '' unless setting.auto_preview_enabled
 
@@ -39,7 +40,8 @@ EOF
   end
 
   def view_issues_edit_notes_bottom(context = { })
-     project = context[:project]
+    project = context[:project]
+    return unless WikiExtensionsUtil.is_enabled?(project)
     setting = WikiExtensionsSetting.find_or_create(project.id)
     return '' unless setting.auto_preview_enabled
 
