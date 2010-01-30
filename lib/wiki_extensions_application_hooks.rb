@@ -38,14 +38,12 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     
     o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css")
    
-    return o unless controller.class.name == 'WikiController'
-    action_name = controller.action_name
-    return o unless action_name == 'index' or action_name == 'edit'
+    #return o unless controller.class.name == 'WikiController'
+    #action_name = controller.action_name
+    #return o unless action_name == 'index' or action_name == 'edit'
        
     o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
-
-    
-          
+      
     return o
   end
   

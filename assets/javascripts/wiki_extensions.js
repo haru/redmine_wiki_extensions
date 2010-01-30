@@ -50,10 +50,29 @@ function setWikiAutoPreview(url) {
             asynchronous:true,
             evalScripts:true,
             method:'post',
-            //onComplete:function(request){Element.scrollTo('preview')},
-            //parameters:Form.serialize('wiki_form') + '&amp;authenticity_token=' + encodeURIComponent(key)
-             parameters:Form.serialize('wiki_form')
+            parameters:Form.serialize('wiki_form')
+        });
+    });
+}
 
+function setIssueAutoPreview(url) {
+    new Field.Observer('issue_description',2, function(){
+        new Ajax.Updater('preview', url, {
+            asynchronous:true,
+            evalScripts:true,
+            method:'post',
+            parameters:Form.serialize('issue-form')
+        });
+    });
+}
+
+function setIssueNotesAutoPreview(url) {
+    new Field.Observer('notes',2, function(){
+        new Ajax.Updater('preview', url, {
+            asynchronous:true,
+            evalScripts:true,
+            method:'post',
+            parameters:Form.serialize('issue-form')
         });
     });
 }
