@@ -1,0 +1,13 @@
+# Translation by Ki Won Kim (http://blog.naver.com/xyz37, xyz37@naver.com)
+ko:
+  wiki_extensions: "확장 위키"
+  label_wikiextensions_tags: "Tags"
+  label_wikiextensions_new: "New"
+  field_auto_preview_enabled: "자동 미리 보기 가능"
+  label_wikiextensions_tab: "탭"
+  wiki_extensions_add_tab: "프로젝트에 탭을 추가합니다."
+
+  permission_add_wiki_comment: "위키 설명 추가"
+  permission_delete_wiki_comments: "위키 설명 삭제"
+  permission_edit_wiki_comments: "위키 설명 수정"
+  permission_wiki_extensions_settings: "확장 위키 관리"

@@ -30,7 +30,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author 'Haruyuki Iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
-  version '0.2.0'
+  version '0.2.1'
   requires_redmine :version_or_higher => '0.9.0'
 
   project_module :wiki_extensions do
