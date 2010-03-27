@@ -70,3 +70,26 @@ list-style-image: none;
 #sidebar ol.wikiext-popularity {
     padding-left: 20px;
 }
+ul.wikiext-tags, ul.wikiext-tags li{
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+ul.wikiext-tags li{
+	display: inline;
+}
+ul.wikiext-tags li{
+	margin-right: 4px;
+}
+ul.wikiext-tags:before{
+	content: 'Tags: ';
+	display: block;
+	float: left;
+}
+ul.wikiext-tags:after{
+	content: ".";
+	height: 0;
+	display: block;
+	clear: left;
+	visibility: hidden;
+}

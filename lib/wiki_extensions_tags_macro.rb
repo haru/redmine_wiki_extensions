@@ -24,12 +24,16 @@ module WikiExtensionsWikiMacro
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       page = obj.page
       return unless page
+      project = page.project
 
-      o = '<h3>' + l(:label_wikiextensions_tags) + '</h3>'
+      return '' if page.tags.empty?
+
+      o = '<ul class="wikiext-tags">'
       page.tags.each{|tag|
-        o << tag.name
-        o << ','
+        o << '<li>' + link_to("#{tag.name}", {:controller => 'wiki_extensions',
+              :action => 'tag', :id => project, :tag_id => tag.id}) + '</li>'
       }
+      o << '</ul>'
       return o
     end
   end
