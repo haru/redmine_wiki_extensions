@@ -62,7 +62,8 @@ module WikiExtensionsCountMacro
       o << '<ol class="wikiext-popularity">'
       cnt = 0
       list.each{|value|
-        page = WikiPage.find(value[0])
+        page = WikiPage.find(:first, :conditions => ['id = ?', value[0]])
+        next unless page
         o << '<li>'
         o << link_to(page.pretty_title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title)
         o << "(#{value[1]})"
