@@ -21,7 +21,8 @@ module WikiExtensionsWikiMacro
       " @{{lastupdated_by}}@" 
     macro :lastupdated_by do |obj, args|
       o = '<span class="wiki_extensions_lastupdated_by">'
-      o << obj.author.name
+      o << "#{avatar(obj.author, :size => "14")}"
+      o << link_to_user(obj.author)
       o << '</span>'
       o
     end
