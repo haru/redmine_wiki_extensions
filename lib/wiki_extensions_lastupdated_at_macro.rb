@@ -21,7 +21,7 @@ module WikiExtensionsWikiMacro
       " @{{lastupdated_at}}@"
     macro :lastupdated_at do |obj, args|
       o = '<span class="wiki_extensions_lastupdated_at">'
-      o << format_time(obj.updated_on)
+      o << l(:label_updated_time, time_tag(obj.updated_on))
       o << '</span>'
       o
     end
