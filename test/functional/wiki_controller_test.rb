@@ -197,6 +197,53 @@ class WikiControllerTest < ActionController::TestCase
     assert_response :success
   end
 
+  context "count" do
+    should "success" do
+      text = ''
+      text << "{{count}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
+  context "show_count" do
+    should "success" do
+      text = ''
+      text << "{{show_count}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
+  context "popularity" do
+    should "success if there is no count data" do
+      text = ''
+      text << "{{popularity}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+
+    should "success if there is count data" do
+      text = ''
+      text << "{{count}}\n"
+      text << "{{popularity}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
   private
 
   def setContent(text)
