@@ -5,9 +5,9 @@ sv:
   wiki_extensions: Wiki Extensions
   label_wikiextensions_tab: Tabb
   wiki_extensions_add_tab: "Lägg till tabbar till projektmenyn."
-  permission_add_wiki_comment: Add Wiki comments
-  permission_delete_wiki_comments: Delete Wiki comments
-  permission_edit_wiki_comments: Edit Wiki comments
-  permission_wiki_extensions_settings: Manage Wiki Extensions
+  permission_add_wiki_comment: Lägg till Wiki kommentarer
+  permission_delete_wiki_comments: Ta bort Wiki kommentarer
+  permission_edit_wiki_comments: Ändra Wiki kommentarer
+  permission_wiki_extensions_settings: Hantera Wiki Extensions
 
-  field_auto_preview_enabled: Enable auto preview
+  field_auto_preview_enabled: Aktivera automatisk förhandsgranskning
