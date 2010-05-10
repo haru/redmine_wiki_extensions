@@ -27,3 +27,5 @@ This plugin works only on production mode.
 * it.yml - earcar
 * sv.yml - Henrik Jönsson
 * es.yml - Francisco Benítez León
+* no.yml - Thomas Nygreen
+
