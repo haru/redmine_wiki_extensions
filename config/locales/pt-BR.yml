@@ -1,0 +1,13 @@
+# Português Brasil strings go
+pt-BR:
+  label_wikiextensions_tags: Tags
+  label_wikiextensions_new: Novo
+  wiki_extensions: Extensões Wiki
+  label_wikiextensions_tab: Tab
+  wiki_extensions_add_tab: "Adicionar tabs para o menu do project."
+  permission_add_wiki_comment: Adicionar comentários Wiki
+  permission_delete_wiki_comments: Apagar comentários Wiki
+  permission_edit_wiki_comments: Editar comentários Wiki
+  permission_wiki_extensions_settings: Gerenciar Extensões Wiki
+
+  field_auto_preview_enabled: Habilitar auto preview
