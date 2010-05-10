@@ -1,0 +1,12 @@
+"no":
+  label_wikiextensions_tags: Merkelapper
+  label_wikiextensions_new: Ny
+  wiki_extensions: Wiki-tillegg
+  label_wikiextensions_tab: Fane
+  wiki_extensions_add_tab: "Legg til faner i prosjekt-menyen."
+  permission_add_wiki_comment: Legge til wiki-kommentarer
+  permission_delete_wiki_comments: Slette wiki-kommentarer
+  permission_edit_wiki_comments: Redigere wiki-kommentarer
+  permission_wiki_extensions_settings: Behandle innstillinger for wiki-tillegg
+
+  field_auto_preview_enabled: Skru på automatisk forhåndsvisning
