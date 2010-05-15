@@ -24,6 +24,9 @@ Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
   next unless /\.rb$/ =~ file
   require file
 end
+ActionView::Base.class_eval do
+  include ActionView::Helpers::WikiExtensionsHelper
+end
 
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'
@@ -34,7 +37,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   requires_redmine :version_or_higher => '0.9.0'
 
   project_module :wiki_extensions do
-    permission :add_wiki_comment, {:wiki_extensions => [:add_comment]}
+    permission :add_wiki_comment, {:wiki_extensions => [:add_comment, :reply_comment]}
     permission :delete_wiki_comments, {:wiki_extensions => [:destroy_comment]}
     permission :edit_wiki_comments, {:wiki_extensions => [:update_comment]}
     permission :show_wiki_extension_tabs, {:wiki_extensions => [:forward_wiki_page]}, :public => true

@@ -17,4 +17,8 @@
 class WikiExtensionsComment < ActiveRecord::Base
   belongs_to :user
   validates_presence_of :comment, :wiki_page_id, :user_id
+  
+  def children(comments)
+    comments.select{|comment| comment.parent_id == id}
+  end
 end

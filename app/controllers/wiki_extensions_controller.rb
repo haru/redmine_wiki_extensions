@@ -15,6 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+
 class WikiExtensionsController < ApplicationController
   unloadable
   menu_item :wiki
@@ -26,6 +27,18 @@ class WikiExtensionsController < ApplicationController
     comment.wiki_page_id = params[:wiki_page_id].to_i
     comment.user_id = @user.id
     comment.comment = params[:comment]
+    comment.save
+    page = WikiPage.find(comment.wiki_page_id)
+    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+  end
+  
+  def reply_comment
+    
+    comment = WikiExtensionsComment.new
+    comment.parent_id = params[:comment_id].to_i
+    comment.wiki_page_id = params[:wiki_page_id].to_i
+    comment.user_id = @user.id
+    comment.comment = params[:reply]
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
     redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
