@@ -11,3 +11,4 @@ ko:
   permission_delete_wiki_comments: "위키 설명 삭제"
   permission_edit_wiki_comments: "위키 설명 수정"
   permission_wiki_extensions_settings: "확장 위키 관리"
+  field_sidebar_disabled: Disable side bar

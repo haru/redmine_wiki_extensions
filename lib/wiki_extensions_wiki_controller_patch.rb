@@ -75,7 +75,9 @@ module InstanceMethodsForWikiExtensionWikiController
     text << "\n\n{{fnlist}}\n"
   end
 
-  def wiki_extensions_include_sidebar    
+  def wiki_extensions_include_sidebar
+    setting = WikiExtensionsSetting.find_or_create @project.id
+    return '' if setting.sidebar_disabled
     side_bar = @wiki.find_page('SideBar')
     return unless side_bar
     return if @page.title == side_bar.title
