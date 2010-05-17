@@ -1,0 +1,14 @@
+# English strings go
+pl:
+  label_wikiextensions_tags: Znaczniki
+  label_wikiextensions_new: Nowy
+  wiki_extensions: Rozszerzenia Wiki
+  label_wikiextensions_tab: Zakładka
+  wiki_extensions_add_tab: "Dodaj zakładki do menu projektu."
+  permission_add_wiki_comment: Dodaj komentarze Wiki
+  permission_delete_wiki_comments: Usułmentarze Wiki
+  permission_edit_wiki_comments: Edytuj komentarze Wiki
+  permission_wiki_extensions_settings: Zarzłdzaj komentarzami Wiki
+
+  field_auto_preview_enabled: Włącz autopodgląd
+  field_sidebar_disabled: Wyłącz panel boczny

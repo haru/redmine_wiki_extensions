@@ -30,3 +30,4 @@ This plugin works only on production mode.
 * no.yml - Thomas Nygreen
 * pt.yml - Marcelo Fernandes
 * pt-BR.yml - Marcelo Fernandes
+* pl.yml - Łukasz Rymarczyk
