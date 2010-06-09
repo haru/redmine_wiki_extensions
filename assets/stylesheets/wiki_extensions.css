@@ -93,3 +93,43 @@ ul.wikiext-tags:after{
 	clear: left;
 	visibility: hidden;
 }
+
+
+.Expand { float: left; height:9px; width:9px; margin-top:5px; }
+
+.ExpandLeaf .Expand {
+	background-image: none;
+	cursor: auto;
+}
+.ExpandOpen .Expand {
+	 background-image: url(../images/minus.gif);
+}
+	 
+.ExpandClosed .Expand {
+    background-image: url(../images/plus.gif);
+}
+
+.ExpandClosed .Expand, .ExpandOpen .Expand {
+	cursor:pointer;
+}
+.ExpandOpen .list {
+	display: block;	
+}
+
+.ExpandClosed .list {
+	display: none;	
+}
+
+.wiki_left{
+	margin-left:15px;
+}
+
+li.ExpandOpen {list-style-type: none;}
+
+li.ExpandClosed {list-style-type: none;}
+
+li.list_item {list-style-type: none;}
+
+ul.list {display:block;list-style-type: none;list-style-image: none;}
+ul.IsRoot { margin-left:0px; list-style-type:none;}
+

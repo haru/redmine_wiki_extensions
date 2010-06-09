@@ -76,3 +76,43 @@ function setIssueNotesAutoPreview(url) {
         });
     });
 }
+
+/*
+ * Author: Dmitry Manayev
+ */
+var DOM;
+var Opera;
+var IE;
+var Firefox;
+
+function do_some(src, evt) {
+  if (!Firefox) {
+     cls = src.parentNode.className;
+     if (cls=='list_item ExpandOpen') {
+        src.parentNode.className = 'list_item ExpandClosed';
+     } else {
+        src.parentNode.className = 'list_item ExpandOpen';
+     }
+     window.event.cancelBubble = true;
+  } else {
+     if (evt.eventPhase!=3) {
+        cls = src.parentNode.className;
+        if (cls=='list_item ExpandOpen') {
+            src.parentNode.className = 'list_item ExpandClosed';
+        } else {
+            src.parentNode.className = 'list_item ExpandOpen';
+        }
+     }
+  }
+}
+
+function Check() {
+   if (!Firefox) {
+      window.event.cancelBubble = true;
+   }
+}
+
+DOM = document.getElementById;
+Opera = window.opera && DOM;
+IE = document.all && !Opera;
+Firefox = navigator.userAgent.indexOf("Gecko") >= 0;
