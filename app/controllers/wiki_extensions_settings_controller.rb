@@ -25,7 +25,6 @@ class WikiExtensionsSettingsController < ApplicationController
     menus = params[:menus]
 
     auto_preview_enabled = (params[:setting][:auto_preview_enabled].to_i == 1)
-    sidebar_disabled = (params[:setting][:sidebar_disabled].to_i == 1)
     setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
@@ -36,7 +35,6 @@ class WikiExtensionsSettingsController < ApplicationController
           menu_setting.save!
         }
         setting.auto_preview_enabled = auto_preview_enabled
-        setting.sidebar_disabled = sidebar_disabled
         setting.save!
       end
       flash[:notice] = l(:notice_successful_update)

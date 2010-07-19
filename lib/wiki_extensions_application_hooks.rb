@@ -68,13 +68,6 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     end
     return unless action_name == 'index'
     
-    @side_bar = wiki.find_page('SideBar')
-    
-    
-    if @side_bar
-      o << javascript_tag('add_wiki_extension_sidebar();')
-    end
-
     return o
   end
 

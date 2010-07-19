@@ -48,7 +48,6 @@ module InstanceMethodsForWikiExtensionWikiController
       elsif (args[:action] == 'show')
         wiki_extensions_add_fnlist 
         wiki_extensions_include_footer
-        wiki_extensions_include_sidebar
       end
     end
     render_without_wiki_extensions(args)
@@ -73,21 +72,6 @@ module InstanceMethodsForWikiExtensionWikiController
   def wiki_extensions_add_fnlist
     text = @content.text
     text << "\n\n{{fnlist}}\n"
-  end
-
-  def wiki_extensions_include_sidebar
-    setting = WikiExtensionsSetting.find_or_create @project.id
-    return '' if setting.sidebar_disabled
-    side_bar = @wiki.find_page('SideBar')
-    return unless side_bar
-    return if @page.title == side_bar.title
-    text = @content.text
-    text << "\n"
-    text << '<div id="wiki_extentions_sidebar">'
-    text << "\n\n"
-    text << "{{include(SideBar)}}\n"
-    text << "</div>\n"
-    
   end
 
   def wiki_extensions_include_footer

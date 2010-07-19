@@ -14,10 +14,7 @@
 
       <%= f.check_box 'auto_preview_enabled' %>
       </p>
-      <p>
-
-      <%= f.check_box 'sidebar_disabled' %>
-      </p>
+      
       <hr/>
       <b><%=h l(:wiki_extensions_add_tab)%></b>
       <%= render :partial => "wiki_extensions_settings/menu", :collection => @wiki_extensions_setting.menus, :as => :menu %>

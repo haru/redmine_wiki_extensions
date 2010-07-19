@@ -34,7 +34,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
   version '0.2.3'
-  requires_redmine :version_or_higher => '0.9.0'
+  requires_redmine :version_or_higher => '1.0.0'
 
   project_module :wiki_extensions do
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment, :reply_comment]}
