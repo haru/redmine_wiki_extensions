@@ -55,6 +55,17 @@ function setWikiAutoPreview(url) {
     });
 }
 
+function setMessagesAutoPreview(url) {
+    new Field.Observer('message_content',2, function(){
+        new Ajax.Updater('preview', url, {
+            asynchronous:true,
+            evalScripts:true,
+            method:'post',
+            parameters:Form.serialize('message-form')
+        });
+    });
+}
+
 function setIssueAutoPreview(url) {
     new Field.Observer('issue_description',2, function(){
         new Ajax.Updater('preview', url, {

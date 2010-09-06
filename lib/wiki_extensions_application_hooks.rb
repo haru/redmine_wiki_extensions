@@ -51,6 +51,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     project = context[:project]
     return unless WikiExtensionsUtil.is_enabled?(project)
     controller = context[:controller]
+    return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name
     request = context[:request]
@@ -63,7 +64,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     if action_name == 'edit' or (action_name == 'index' and page_name and page == nil)
       o = ''
       o << add_wiki_ext_tags_form(context)
-      o << add_auto_preview(context)
+      o << add_wiki_auto_preview(context)
       return o
     end
     return unless action_name == 'index'
@@ -135,7 +136,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     return o
   end
 
-  def add_auto_preview(context)
+  def add_wiki_auto_preview(context)
     project = context[:project]
     setting = WikiExtensionsSetting.find_or_create(project.id)
     return '' unless setting.auto_preview_enabled
@@ -145,6 +146,19 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     url = url_for :controller => 'wiki', :action => 'preview', :id => project, :page => page_name
     o = ''
     o << javascript_tag("setWikiAutoPreview('#{url}');")
+    return o
+  end
+
+  def add_messages_auto_preview(context)
+    project = context[:project]
+    setting = WikiExtensionsSetting.find_or_create(project.id)
+    return '' unless setting.auto_preview_enabled
+    request = context[:request]
+    params = request.parameters if request
+    board = params[:board_id] if params
+    url = url_for :controller => 'messages', :action => 'preview', :board_id => board
+    o = ''
+    o << javascript_tag("setMessagesAutoPreview('#{url}');")
     return o
   end
   
