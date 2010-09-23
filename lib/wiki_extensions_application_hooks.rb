@@ -52,6 +52,8 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     return unless WikiExtensionsUtil.is_enabled?(project)
     controller = context[:controller]
     return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
+    return add_boards_auto_preview(context) if controller.class.name == 'BoardsController'
+
     return unless controller.class.name == 'WikiController'
     action_name = controller.action_name
     request = context[:request]
@@ -159,6 +161,19 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     url = url_for :controller => 'messages', :action => 'preview', :board_id => board
     o = ''
     o << javascript_tag("setMessagesAutoPreview('#{url}');")
+    return o
+  end
+
+  def add_boards_auto_preview(context)
+    project = context[:project]
+    setting = WikiExtensionsSetting.find_or_create(project.id)
+    return '' unless setting.auto_preview_enabled
+    request = context[:request]
+    params = request.parameters if request
+    board = params[:id] if params
+    url = url_for :controller => 'messages', :action => 'preview', :board_id => board
+    o = ''
+    o << javascript_tag("setBoardsAutoPreview('#{url}');")
     return o
   end
   
