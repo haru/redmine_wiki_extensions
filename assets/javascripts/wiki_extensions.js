@@ -99,6 +99,24 @@ function setIssueNotesAutoPreview(url) {
     });
 }
 
+function wiki_extension_create_table_header() {
+    
+    var tbodys = $$('.wiki table tbody');
+    for (var i = 0; i < tbodys.length; i++) {
+        var tbody = tbodys[i];
+        var table = tbody.parentNode;
+        var header = tbody.removeChild(tbody.firstChild);
+        var thead = table.insertBefore(document.createElement('thead'), tbody);
+        thead.appendChild(header);
+
+    }
+
+    var ths = $$('.wiki table thead tr th');
+    for (var j = 0; j < ths.length; j++) {
+        ths[j].addClassName('nocase');
+    }
+}
+
 /*
  * Author: Dmitry Manayev
  */

@@ -43,6 +43,9 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     #return o unless action_name == 'index' or action_name == 'edit'
        
     o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
+    if (controller.class.name == 'WikiController')
+      o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/tablesort.js")
+    end
       
     return o
   end
@@ -69,7 +72,8 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
       o << add_wiki_auto_preview(context)
       return o
     end
-    return unless action_name == 'index'
+
+    o << javascript_tag('wiki_extension_create_table_header();')
     
     return o
   end
