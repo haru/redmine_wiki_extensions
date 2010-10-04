@@ -1,0 +1,44 @@
+<% # Wiki Extensions plugin for Redmine
+# Copyright (C) 2010  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-%>
+
+<% if WikiExtensionsUtil.is_enabled?(project) -%>
+  <%
+  wiki = project.wiki
+  style_sheet = wiki.find_page('StyleSheet') if wiki
+  baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
+  -%>
+
+  <% if style_sheet -%>
+    <style type="text/css">
+    <%=  style_sheet.text %>
+    </style>
+  <% end -%>
+
+
+  <%=  stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css") %>
+  <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js") %>
+  <% if (controller.class.name == 'WikiController') %>
+    <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/tablesort.js") %>
+  <% end %>
+
+<script type="text/javascript">
+  //TableSort.arrowNone = " ";
+  TableSort.arrowUp   = ' <%= image_tag "sort_asc.png" %>';
+    TableSort.arrowDown = ' <%= image_tag "sort_desc.png" %>';
+  </script>>
+<% end %>

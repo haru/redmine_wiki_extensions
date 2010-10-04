@@ -17,39 +17,8 @@
 require 'redmine'
 class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
 
-  def view_layouts_base_html_head(context = {})
-    project = context[:project]
-    return unless WikiExtensionsUtil.is_enabled?(project)
-    wiki = project.wiki
-    style_sheet = wiki.find_page('StyleSheet') if wiki
-    o = ""
-    if style_sheet
-      o << "\n"
-      o << '<style type="text/css">'
-      o << style_sheet.text
-
-      o << '</style>'
-      o << "\n"
-
-    end
+  render_on :view_layouts_base_html_head, :partial => 'wiki_extensions/html_header'
     
-    controller = context[:controller]
-    baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
-    
-    o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css")
-   
-    #return o unless controller.class.name == 'WikiController'
-    #action_name = controller.action_name
-    #return o unless action_name == 'index' or action_name == 'edit'
-       
-    o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js")
-    if (controller.class.name == 'WikiController')
-      o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/tablesort.js")
-    end
-      
-    return o
-  end
-  
   def view_layouts_base_body_bottom(context = { })
     project = context[:project]
     return unless WikiExtensionsUtil.is_enabled?(project)
