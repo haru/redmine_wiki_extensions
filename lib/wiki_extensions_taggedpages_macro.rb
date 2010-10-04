@@ -22,18 +22,16 @@ module WikiExtensionsWikiMacro
       "  @{{taggedpages(tagname)}}@\n"
     macro :taggedpages do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      page = obj.page
-      return unless page
-      project = page.project
+
       return nil if args.length < 1
       tag_name = args[0].strip
 
-      tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
+      tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", @project.id, tag_name])
 
       o = '<ul class="wikiext-taggedpages">'
       tag.pages.sort{|a, b| a.pretty_title <=> b.pretty_title}.each{|page|
         o << '<li>' + link_to("#{page.pretty_title}", {:controller => 'wiki',
-              :action => 'index', :id => project, :page_title => page.title}) + '</li>'
+              :action => 'index', :id => @project, :page_title => page.title}) + '</li>'
       }
       o << '</ul>'
       return o
