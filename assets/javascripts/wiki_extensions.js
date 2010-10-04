@@ -99,22 +99,36 @@ function setIssueNotesAutoPreview(url) {
     });
 }
 
+function is_table_for_sort(tbody) {
+    var trs = tbody.getElementsByTagName('tr');
+    if (trs.length == 0) {
+        return false;
+    }
+    var tds = trs[0].getElementsByTagName('td');
+    if (tds.length != 0) {
+        return false;
+    }
+
+    return true;
+}
 function wiki_extension_create_table_header() {
-    
+
     var tbodys = $$('.wiki table tbody');
     for (var i = 0; i < tbodys.length; i++) {
         var tbody = tbodys[i];
+        if (!is_table_for_sort(tbody)) {
+            continue;
+        }
         var table = tbody.parentNode;
         var header = tbody.removeChild(tbody.firstChild);
         var thead = table.insertBefore(document.createElement('thead'), tbody);
         thead.appendChild(header);
-
+        var ths = thead.getElementsByTagName('th');
+        for (var j = 0; j < ths.length; j++) {
+            ths[j].addClassName('nocase');
+        }
     }
 
-    var ths = $$('.wiki table thead tr th');
-    for (var j = 0; j < ths.length; j++) {
-        ths[j].addClassName('nocase');
-    }
 }
 
 /*
