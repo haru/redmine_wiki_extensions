@@ -83,6 +83,17 @@ class WikiExtensionsController < ApplicationController
 
   end
 
+  def vote
+    target_class_name = params[:target_class_name]
+    target_id = params[:target_id].to_i
+    key = params[:key]
+    vote = WikiExtensionsVote.find_or_create(target_class_name, target_id, key)
+    vote.countup
+    vote.save!
+    url = params[:url]
+    redirect_to  url
+  end
+  
   private
   def find_project
     # @project variable must be set before calling the authorize filter

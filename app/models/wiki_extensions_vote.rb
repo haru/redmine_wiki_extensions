@@ -18,7 +18,7 @@
 class WikiExtensionsVote < ActiveRecord::Base
   unloadable
   validates_presence_of :target_class_name, :target_id, :key, :count
-  validates_uniqueness_of :count, :scope => [:target_class_name, :target_id]
+  validates_uniqueness_of :key, :scope => [:target_class_name, :target_id]
 
   def target
     return nil unless self.target_class_name

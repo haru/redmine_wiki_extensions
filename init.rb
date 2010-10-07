@@ -37,6 +37,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   requires_redmine :version_or_higher => '1.0.0'
 
   project_module :wiki_extensions do
+    permission :wiki_extensions_vote, {:wiki_extensions => [:vote, :show_vote]}, :public => true
     permission :add_wiki_comment, {:wiki_extensions => [:add_comment, :reply_comment]}
     permission :delete_wiki_comments, {:wiki_extensions => [:destroy_comment]}
     permission :edit_wiki_comments, {:wiki_extensions => [:update_comment]}
