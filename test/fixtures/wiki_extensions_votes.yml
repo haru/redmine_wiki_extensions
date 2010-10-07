@@ -1,0 +1,23 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+
+  key: MyString
+
+  target_class_name: MyString
+
+  target_id: 1
+
+  count: 1
+
+two:
+  id: 2
+
+  key: MyString
+
+  target_class_name: MyString
+
+  target_id: 1
+
+  count: 1
+
