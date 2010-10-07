@@ -19,7 +19,7 @@ class CreateWikiExtensionsVotes < ActiveRecord::Migration
   def self.up
     create_table :wiki_extensions_votes do |t|
 
-      t.column :key, :string
+      t.column :keystr, :string
 
       t.column :target_class_name, :string
 

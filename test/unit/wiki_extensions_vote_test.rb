@@ -75,7 +75,7 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
     should "save" do
       @vote.target = @project
       @vote.count = 1
-      @vote.key = "aaa"
+      @vote.keystr = "aaa"
       @vote.save!
       vote2 = WikiExtensionsVote.find(@vote.id)
       assert_equal(@vote.id, vote2.id)
@@ -104,20 +104,20 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
   context "find_or_create" do
     setup do
       @project = Project.generate!
-      @vote = WikiExtensionsVote.generate!(:target => @project, :count => 1, :key => 'aaa')
+      @vote = WikiExtensionsVote.generate!(:target => @project, :count => 1, :keystr => 'aaa')
     end
 
     should "return new instance which count is 0 if target not found." do
-      vote = WikiExtensionsVote.find_or_create('Hoge', 3, 'key')
+      vote = WikiExtensionsVote.find_or_create('Hoge', 3, 'keystr')
       assert_not_nil(vote)
       assert_equal('Hoge', vote.target_class_name)
       assert_equal(3, vote.target_id)
-      assert_equal('key', vote.key)
+      assert_equal('keystr', vote.keystr)
       assert_equal(0, vote.count)
     end
 
     should "find instance what has specified values." do
-      vote = WikiExtensionsVote.find_or_create(@vote.target_class_name, @vote.target_id, @vote.key)
+      vote = WikiExtensionsVote.find_or_create(@vote.target_class_name, @vote.target_id, @vote.keystr)
       assert_not_nil(vote)
       assert_equal(@vote.id, vote.id)
     end

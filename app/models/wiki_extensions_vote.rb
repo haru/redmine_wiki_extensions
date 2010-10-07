@@ -17,8 +17,8 @@
 
 class WikiExtensionsVote < ActiveRecord::Base
   unloadable
-  validates_presence_of :target_class_name, :target_id, :key, :count
-  validates_uniqueness_of :key, :scope => [:target_class_name, :target_id]
+  validates_presence_of :target_class_name, :target_id, :keystr, :count
+  validates_uniqueness_of :keystr, :scope => [:target_class_name, :target_id]
 
   def target
     return nil unless self.target_class_name
@@ -39,14 +39,14 @@ class WikiExtensionsVote < ActiveRecord::Base
 
   def self.find_or_create(class_name, obj_id, key_str)
     vote = WikiExtensionsVote.find(:first,
-      :conditions => ['target_class_name = ? and target_id = ? and key = ?',
+      :conditions => ['target_class_name = ? and target_id = ? and keystr = ?',
         class_name, obj_id, key_str])
     unless vote
       vote = WikiExtensionsVote.new
       vote.count = 0
       vote.target_class_name = class_name
       vote.target_id = obj_id
-      vote.key = key_str
+      vote.keystr = key_str
     end
     return vote
   end
