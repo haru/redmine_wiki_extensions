@@ -19,7 +19,8 @@ require File.dirname(__FILE__) + '/../test_helper'
 class WikiExtensionsControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis, 
     :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments,
-    :wiki_extensions_comments, :wiki_extensions_tags, :wiki_extensions_menus
+    :wiki_extensions_comments, :wiki_extensions_tags, :wiki_extensions_menus,
+    :wiki_extensions_votes
 
   def setup
     @controller = WikiExtensionsController.new
@@ -90,5 +91,16 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     @request.session[:user_id] = 1
     get :forward_wiki_page, :id => 1, :menu_id => 1
     assert_response :redirect
+  end
+
+  context "vote" do
+    should "success if new vote." do
+      @request.session[:user_id] = 1
+      count = WikiExtensionsVote.find(:all).length
+      post :vote, :id => 1, :target_class_name => 'Project', :target_id => 1,
+        :key => 'aaa', :url => 'http://localhost:3000'
+      assert_equal(count + 1, WikiExtensionsVote.find(:all).length)
+      assert_response :redirect
+    end
   end
 end

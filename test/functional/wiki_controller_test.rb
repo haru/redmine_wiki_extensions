@@ -244,6 +244,54 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
+  context "vote" do
+    should "success" do
+      text = ''
+      text << "{{vote(aaa)}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
+  context "show_vote" do
+    should "success" do
+      text = ''
+      text << "{{show_vote(aaa)}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
+  context "twitter" do
+    should "success" do
+      text = ''
+      text << "{{twitter(haru_iida)}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
+  context "taggedpages" do
+    should "success" do
+      text = ''
+      text << "{{taggedpages(aaa)}}\n"
+
+      setContent(text)
+      @request.session[:user_id] = 1
+      get :index, :id => 1, :page => @page_name
+      assert_response :success
+    end
+  end
+
   private
 
   def setContent(text)
