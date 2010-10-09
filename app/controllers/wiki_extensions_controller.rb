@@ -95,8 +95,7 @@ class WikiExtensionsController < ApplicationController
       session[:wiki_extension_voted][vote.id] = 1
     end
     
-    url = params[:url]
-    redirect_to  url
+    render :inline => " #{vote.count}"
   end
   
   private

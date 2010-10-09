@@ -28,11 +28,16 @@ module WikiExtensionsWikiMacro
       key = args[0].strip
       label = 'vote'
       label = args[1].strip if args.length > 1
+      voteid = "wikiext-vote-#{rand(9999999)}"
+      vote = WikiExtensionsVote.find_or_create(obj.class.name, obj.id, key)
 
       o = '<span class="wikiext-vote">'
-      o << link_to(label, :controller => 'wiki_extensions', :action => 'vote',
+      o << link_to_remote(label, :update => voteid, :url => {:controller => 'wiki_extensions', :action => 'vote',
         :id => @project, :target_class_name => obj.class.name, :target_id => obj.id,
-        :key => key, :url => @_request.url)
+        :key => key, :url => @_request.url})
+      o << '<span id="' + voteid + '"> '
+      o << " #{vote.count}"
+      o << '</span>'
       o << '</span>'
       return o
     end

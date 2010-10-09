@@ -100,7 +100,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
       post :vote, :id => 1, :target_class_name => 'Project', :target_id => 1,
         :key => 'aaa', :url => 'http://localhost:3000'
       assert_equal(count + 1, WikiExtensionsVote.find(:all).length)
-      assert_response :redirect
+      assert_response :success
     end
   end
 end
