@@ -34,11 +34,10 @@
   <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js") %>
   <% if (controller.class.name == 'WikiController') %>
     <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/tablesort.js") %>
+    <script type="text/javascript">
+      //TableSort.arrowNone = " ";
+      TableSort.arrowUp   = ' <%= image_tag "sort_asc.png" %>';
+      TableSort.arrowDown = ' <%= image_tag "sort_desc.png" %>';
+    </script>
   <% end %>
-
-  <script type="text/javascript">
-    //TableSort.arrowNone = " ";
-    TableSort.arrowUp   = ' <%= image_tag "sort_asc.png" %>';
-    TableSort.arrowDown = ' <%= image_tag "sort_desc.png" %>';
-  </script>
 <% end %>
