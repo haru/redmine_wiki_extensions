@@ -28,7 +28,7 @@ module WikiExtensionsWikiControllerPatch
 
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      after_filter :wiki_extensions_save_tags, :only => :edit
+      after_filter :wiki_extensions_save_tags, :only => [:edit, :update]
       alias_method_chain :render, :wiki_extensions
       class << self
         
