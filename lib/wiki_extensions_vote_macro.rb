@@ -26,7 +26,7 @@ module WikiExtensionsWikiMacro
 
       return nil if args.length < 1
       key = args[0].strip
-      label = 'vote'
+      label = l(:wiki_extensions_vote)
       label = args[1].strip if args.length > 1
       voteid = "wikiext-vote-#{rand(9999999)}"
       vote = WikiExtensionsVote.find_or_create(obj.class.name, obj.id, key)
