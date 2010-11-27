@@ -30,10 +30,15 @@ module WikiExtensionsComments
       return unless page
       data = page.wiki_extension_data
       num = rand(10000)
-      div_id = "add_comment_area_#{num}"
+      area_id = "add_comment_area_#{num}"
+      div_id = "add_comment_form_div#{num}"
 
       url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id => @project)
       o = ""
+      o << '<div class="icon icon-comment">'
+      o << link_to_function(l(:label_comment_add), "$('#{div_id}').show();")
+      o << '</div>'
+      o << '<div id="' + div_id + '" style="display:none">'
       o << '<form method="post" action="' + url + '">'
       o << "\n"
       if protect_against_forgery?
@@ -42,13 +47,15 @@ module WikiExtensionsComments
       end
       o << hidden_field_tag(:wiki_page_id, page.id)
       o << "\n"
-      o << text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => div_id,:accesskey => accesskey(:edit),
+      o << text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => area_id,:accesskey => accesskey(:edit),
                    :class => 'wiki-edit')
       o << '<br/>'
       o << submit_tag(l(:label_comment_add))
+      o << link_to_function(l(:button_cancel), "$('#{div_id}').hide();")
       o << "\n"
-      o << wikitoolbar_for(div_id)
+      o << wikitoolbar_for(area_id)
       o << '</form>'
+      o << '</div>'
       return o
     end
   end
