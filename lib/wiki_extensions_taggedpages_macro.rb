@@ -19,19 +19,23 @@ require 'redmine'
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays pages that have specified tag.\n\n"+
-      "  @{{taggedpages(tagname)}}@\n"
+      "  @{{taggedpages(tagname)}}@\n" +
+      "  @{{taggedpages(tagname, project)}}@\n"
     macro :taggedpages do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
 
       return nil if args.length < 1
       tag_name = args[0].strip
+      project = Project.find_by_name(args[1].strip) if args.length > 1
+      project = @project unless project
 
-      tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", @project.id, tag_name])
+      tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
+      return nil unless tag
 
       o = '<ul class="wikiext-taggedpages">'
       tag.pages.sort{|a, b| a.pretty_title <=> b.pretty_title}.each{|page|
         o << '<li>' + link_to("#{page.pretty_title}", {:controller => 'wiki',
-              :action => 'index', :id => @project, :page_title => page.title}) + '</li>'
+              :action => 'index', :id => project, :page_title => page.title}) + '</li>'
       }
       o << '</ul>'
       return o
