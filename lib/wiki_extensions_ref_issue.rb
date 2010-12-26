@@ -51,16 +51,17 @@ module WikiExtensionsRefIssue
       # オプション指定がなければ検索ワードを抽出
       if searchWords.empty? then # 検索ワードの指定が無かったら
         # 検索するキーワードを取得する
-        if obj.class == Issue then # チケット？Wiki？
-          # チケットの場合はチケット番号を検索ワードにする
-          searchWords = ['#'+obj.id.to_s];
-        elsif obj.class == WikiContent then
-          # Wikiの場合はページ名および別名を検索ワードにする
+        if obj.class == WikiContent then # Wikiの場合はページ名および別名を検索ワードにする
           searchWords = [ obj.page.title ]; #ページ名
           redirects = WikiRedirect.find(:all, :conditions=>["redirects_to=:s", {:s=>obj.page.title}]); #別名query
           redirects.each do |redirect|
             searchWords.push(redirect.title); #別名
           end
+        elsif obj.class == Issue then # チケットの場合はチケット番号表記を検索ワードにする
+          searchWords.push('#'+obj.id.to_s);
+        elsif obj.class == Journal && obj.journalized_type == "Issue" then
+          # チケットコメントの場合もチケット番号表記を検索ワードにする
+          searchWords.push('#'+obj.journalized_id.to_s);
         else
           # チケットでもWikiでもない場合はどうしていいかわからないので帰る。
           return;
