@@ -16,8 +16,8 @@
   image: wink.png
   title: Wink
 - emoticon: '(/)'
-  image: check.gif
+  image: check.png
   title: Check
 - emoticon: '(!)'
-  image: warning.gif
+  image: warning.png
   title: Warning
