@@ -1,6 +1,6 @@
 
 
-require_dependency "lib/redmine/wiki_formatting/textile/helper"
+require_dependency "redmine/wiki_formatting/textile/helper"
 
 module WikiExtensionsHelperPatch
   def self.included(base) # :nodoc:
