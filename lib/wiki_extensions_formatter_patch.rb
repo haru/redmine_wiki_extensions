@@ -1,6 +1,6 @@
 
 
-require_dependency "lib/redmine/wiki_formatting/textile/formatter"
+require_dependency "redmine/wiki_formatting/textile/formatter"
 
 module WikiExtensionsFormatterPatch
   def self.included(base) # :nodoc:
@@ -22,7 +22,8 @@ module FormatterMethodsWikiExtensions
   private
   
   def inline_smiles(text)
-    src = "/plugin_assets/redmine_wiki_extensions/images/"
+    baseurl = Redmine::Utils.relative_url_root
+    src = baseurl + "/plugin_assets/redmine_wiki_extensions/images/"
     @emoticons = WikiExtensions::Emoticons.new
     @emoticons.emoticons.each{|emoticon|
       text.gsub!(emoticon['emoticon'], "<img src=\""+src+"#{emoticon['image']}\">")
