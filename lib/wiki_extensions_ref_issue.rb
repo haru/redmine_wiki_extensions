@@ -102,6 +102,7 @@ module WikiExtensionsRefIssue
         end
         issues = Issue.find(:all, :conditions=>cond);
         issues.each do |issue|
+          next if !issue.visible?;
           if flgLinkOnly then
             # Issueの説明に含まれるWikiへの参照[[*]]を抽出
             refs = issue.description.scan(/\[\[(.*)\]\]/);
