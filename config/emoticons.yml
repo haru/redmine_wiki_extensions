@@ -1,0 +1,23 @@
+## YAML Template.
+---
+- emoticon: ":)"
+  image: smile.png
+  title: Smile
+- emoticon: ':('
+  image: sad.png
+  title: Sad
+- emoticon: ':P'
+  image: tongue.png
+  title: Tongue
+- emoticon: ':D'
+  image: biggrin.png
+  title: Big grin
+- emoticon: ';)'
+  image: wink.png
+  title: Wink
+- emoticon: '(/)'
+  image: check.gif
+  title: Check
+- emoticon: '(!)'
+  image: warning.gif
+  title: Warning

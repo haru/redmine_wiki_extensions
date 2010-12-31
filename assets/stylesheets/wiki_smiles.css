@@ -1,0 +1,103 @@
+/* Here added styles for smiles */
+
+.jstb_smile {
+	background-image: url(../images/smile.gif);
+}
+.jstb_sad {
+	background-image: url(../images/sad.gif);
+}
+.jstb_tongue {
+	background-image: url(../images/tongue.gif);
+}
+.jstb_biggrin {
+	background-image: url(../images/biggrin.gif);
+}
+.jstb_wink {
+	background-image: url(../images/wink.gif);
+}
+.jstb_thumbs_up {
+	background-image: url(../images/thumbs_up.gif);
+}
+.jstb_thumbs_down {
+	background-image: url(../images/thumbs_down.gif);
+}
+.jstb_inf {
+	background-image: url(../images/information.gif);
+}
+.jstb_check {
+	background-image: url(../images/check.gif);
+}
+.jstb_error {
+	background-image: url(../images/error.gif);
+}
+.jstb_warn {
+	background-image: url(../images/warning.gif);
+}
+.jstb_add {
+	background-image: url(../images/add.gif);
+}
+.jstb_forbidden {
+	background-image: url(../images/forbidden.gif);
+}
+.jstb_help_16 {
+	background-image: url(../images/help_16.gif);
+}
+.jstb_lightbulb_on {
+	background-image: url(../images/lightbulb_on.gif);
+}
+.jstb_lightbulb_off {
+	background-image: url(../images/lightbulb.gif);
+}
+.jstb_star {
+	background-image: url(../images/star_yellow.gif);
+}
+.jstb_star_red {
+	background-image: url(../images/star_red.gif);
+}
+.jstb_star_green {
+	background-image: url(../images/star_green.gif);
+}
+.jstb_star_blue {
+	background-image: url(../images/star_blue.gif);
+}
+.jstb_star_yellow {
+	background-image: url(../images/star_yellow.gif);
+}
+
+.jstt_smiles #smiles_img {
+	background-color:#F7F7F7;
+	background-position:50% 50%;
+	background-repeat:no-repeat;
+	border:1px solid #DDDDDD;
+	height:22px;
+	margin-right:6px;
+	width:22px;
+}
+
+.jstt_smiles #smiles_img:hover {
+	border-color:#000000;
+}
+
+.jstt_smiles #group_of_smiles {
+	background-color:#F7F7F7;
+	border:1px solid #507AAA;
+	display:none;
+	position:absolute;
+	width:210px;
+}
+
+.jstt_smiles a:hover  #group_of_smiles{
+	display:block;
+	z-index:80;
+}
+
+.jstt_smiles {
+	float:left;
+}
+
+.jstElements button {
+	float:left;
+}
+.jstElements {
+	float:left;
+}
