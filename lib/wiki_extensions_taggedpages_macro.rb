@@ -25,15 +25,25 @@ module WikiExtensionsWikiMacro
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
 
       return nil if args.length < 1
-      tag_name = args[0].strip
-      project = Project.find_by_name(args[1].strip) if args.length > 1
-      project = @project unless project
+      tag_names = []
+      if (args.length == 1)
+        tag_names << args[0].strip
+        project = @project
+      else
+        project = Project.find_by_name(args.pop.strip)
+        args.each{|arg|
+          tag_names << arg.strip
+        }
+      end      
 
-      tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
-      return nil unless tag
+      tagged_pages = []
+      tag_names.each {|tag_name|
+        tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
+        tagged_pages = tagged_pages + tag.pages if tag
+      }
 
       o = '<ul class="wikiext-taggedpages">'
-      tag.pages.sort{|a, b| a.pretty_title <=> b.pretty_title}.each{|page|
+      tagged_pages.uniq.sort{|a, b| a.pretty_title <=> b.pretty_title}.each{|page|
         o << '<li>' + link_to("#{page.pretty_title}", {:controller => 'wiki',
               :action => 'index', :id => project, :page_title => page.title}) + '</li>'
       }
