@@ -42,7 +42,7 @@ module WikiExtensionsWikiMacro
       return nil unless page
 
       o = ""
-      o << link_to(alias_name, :controller => 'wiki', :action => 'index', :id => project, :page => page_name)
+      o << link_to(alias_name, :controller => 'wiki', :action => 'show', :project_id => project, :id => page_name)
       return o
     end
   end

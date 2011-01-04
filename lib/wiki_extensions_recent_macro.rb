@@ -41,7 +41,7 @@ module WikiExtensionsRecentMacro
           date = updated_on
           o << "<b>" + format_date(date) + "</b><br/>"
         end
-        o << link_to(content.page.pretty_title, :controller => 'wiki', :action => 'index', :id => project, :page => content.page.title)
+        o << link_to_wiki_page(page)
         o << '<br/>'
       }
       o << '</div>'

@@ -1,5 +1,5 @@
 <% # Wiki Extensions plugin for Redmine
-# Copyright (C) 2010  Haruyuki Iida
+# Copyright (C) 2010-2011  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
   <%
   wiki = project.wiki
   style_sheet = wiki.find_page('StyleSheet') if wiki
-  baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
+  baseurl = Redmine::Utils.relative_url_root
   -%>
 
   <% if style_sheet -%>

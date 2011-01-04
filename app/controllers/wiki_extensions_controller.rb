@@ -29,7 +29,7 @@ class WikiExtensionsController < ApplicationController
     comment.comment = params[:comment]
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
   
   def reply_comment
@@ -41,7 +41,7 @@ class WikiExtensionsController < ApplicationController
     comment.comment = params[:reply]
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
 
   def tag
@@ -52,7 +52,7 @@ class WikiExtensionsController < ApplicationController
   def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => menu.page_name
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
 
   def destroy_comment
@@ -65,7 +65,7 @@ class WikiExtensionsController < ApplicationController
     
     page = WikiPage.find(comment.wiki_page_id)
     comment.destroy
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
 
   def update_comment

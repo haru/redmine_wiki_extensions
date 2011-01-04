@@ -44,8 +44,7 @@ module WikiExtensionsWikiMacro
 
       o = '<ul class="wikiext-taggedpages">'
       tagged_pages.uniq.sort{|a, b| a.pretty_title <=> b.pretty_title}.each{|page|
-        o << '<li>' + link_to("#{page.pretty_title}", {:controller => 'wiki',
-              :action => 'index', :id => project, :page_title => page.title}) + '</li>'
+        o << '<li>' + link_to_wiki_page(page) + '</li>'
       }
       o << '</ul>'
       return o

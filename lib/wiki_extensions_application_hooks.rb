@@ -35,7 +35,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     return unless wiki
     page = wiki.find_page(page_name) if page_name
     o = ''
-    if action_name == 'edit' or (action_name == 'index' and page_name and page == nil)
+    if action_name == 'edit' or (action_name == 'show' and page_name and page == nil)
       o = ''
       o << add_wiki_ext_tags_form(context)
       o << add_wiki_auto_preview(context)
@@ -54,7 +54,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     controller = context[:controller]
     page = controller.wiki_extensions_get_current_page
     tags = page.tags.sort{|a, b|a.name <=> b.name}
-    baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => project) + '/../../..'
+    baseurl = Redmine::Utils.relative_url_root
     img = baseurl + "/images/add.png"
 
     o = '<div id="wiki_extensions_tag_form"><p>'

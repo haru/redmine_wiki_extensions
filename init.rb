@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2010  Haruyuki Iida
+# Copyright (C) 2009-2011  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,8 +33,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author 'Haruyuki Iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en" if respond_to?(:url)
-  version '0.2.5'
-  requires_redmine :version_or_higher => '1.0.0'
+  version '0.3.0'
+  requires_redmine :version_or_higher => '1.1.0'
 
   project_module :wiki_extensions do
     permission :wiki_extensions_vote, {:wiki_extensions => [:vote, :show_vote]}, :public => true
