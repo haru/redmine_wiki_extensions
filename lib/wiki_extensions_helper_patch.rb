@@ -36,9 +36,10 @@ module HelperMethodsWikiExtensions
     emoticons = WikiExtensions::Emoticons.new
     o << '<script type="text/javascript">'
     o << "\n"
+    o << "redmine_base_url = '#{baseurl}';\n"
     o << 'var buttons = [];'
     emoticons.emoticons.each{|emoticon|
-      o << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);"
+      o << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);\n"
     }
     o << "setEmoticonButtons(buttons, '#{imageurl}');\n"
     o << '</script>'
