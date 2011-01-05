@@ -58,7 +58,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{comments}}"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
 
   end
@@ -72,7 +72,7 @@ class WikiControllerTest < ActionController::TestCase
     comment.comment = "aaa"
     comment.save!
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -83,7 +83,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{div_end_tag}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
 
   end
@@ -94,7 +94,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{fnlist}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
 
   end
@@ -106,7 +106,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{new(2009-03-01, 4)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -117,7 +117,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{project(#{@project.id}), bar}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -129,7 +129,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{tagcloud}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -141,18 +141,18 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{wiki(#{@project.id}, #{@page_name}, bar)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
   def test_edit
     @request.session[:user_id] = 1
-    get :edit, :id => 1, :page => @page_name
+    get :edit, :project_id => 1, :id => @page_name
     assert_response :success
 
-    post :edit, :id => 1, :page => @page_name, :content => {:text => 'aaa'},
+    post :edit, :project_id => 1, :id => @page_name, :content => {:text => 'aaa'},
       :extension => {:tags =>{"0" => "aaa", "1" => "bbb"}}
-    assert_response :redirect
+    assert_response :success
   end
 
   def test_recent
@@ -162,7 +162,7 @@ class WikiControllerTest < ActionController::TestCase
     
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -172,7 +172,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -182,7 +182,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -193,7 +193,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :index, :id => 1, :page => @page_name
+    get :show, :project_id => 1, :id => @page_name
     assert_response :success
   end
 
@@ -204,7 +204,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -216,7 +216,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -228,7 +228,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
 
@@ -239,7 +239,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -251,7 +251,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -263,7 +263,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -275,7 +275,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end
@@ -287,7 +287,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :index, :id => 1, :page => @page_name
+      get :show, :project_id => 1, :id => @page_name
       assert_response :success
     end
   end

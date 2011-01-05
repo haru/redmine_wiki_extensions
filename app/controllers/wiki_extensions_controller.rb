@@ -52,7 +52,7 @@ class WikiExtensionsController < ApplicationController
   def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => menu.page_name
   end
 
   def destroy_comment
