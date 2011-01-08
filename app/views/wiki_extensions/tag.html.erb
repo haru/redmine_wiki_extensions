@@ -1,5 +1,5 @@
 <% # Wiki Extensions plugin for Redmine
-# Copyright (C) 2010  Haruyuki Iida
+# Copyright (C) 2010-2011  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,7 +19,7 @@
 <ul>
 <% for page in @tag.pages.sort{|a, b| a.title <=> b.title} %>
   <li>
-    <%= link_to  page.pretty_title, :controller => 'wiki', :action => 'index', :id => @project, :page => page.title %>
+    <%= link_to_wiki_page page %>
   </li>
 <% end %>
 </ul>
