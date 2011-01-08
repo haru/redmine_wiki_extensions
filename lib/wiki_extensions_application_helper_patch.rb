@@ -18,10 +18,22 @@
 require_dependency "application_helper"
 
 module WikiExtensionsApplicationHelperPatch
+  def self.included(base) # :nodoc:
+    base.send(:include, WikiExtensionsApplicationHelperMethods)
+
+
+    base.class_eval do
+      unloadable # Send unloadable so it will not be unloaded in development
+
+    end
+  end
+end
+
+module WikiExtensionsApplicationHelperMethods
 
   def link_to_wiki_page(page)
     link_to(page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title)
   end
 end
 
-ApplicationHelper.send(:include, WikiExtensionsHelperPatch)
+ApplicationHelper.send(:include, WikiExtensionsApplicationHelperPatch)
