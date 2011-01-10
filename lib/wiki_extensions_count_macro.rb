@@ -65,7 +65,7 @@ module WikiExtensionsCountMacro
         page = WikiPage.find(:first, :conditions => ['id = ?', value[0]])
         next unless page
         o << '<li>'
-        o << link_to_wiki_page(page)
+        o << link_to(page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => page.project, :id => page.title)
         o << "(#{value[1]})"
         o << '</li>'
         cnt = cnt + 1
