@@ -30,7 +30,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     action_name = controller.action_name
     request = context[:request]
     params = request.parameters if request
-    page_name = params[:page] if params
+    page_name = params[:id] if params
     wiki = project.wiki
     return unless wiki
     page = wiki.find_page(page_name) if page_name
@@ -117,8 +117,8 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     return '' unless setting.auto_preview_enabled
     request = context[:request]
     params = request.parameters if request
-    page_name = params[:page] if params
-    url = url_for :controller => 'wiki', :action => 'preview', :id => project, :page => page_name
+    page_name = params[:id] if params
+    url = url_for(:controller => 'wiki', :action => 'preview', :id => page_name, :project_id => project)
     o = ''
     o << javascript_tag("setWikiAutoPreview('#{url}');")
     return o

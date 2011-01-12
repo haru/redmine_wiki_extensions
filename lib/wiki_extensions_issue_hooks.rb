@@ -28,7 +28,7 @@ class WikiExtensionsIssueHooks < Redmine::Hook::ViewListener
     parameters = request.parameters
     issue = context[:issue]
 
-    url = url_for(:controller => 'issues', :action => 'preview', :project_id => project)
+    url = preview_issue_path(:project_id => project)
     o =<<EOF
 <script type="text/javascript">
 document.observe('dom:loaded', function() {
@@ -49,7 +49,7 @@ EOF
     parameters = request.parameters
     issue = context[:issue]
 
-    url = url_for(:controller => 'issues', :action => 'preview', :id => issue.id, :project_id => project)
+    url = preview_issue_path(:id => issue.id, :project_id => project)
     o =<<EOF
 <script type="text/javascript">
 document.observe('dom:loaded', function() {
