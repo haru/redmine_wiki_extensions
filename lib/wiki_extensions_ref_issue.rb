@@ -8,6 +8,7 @@ module WikiExtensionsRefIssue
       searchWords = [];
       flgSearchSubject = nil;
       flgSearchDescription = nil;
+      customQuery = nil;
 
       # 引数をパース
       columns = [];
@@ -36,7 +37,7 @@ module WikiExtensionsRefIssue
               end
             when 'q'
               if arg=~/^[^\=]+\=(.*)$/ then
-                @customQuery = $1;
+                customQuery = $1;
                 if flgSearchSubject == nil then
                   flgSearchSubject = false;
                 end
@@ -44,16 +45,16 @@ module WikiExtensionsRefIssue
                   flgSearchDescription = false;
                 end
               else
-                raise "no search word:#{arg}<br>"+
-                "ex. -w=SEARCH_WORD";
+                raise "no CustomQuery name:#{arg}<br>"+
+                "ex. -q=CUSTOM_QUERY";
               end
             else
               raise "unknown option:#{arg}<br>"+
               "[optins]<br>"+
-              "-S : not search word in subject<br>"+
               "-s : search word in subject<br>"+
-              "-D : not search word in description<br>"+
+              "-S : not search word in subject<br>"+
               "-d : search word in description<br>"+
+              "-D : not search word in description<br>"+
               "-p : restrict project<br>"+
               "-w=[search word]: specify search word<br>"+
               "-q=[custom query name]: specify custom query";
@@ -106,7 +107,7 @@ module WikiExtensionsRefIssue
         flgSearchDescription = true;
       end
 
-      # オプション指定がなければ検索ワードを抽出
+      # オプションに検索ワードの指定がなければ検索ワードを決める
       if searchWords.empty? then # 検索ワードの指定が無かったら
         # 検索するキーワードを取得する
         if obj.class == WikiContent then # Wikiの場合はページ名および別名を検索ワードにする
@@ -125,26 +126,29 @@ module WikiExtensionsRefIssue
           return;
         end
       end
-
-      extend SortHelper
-      extend QueriesHelper
-      extend IssuesHelper
-
-      if defined?(@customQuery) then
+      
+      # オプションにカスタムクエリがあればカスタムクエリを名前から取得
+      if customQuery then
         cond = "project_id IS NULL"
         cond << " OR project_id = #{@project.id}" if @project
-        cond = "(#{cond}) AND name = '#{@customQuery}'";
+        cond = "(#{cond}) AND name = '#{customQuery}'";
         @query = Query.find(:first, :conditions=>cond);
       else
         @query = Query.new(:name => "_", :filters => {});
       end
+      
+      # Queryモデルを拡張
       WikiExtensionsRefIssue.overwrite_sql_for_field(@query);
       WikiExtensionsRefIssue.overwrite_statement(@query);
+      @query.available_filters["description"] = { :type => :text, :order => 8 };
 
       if flgSameProject then
         @query.project = @project;
       end
 
+      extend SortHelper
+      extend QueriesHelper
+      extend IssuesHelper
       sort_init(@query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria);
       sort_update(@query.sortable_columns);
 
@@ -153,7 +157,6 @@ module WikiExtensionsRefIssue
       end
 
       if flgSearchDescription then
-        @query.available_filters["description"] = { :type => :text, :order => 8 };
         @query.add_filter("description", "~", searchWords);
       end
 
@@ -256,6 +259,47 @@ module WikiExtensionsRefIssue
           db_field = 'user_id'
           sql << "#{Issue.table_name}.id #{ operator == '=' ? 'IN' : 'NOT IN' } (SELECT #{db_table}.watchable_id FROM #{db_table} WHERE #{db_table}.watchable_type='Issue' AND "
           sql << sql_for_field(field, '=', v, db_table, db_field) + ')'
+        elsif field == "member_of_group" # named field
+          if operator == '*' # Any group
+            groups = Group.all
+            operator = '=' # Override the operator since we want to find by assigned_to
+          elsif operator == "!*"
+            groups = Group.all
+            operator = '!' # Override the operator since we want to find by assigned_to
+          else
+            groups = Group.find_all_by_id(v)
+          end
+          groups ||= []
+
+          members_of_groups = groups.inject([]) {|user_ids, group|
+            if group && group.user_ids.present?
+              user_ids << group.user_ids
+            end
+            user_ids.flatten.uniq.compact
+          }.sort.collect(&:to_s)
+
+          sql << '(' + sql_for_field("assigned_to_id", operator, members_of_groups, Issue.table_name, "assigned_to_id", false) + ')'
+
+        elsif field == "assigned_to_role" # named field
+          if operator == "*" # Any Role
+            roles = Role.givable
+            operator = '=' # Override the operator since we want to find by assigned_to
+          elsif operator == "!*" # No role
+            roles = Role.givable
+            operator = '!' # Override the operator since we want to find by assigned_to
+          else
+            roles = Role.givable.find_all_by_id(v)
+          end
+          roles ||= []
+
+          members_of_roles = roles.inject([]) {|user_ids, role|
+            if role && role.members
+              user_ids << role.members.collect(&:user_id)
+            end
+            user_ids.flatten.uniq.compact
+          }.sort.collect(&:to_s)
+
+          sql << '(' + sql_for_field("assigned_to_id", operator, members_of_roles, Issue.table_name, "assigned_to_id", false) + ')'
         else
           # regular field
           db_table = Issue.table_name
