@@ -133,6 +133,7 @@ module WikiExtensionsRefIssue
         cond << " OR project_id = #{@project.id}" if @project
         cond = "(#{cond}) AND name = '#{customQuery}'";
         @query = Query.find(:first, :conditions=>cond);
+        raise "can not find CustomQuery:'#{customQuery}'" if !@query;
       else
         @query = Query.new(:name => "_", :filters => {});
       end
@@ -151,6 +152,7 @@ module WikiExtensionsRefIssue
       extend IssuesHelper
       sort_init(@query.sort_criteria.empty? ? [['id', 'desc']] : @query.sort_criteria);
       sort_update(@query.sortable_columns);
+      @issue_count_by_group = @query.issue_count_by_group;
 
       if flgSearchSubject then
         @query.add_filter("subject", "~", searchWords);
