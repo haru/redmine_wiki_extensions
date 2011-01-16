@@ -17,9 +17,9 @@
 
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
-    desc "Insert an iframe tag" + "'\n\n" +
-      " @{{iframe(url, width, height)}}@" + "\n\n"
-    " @{{iframe(url,  width, height, scroll)}}@"
+    desc "Insert an iframe tag" + "\n\n" +
+      "  !{{iframe(url, width, height)}}" + "\n\n"
+    "  !{{iframe(url,  width, height, scroll)}}"
     macro :iframe do |obj, args|
       width = '100%'
       width = args[1].strip if args[1]

@@ -19,8 +19,8 @@ require 'redmine'
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Vote macro.\n\n"+
-      "  @{{vote(key)}}@\n" +
-      "  @{{vote(key, label)}}@\n"
+      "  !{{vote(key)}}\n" +
+      "  !{{vote(key, label)}}\n"
     macro :vote do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
 
@@ -45,7 +45,7 @@ module WikiExtensionsWikiMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Display result of vote macro.\n\n"+
-      "  @{{show_vote(key)}}@\n"
+      "  !{{show_vote(key)}}\n"
     macro :show_vote do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
 

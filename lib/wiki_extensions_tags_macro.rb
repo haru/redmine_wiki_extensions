@@ -19,7 +19,7 @@ require 'redmine'
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays tags.\n\n"+
-      "  @{{tags}}@\n"
+      "  !{{tags}}\n"
     macro :tags do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       page = obj.page
@@ -40,7 +40,7 @@ module WikiExtensionsWikiMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays tagcloud.\n\n"+
-      "  @{{tagcloud}}@\n"
+      "  !{{tagcloud}}\n"
     macro :tagcloud do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       classes = ['tag_level1', 'tag_level2', 'tag_level3', 'tag_level4', 'tag_level5']

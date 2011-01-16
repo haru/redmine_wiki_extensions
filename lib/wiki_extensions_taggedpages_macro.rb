@@ -19,8 +19,8 @@ require 'redmine'
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays pages that have specified tag.\n\n"+
-      "  @{{taggedpages(tagname)}}@\n" +
-      "  @{{taggedpages(tagname, project)}}@\n"
+      "  !{{taggedpages(tagname)}}\n" +
+      "  !{{taggedpages(tagname, project)}}\n"
     macro :taggedpages do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
 

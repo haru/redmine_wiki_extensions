@@ -19,10 +19,10 @@ require 'redmine'
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Link to wiki page of other project.\n\n"+
-      "  @{{wiki(project_name, wiki_page)}}@\n" +
-      " @{{wiki(project_name, wiki_page, alias)}}@\n" +
-      " @{{wiki(project_identifier, wiki_page)}}@\n" +
-      " @{{wiki(project_identifier, wiki_page, alias)}}@\n"
+      "  !{{wiki(project_name, wiki_page)}}\n" +
+      " !{{wiki(project_name, wiki_page, alias)}}\n" +
+      " !{{wiki(project_identifier, wiki_page)}}\n" +
+      " !{{wiki(project_identifier, wiki_page, alias)}}\n"
     macro :wiki do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
       return nil if args.length < 2

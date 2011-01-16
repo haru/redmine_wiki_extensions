@@ -19,7 +19,7 @@ require 'redmine'
 module WikiExtensionsCountMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Count access to the pages.\n\n"+
-      "  @{{count}}@\n" 
+      "  !{{count}}\n"
     macro :count do |obj, args|
       return nil unless obj
       page = obj.page
@@ -35,7 +35,7 @@ module WikiExtensionsCountMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays an access count of the page.\n\n"+
-      "  @{{show_count}}@\n"
+      "  !{{show_count}}\n"
     macro :show_count do |obj, args|
       return nil unless obj
       page = obj.page
@@ -47,9 +47,9 @@ module WikiExtensionsCountMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays list of the popular pages.\n\n"+
-      "  @{{popularity}}@\n" + 
-      "  @{{popularity(max)}}@\n" +
-      "  @{{popularity(max, term)}}@\n"
+      "  !{{popularity}}\n" + 
+      "  !{{popularity(max)}}\n" +
+      "  !{{popularity(max, term)}}\n"
     macro :popularity do |obj, args|
       return nil unless obj
       term = 0

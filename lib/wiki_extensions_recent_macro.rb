@@ -18,8 +18,8 @@
 module WikiExtensionsRecentMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a list of pages that were changed recently. " + "'\n\n" +
-      " @{{recent()}}@" + "'\n\n" +
-      " @{{recent(number_of_days)}}@"
+      " !{{recent}}" + "'\n" +
+      " !{{recent(number_of_days)}}"
     macro :recent do |obj, args|
       page = obj.page
       return nil unless page

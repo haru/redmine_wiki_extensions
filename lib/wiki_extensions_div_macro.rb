@@ -17,9 +17,9 @@
 
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
-    desc "Displays a '<div id=" + '"id_name"' + " class=" + '"' + 'class_name' + '">' + "'\n\n" +
-      " @{{div_start_tag(id_name)}}@" + "'\n\n" +
-      " @{{div_start_tag(id_name, class_name)}}@"
+    desc "Displays a <pre><div id=" + '"id_name"' + " class=" + '"' + 'class_name' + '"></pre>' + "\n\n" +
+      " !{{div_start_tag(id_name)}}" + "'\n" +
+      " !{{div_start_tag(id_name, class_name)}}"
     macro :div_start_tag do |obj, args|
       return '<div>' if args.length == 0
       return '<div id="' + args[0].strip + '">' if args.length == 1
@@ -30,7 +30,8 @@ end
 
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
-    desc "Displays a '</div>.'"
+    desc "Displays a <pre></div></pre>\n\n" +
+      "  !{{div_end_tag}}"
     macro :div_end_tag do |obj, args|
       return '</div>'
     end

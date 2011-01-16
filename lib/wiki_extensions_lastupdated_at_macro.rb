@@ -18,7 +18,7 @@
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a date that updated the page.\n\n" +
-      " @{{lastupdated_at}}@"
+      " !{{lastupdated_at}}"
     macro :lastupdated_at do |obj, args|
       o = '<span class="wiki_extensions_lastupdated_at">'
       o << l(:label_updated_time, time_tag(obj.updated_on))

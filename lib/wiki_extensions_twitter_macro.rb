@@ -19,7 +19,7 @@ require 'redmine'
 module WikiExtensionsTwitterMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Creates link to twitter account page.\n\n" +
-      " \{{twitter(user_name)}}\n"
+      " !{{twitter(user_name)}}\n"
     macro :twitter do |obj, args|
       
       return nil if args.length < 1
