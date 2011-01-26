@@ -20,6 +20,7 @@ module HelperMethodsWikiExtensions
     
   def wikitoolbar_for_with_wiki_smiles(field_id)
     # Is there a simple way to link to a public resource?
+    return wikitoolbar_for_without_wiki_smiles(field_id) if ie6_or_ie7?
     url = "#{Redmine::Utils.relative_url_root}/help/wiki_syntax.html"
           
     help_link = l(:setting_text_formatting) + ': ' +
@@ -46,6 +47,12 @@ module HelperMethodsWikiExtensions
     o << javascript_include_tag("jstoolbar/lang/jstoolbar-#{current_language.to_s.downcase}")
     o << javascript_tag("var wikiToolbar = new jsToolBar($('#{field_id}')); wikiToolbar.setHelpLink('#{help_link}'); wikiToolbar.draw();")
     o
+  end
+
+  private
+  def ie6_or_ie7?
+    useragent = request.env['HTTP_USER_AGENT']
+    return useragent.match(/IE[ ]+[67]./) != nil
   end
 
 end
