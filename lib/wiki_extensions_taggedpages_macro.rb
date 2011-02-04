@@ -37,9 +37,28 @@ module WikiExtensionsWikiMacro
       end      
 
       tagged_pages = []
+      and_op = false
+      if (tag_names.length > 1 and tag_names[0] == 'and')
+        and_op = true
+        tag_names.delete_at 0
+      end
+      first_time = true
       tag_names.each {|tag_name|
         tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
-        tagged_pages = tagged_pages + tag.pages if tag
+        if and_op
+          if tag
+            if first_time
+               tagged_pages = tag.pages
+               first_time = false
+            else
+              tagged_pages = tagged_pages & tag.pages
+            end
+          else
+            tagged_pages = []
+          end
+        else
+          tagged_pages = tagged_pages | tag.pages if tag
+        end
       }
 
       o = '<ul class="wikiext-taggedpages">'
@@ -51,3 +70,4 @@ module WikiExtensionsWikiMacro
     end
   end
 end
+
