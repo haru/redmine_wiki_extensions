@@ -1,5 +1,6 @@
 /**
  * @author Dmitry Manayev
+ * modified by Haruyuki Iida.
  */
 
 emoticons_image_url = ""
@@ -126,7 +127,7 @@ function setEmoticonButtons(buttons, url) {
             icon: url + '/' + button[1],
             fn: {
                 wiki: function() {
-                    this.encloseSelection(button[0])
+                    this.encloseSelection(button[0] + " ")
                 }
             }
         }

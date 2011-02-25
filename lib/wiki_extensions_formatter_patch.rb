@@ -24,10 +24,12 @@ module FormatterMethodsWikiExtensions
   def inline_smiles(text)
     baseurl = Redmine::Utils.relative_url_root
     src = baseurl + "/plugin_assets/redmine_wiki_extensions/images/"
+
     @emoticons = WikiExtensions::Emoticons.new
     @emoticons.emoticons.each{|emoticon|
-      text.gsub!(emoticon['emoticon'], "<img src=\""+src+"#{emoticon['image']}\">")
-    }      
+      text.gsub!(Regexp.new("#{Regexp.escape(emoticon['emoticon'])}(\\s|<br/>|</p>)"),
+        "<img src=\""+src+"#{emoticon['image']}\" alt=\"#{emoticon['emoticon']}\">\\1")
+    }
   end
 end
 
