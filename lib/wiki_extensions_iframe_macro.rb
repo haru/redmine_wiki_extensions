@@ -28,7 +28,8 @@ module WikiExtensionsWikiMacro
 
       scrolling = 'auto'
       scrolling = args[3].strip if args.length > 3
-      url = /([a-zA-Z0-9]+:\/\/[-a-zA-Z0-9.?&=+@:_~\#%\/]+)/.match(args[0]).to_a[1]
+      url = /([a-zA-Z0-9]+:\/\/[-a-zA-Z0-9\.\?\&=\+@:_~\#\%\/\;]+)/.match(args[0]).to_a[1]
+      url = url.gsub(/\&#38;/,"&")
       o = ''
       o << '<iframe src="' + url + '" style="border: 0" width="' + width +
         '" height="' + height + '" frameborder="0" scrolling="' + scrolling + '"></iframe>'
