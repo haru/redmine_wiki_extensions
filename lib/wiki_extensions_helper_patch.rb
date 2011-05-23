@@ -9,7 +9,12 @@ module WikiExtensionsHelperPatch
     
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      alias_method_chain :wikitoolbar_for, :wiki_smiles
+      major, minor = Redmine::VERSION.to_a
+      if major == 1 and minor < 2
+        alias_method_chain :wikitoolbar_for, :wiki_smiles
+      else
+        alias_method_chain :heads_for_wiki_formatter, :wiki_smiles
+      end
       
     end
 
@@ -17,6 +22,30 @@ module WikiExtensionsHelperPatch
 end
 
 module HelperMethodsWikiExtensions
+  def heads_for_wiki_formatter_with_wiki_smiles
+    heads_for_wiki_formatter_without_wiki_smiles
+    return if ie6_or_ie7?
+    unless @heads_for_wiki_smiles_included
+      baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => @project) + '/../../..'
+      imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
+      content_for :header_tags do
+        o = stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_smiles.css")
+        o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_smiles.js")
+        emoticons = WikiExtensions::Emoticons.new
+        o << '<script type="text/javascript">'
+        o << "\n"
+        o << "redmine_base_url = '#{baseurl}';\n"
+        o << 'var buttons = [];'
+        emoticons.emoticons.each{|emoticon|
+          o << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);\n"
+        }
+        o << "setEmoticonButtons(buttons, '#{imageurl}');\n"
+        o << '</script>'
+        o
+      end
+      @heads_for_wiki_smiles_included = true
+    end
+  end
     
   def wikitoolbar_for_with_wiki_smiles(field_id)
     # Is there a simple way to link to a public resource?
