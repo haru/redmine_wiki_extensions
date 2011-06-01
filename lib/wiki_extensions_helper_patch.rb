@@ -9,15 +9,28 @@ module WikiExtensionsHelperPatch
     
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
-      major, minor = Redmine::VERSION.to_a
-      if major == 1 and minor < 2
-        alias_method_chain :wikitoolbar_for, :wiki_smiles
-      else
+      if WikiExtensionsHelperPatch::has_heads_for_wiki_formatter?
         alias_method_chain :heads_for_wiki_formatter, :wiki_smiles
-      end
-      
+      else
+        alias_method_chain :wikitoolbar_for, :wiki_smiles
+      end      
     end
-
+  end
+  def self.has_heads_for_wiki_formatter?
+    major, minor = Redmine::VERSION.to_a
+    if Redmine::Info.app_name == 'Redmine'
+      if major > 1
+        return true
+      end
+      if major == 1 and minor > 1
+        return true
+      end
+    else
+      if major > 1
+        return true
+      end
+    end
+    false
   end
 end
 
@@ -61,7 +74,7 @@ module HelperMethodsWikiExtensions
     o = ""
     o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_smiles.css") +javascript_include_tag('jstoolbar/jstoolbar')
     o << javascript_include_tag('jstoolbar/textile')
-      #here added a new js tag#
+    #here added a new js tag#
     o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_smiles.js")
     emoticons = WikiExtensions::Emoticons.new
     o << '<script type="text/javascript">'
@@ -83,7 +96,8 @@ module HelperMethodsWikiExtensions
     useragent = request.env['HTTP_USER_AGENT']
     return useragent.match(/IE[ ]+[67]./) != nil
   end
-
+  
+ 
 end
 
 Redmine::WikiFormatting::Textile::Helper.send(:include, WikiExtensionsHelperPatch)
