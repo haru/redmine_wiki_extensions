@@ -319,7 +319,9 @@ module WikiExtensionsRefIssue
       if !filters_key_words.empty? then
         filters_clauses << '(' + filters_key_words.join(' OR ') + ')';
       end
-      return (filters_clauses << project_statement).join(' AND ')
+      ps = project_statement
+      filters_clauses << ps if ps
+      return filters_clauses.join(' AND ')
     end
   end
 end
