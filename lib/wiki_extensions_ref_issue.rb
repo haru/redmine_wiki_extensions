@@ -166,7 +166,8 @@ module WikiExtensionsRefIssue
         @query.column_names = columns;
       end
 
-      @issues = @query.issues(:order => sort_clause);
+      @issues = @query.issues(:order => sort_clause, 
+                              :include => [:assigned_to, :tracker, :priority, :category, :fixed_version]);
       
       disp = context_menu(issues_context_menu_path);
       disp << render(:partial => 'issues/list', :locals => {:issues => @issues, :query => @query});
@@ -177,12 +178,22 @@ module WikiExtensionsRefIssue
 
   def WikiExtensionsRefIssue.overwrite_sql_for_field(query)
     def query.sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false);
-      sql = '';
+      sql = ''
       case operator
       when "="
-        sql = "#{db_table}.#{db_field} IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + ")"
+        if value.any?
+          sql = "#{db_table}.#{db_field} IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + ")"
+        else
+          # IN an empty set
+          sql = "1=0"
+        end
       when "!"
-        sql = "(#{db_table}.#{db_field} IS NULL OR #{db_table}.#{db_field} NOT IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + "))"
+        if value.any?
+          sql = "(#{db_table}.#{db_field} IS NULL OR #{db_table}.#{db_field} NOT IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + "))"
+        else
+          # NOT IN an empty set
+          sql = "1=1"
+        end
       when "!*"
         sql = "#{db_table}.#{db_field} IS NULL"
         sql << " OR #{db_table}.#{db_field} = ''" if is_custom_filter
@@ -212,13 +223,11 @@ module WikiExtensionsRefIssue
       when "t"
         sql = date_range_clause(db_table, db_field, 0, 0)
       when "w"
-        from = l(:general_first_day_of_week) == '7' ?
-        # week starts on sunday
-        ((Date.today.cwday == 7) ? Time.now.at_beginning_of_day : Time.now.at_beginning_of_week - 1.day) :
-        # week starts on monday (Rails default)
-        Time.now.at_beginning_of_week
-        sql = "#{db_table}.#{db_field} BETWEEN '%s' AND '%s'" % [connection.quoted_date(from), connection.quoted_date(from + 7.days)]
-      when "~"
+        first_day_of_week = l(:general_first_day_of_week).to_i
+        day_of_week = Date.today.cwday
+        days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
+        sql = date_range_clause(db_table, db_field, - days_ago, - days_ago + 6)
+      when "~" # monkey patched for ref_issues: originally treat single value  -> extend multiple value
         sql = "(";
         value.each do |v|
           sql << " OR " if sql != "(";
@@ -236,7 +245,7 @@ module WikiExtensionsRefIssue
     def query.statement
       # filters clauses
       filters_clauses = []
-      filters_key_words = []
+      filters_key_words = [] # added for ref_issues
       filters.each_key do |field|
         next if field == "subproject_id"
         v = values_for(field).clone
@@ -308,20 +317,22 @@ module WikiExtensionsRefIssue
           db_field = field
           sql << '(' + sql_for_field(field, operator, v, db_table, db_field) + ')'
         end
-        if field == 'subject' || field == 'description' then
+        if field == 'subject' || field == 'description' then # for ref_issues: force OR CONDITION in subject and description
           filters_key_words << sql;
         else
           filters_clauses << sql
         end
 
       end if filters and valid?
-      
-      if !filters_key_words.empty? then
+
+      if !filters_key_words.empty? then # for ref_issues: force OR CONDITION in subject and description
         filters_clauses << '(' + filters_key_words.join(' OR ') + ')';
       end
-      ps = project_statement
-      filters_clauses << ps if ps
-      return filters_clauses.join(' AND ')
+
+      filters_clauses << project_statement
+      filters_clauses.reject!(&:blank?)
+
+      filters_clauses.any? ? filters_clauses.join(' AND ') : nil
     end
   end
 end
