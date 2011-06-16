@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2011  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -79,7 +79,7 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     comment.comment = params[:comment]
     comment.save
-    redirect_to :controller => 'wiki', :action => 'index', :id => @project, :page => page.title
+    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
 
   end
 
