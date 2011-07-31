@@ -1,0 +1,15 @@
+# Simplified Chinese strings go here
+zh:
+  label_wikiextensions_tags: 标签
+  label_wikiextensions_new: 新建
+  wiki_extensions: Wiki Extensions
+  label_wikiextensions_tab: 标签
+  wiki_extensions_add_tab: "增加标签到项目菜单栏."
+  permission_add_wiki_comment: 增加Wiki注释
+  permission_delete_wiki_comments: 删除Wiki注释
+  permission_edit_wiki_comments: 编辑Wiki注释
+  permission_wiki_extensions_settings: 管理Wiki Extensions
+
+  field_auto_preview_enabled: 打开自动预览
+  field_sidebar_disabled: 禁止侧栏
+  wiki_extensions_vote: 投票 
