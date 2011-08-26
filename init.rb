@@ -20,6 +20,7 @@ require 'config/initializers/session_store.rb'
 rescue LoadError
 end
 require 'redcloth3'
+require_dependency 'wiki_extensions_notifiable_patch'
 Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
   next unless /\.rb$/ =~ file
   require file

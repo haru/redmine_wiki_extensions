@@ -1,0 +1,19 @@
+<%= 
+l(:wiki_page_commented_header, :project_name => @project.name, :page_title => @wiki_page_title, :author => @author)
+%>
+<hr />
+<%=
+l(:wiki_page_commented_comment_head)
+%>
+<br /><br />
+<%=
+@text
+%>
+<hr />
+<%=
+l(:wiki_page_commented_url)
+%>
+<br />
+<%=
+"<a href=\"" + @wiki_page_url + "\">" + @wiki_page_url + "<a/>"
+%>

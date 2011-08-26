@@ -29,6 +29,8 @@ class WikiExtensionsController < ApplicationController
     comment.comment = params[:comment]
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
+    # Send email-notification to watchers of wiki page
+    WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
     redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
   
@@ -41,6 +43,8 @@ class WikiExtensionsController < ApplicationController
     comment.comment = params[:reply]
     comment.save
     page = WikiPage.find(comment.wiki_page_id)
+    # Send email-notification to watchers of wiki page
+    WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
     redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
   end
 

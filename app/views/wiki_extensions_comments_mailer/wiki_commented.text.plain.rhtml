@@ -1,0 +1,18 @@
+<%= 
+l(:wiki_page_commented_header, :project_name => @project.name, :page_title => @wiki_page_title, :author => @author)
+%>
+----------------------------------------
+<%=
+l(:wiki_page_commented_comment_head)
+%>
+
+<%=
+@text
+%>
+----------------------------------------
+<%=
+l(:wiki_page_commented_url)
+%>
+<%=
+@wiki_page_url
+%>
