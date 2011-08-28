@@ -18,3 +18,4 @@ ja:
   wiki_page_commented_header: プロジェクト"%{project_name}"のWikiページ "%{page_title}" へのコメントが %{author}によって追加されました。
   wiki_page_commented_comment_head: 'コメント:'
   wiki_page_commented_url: 'コメントへのリンク:'
+  label_wiki_comment_added: Wikiコメントが追加されました

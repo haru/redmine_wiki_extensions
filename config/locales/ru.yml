@@ -18,3 +18,4 @@ ru:
   wiki_page_commented_header: Вики-страница "%{page_title}" проекта "%{project_name}" прокомментированна пользователем %{author}
   wiki_page_commented_comment_head: 'Комментарий:'
   wiki_page_commented_url: 'Вы можете просмотреть страницу с комментарием перейдя по следующей ссылке:'
+  label_wiki_comment_added: 'Wiki comment added'
