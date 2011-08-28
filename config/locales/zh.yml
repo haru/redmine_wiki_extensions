@@ -13,3 +13,8 @@ zh:
   field_auto_preview_enabled: 打开自动预览
   field_sidebar_disabled: 禁止侧栏
   wiki_extensions_vote: 投票 
+
+  
+  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
+  wiki_page_commented_comment_head: 'Comment:'
+  wiki_page_commented_url: 'You can see page with comment by the following link:'
