@@ -8,7 +8,8 @@ module WikiExtensionsRefIssue
       searchWordsS = [];
       searchWordsD = [];
       searchWordsW = [];
-      customQuery = nil;
+      customQueryId = nil;
+      customQueryName = nil;
 
       # 引数をパース
       columns = [];
@@ -25,9 +26,15 @@ module WikiExtensionsRefIssue
               searchWordsW.push WikiExtensionsRefIssue.getWords(arg)
             when 'q'
               if arg=~/^[^\=]+\=(.*)$/ then
-                customQuery = $1;
+                customQueryName = $1;
               else
                 raise "no CustomQuery name:#{arg}"
+              end
+            when 'i'
+              if arg=~/^[^\=]+\=(.*)$/ then
+                customQueryId = $1;
+              else
+                raise "no CustomQuery ID:#{arg}"
               end
             when 'p'
               flgSameProject = true;
@@ -79,6 +86,7 @@ module WikiExtensionsRefIssue
           "-s=WORD[|WORD[|...]] : search WORDs in subject<br>"+
           "-d=WORD[|WORD[|...]] : search WORDs in description<br>"+
           "-w=WORD[|WORD[|...]] : search WORDs in subject and/or description<br>"+
+          "-i=CustomQueryID : specify custom query<br>"+
           "-q=CustomQueryName : specify custom query<br>"+
           "-p : restrict project<br>"+
           "[columns]<br>"+
@@ -86,7 +94,11 @@ module WikiExtensionsRefIssue
           "category,fixed_version,start_date,due_date,estimated_hours,done_ratio,created"
       end
 
-      if customQuery==nil && searchWordsS.size==0 && searchWordsD.size==0 && searchWordsW.size==0 then # 検索条件がなにもなかったら
+      if customQueryId==nil && 
+          customQueryName==nil &&
+          searchWordsS.size==0 &&
+          searchWordsD.size==0 &&
+          searchWordsW.size==0 then # 検索条件がなにもなかったら
         # 検索するキーワードを取得する
         if obj.class == WikiContent then # Wikiの場合はページ名および別名を検索ワードにする
           words = []
@@ -108,12 +120,15 @@ module WikiExtensionsRefIssue
       end
       
       # オプションにカスタムクエリがあればカスタムクエリを名前から取得
-      if customQuery then
+      if customQueryId then
+        @query = Query.find_by_id(customQueryId);
+        raise "can not find CustomQuery ID:'#{customQueryId}'" if !@query;
+      elsif customQueryName then
         cond = "project_id IS NULL"
         cond << " OR project_id = #{@project.id}" if @project
-        cond = "(#{cond}) AND name = '#{customQuery}'";
+        cond = "(#{cond}) AND name = '#{customQueryName}'";
         @query = Query.find(:first, :conditions=>cond);
-        raise "can not find CustomQuery:'#{customQuery}'" if !@query;
+        raise "can not find CustomQuery Name:'#{customQueryName}'" if !@query;
       else
         @query = Query.new(:name => "_", :filters => {});
       end
