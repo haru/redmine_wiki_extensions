@@ -15,7 +15,7 @@ zh:
   wiki_extensions_vote: 投票 
 
   
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
+  wiki_page_commented_header: 用户 %{author} 对项目 "%{project_name}" 的Wiki "%{page_title}" 评论已创建。
+  wiki_page_commented_comment_head: '评论:'
+  wiki_page_commented_url: '您可以按以下链接查看相关评论：'
+  label_wiki_comment_added: 'Wiki 评论已添加'
