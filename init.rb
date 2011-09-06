@@ -44,7 +44,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
     permission :delete_wiki_comments, {:wiki_extensions => [:destroy_comment]}
     permission :edit_wiki_comments, {:wiki_extensions => [:update_comment]}
     permission :show_wiki_extension_tabs, {:wiki_extensions => [:forward_wiki_page]}, :public => true
-    permission :show_wiki_comments, {:wiki_extensions => [:show_comments]}, :public => true
+    permission :view_wiki_comment, {:wiki_extensions => [:show_comments]}, :public => true
     permission :show_wiki_tags, {:wiki_extensions => [:tag]}, :public => true
     permission :wiki_extensions_settings, {:wiki_extensions_settings => [:show, :update]}
   end
@@ -61,6 +61,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   }
 
   RedCloth3::ALLOWED_TAGS << "div"
-  
+    
+  activity_provider :wiki_comment, :class_name => 'WikiExtensionsComment', :default => false
 end
 

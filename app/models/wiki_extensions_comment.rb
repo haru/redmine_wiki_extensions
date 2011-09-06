@@ -16,9 +16,26 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsComment < ActiveRecord::Base
   belongs_to :user
+  belongs_to :wiki_page
   validates_presence_of :comment, :wiki_page_id, :user_id
   
   def children(comments)
     comments.select{|comment| comment.parent_id == id}
   end
+  
+  def project
+    wiki_page.wiki.project
+  end
+  
+  acts_as_event :title => Proc.new {|o| "Wiki comment: #{o.wiki_page.title}"},
+    :author => :user,
+    :description => :comment,
+    :datetime => :updated_at,
+    :url => Proc.new {|o| {:controller =>'wiki', :action => 'show', :id => o.wiki_page.title, :project_id => o.project}}
+  
+  acts_as_activity_provider :type => 'wiki_comment',
+    :timestamp => "updated_at",
+    :author_key => "user_id",
+    :find_options => {:include => {:wiki_page => {:wiki => :project}}}
+
 end

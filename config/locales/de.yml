@@ -19,3 +19,4 @@ de:
   wiki_page_commented_comment_head: 'Comment:'
   wiki_page_commented_url: 'You can see page with comment by the following link:'
   label_wiki_comment_added: 'Wiki comment added'
+  label_wiki_comment_plural: 'Wiki comments'
