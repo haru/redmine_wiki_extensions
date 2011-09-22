@@ -1,0 +1,40 @@
+<% # Wiki Extensions plugin for Redmine
+# Copyright (C) 2011  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-%>
+<script lang="JavaScript">
+  function create_new_wikipage(title) {
+    if (title == null || title.length == 0) {
+      return false;
+    }
+    var new_page_url = '<%=url_for(:controller => 'wiki', :action => 'show', :project_id => @project, :id => 'wiki_extensions_dummy_title__')%>';
+    new_page_url = new_page_url.replace('wiki_extensions_dummy_title__', encodeURIComponent(title));
+    window.location.href = new_page_url;
+  }
+</script>
+
+<%
+randnum = rand(10000)
+element_id = "new_page_title_#{randnum}"
+div_id = "newpage_form_id_#{randnum}"
+-%>
+<%= link_to_function l(:wiki_extensions_new_wiki_page), "$('#{div_id}').visualEffect('BlindDown')" %>
+<div id ="<%=div_id%>" style="display: none;">
+<% form_tag({:controller => 'wiki', :action => 'show', :project_id => @project}) do -%>
+  <span><b><%=l(:field_title)%>:</b></span><%= text_field_tag element_id %>
+  <%= link_to_function l(:button_create), "create_new_wikipage($('#{element_id}').value)"%>
+<% end %>
+</div>

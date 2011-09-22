@@ -20,3 +20,5 @@ zh:
   wiki_page_commented_url: '您可以按以下链接查看相关评论：'
   label_wiki_comment_added: 'Wiki 评论已添加'
   label_wiki_comment_plural: 'Wiki comments'
+  
+  wiki_extensions_new_wiki_page: 'New page'
