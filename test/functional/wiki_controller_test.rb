@@ -37,7 +37,11 @@ class WikiControllerTest < ActionController::TestCase
     side_bar.content = WikiContent.new
     side_bar.content.text = 'test'
     side_bar.save!
-    footer = @wiki.find_or_new_page('Footer')
+    header = @wiki.find_or_new_page('Header')
+    header.content = WikiContent.new
+    header.content.text = 'test'
+    header.save!
+	footer = @wiki.find_or_new_page('Footer')
     footer.content = WikiContent.new
     footer.content.text = 'test'
     footer.save!
