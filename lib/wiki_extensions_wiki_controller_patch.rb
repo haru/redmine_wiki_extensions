@@ -76,7 +76,7 @@ module InstanceMethodsForWikiExtensionWikiController
   end
   
   def wiki_extensions_include_header
-    return if @page.title == 'Header'
+    return if @page.title == 'Header' || @page.title == 'Footer'
     header = @wiki.find_page('Header')
     return unless header
     text = "\n"
@@ -84,14 +84,14 @@ module InstanceMethodsForWikiExtensionWikiController
     text << "\n\n"
     text << header.content.text
     text << "\n\n</div>"
-    text << "\n"
+    text << "\n\n"
     text << @content.text
     @content.text = text
 
   end
 
   def wiki_extensions_include_footer
-    return if @page.title == 'Footer'
+    return if @page.title == 'Footer' || @page.title == 'Header'
     footer = @wiki.find_page('Footer')
     return unless footer
     text = @content.text
