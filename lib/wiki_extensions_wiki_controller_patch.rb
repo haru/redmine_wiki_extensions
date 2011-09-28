@@ -46,8 +46,8 @@ module InstanceMethodsForWikiExtensionWikiController
       if (args[:partial] == 'common/preview')
         WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
       elsif (args[:action] == 'show')
+        wiki_extensions_include_header
         wiki_extensions_add_fnlist 
-		wiki_extensions_include_header
         wiki_extensions_include_footer
       end
     end
@@ -79,12 +79,13 @@ module InstanceMethodsForWikiExtensionWikiController
     return if @page.title == 'Header'
     header = @wiki.find_page('Header')
     return unless header
-    text = '<div id="wiki_extentions_header">'
+    text = '\n<div id="wiki_extentions_header">'
     text << "\n\n"
     text << header.content.text
     text << "\n\n</div>"
     text << "\n"
     text << @content.text
+    @content.text = text
 
   end
 
