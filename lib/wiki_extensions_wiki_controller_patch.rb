@@ -79,7 +79,8 @@ module InstanceMethodsForWikiExtensionWikiController
     return if @page.title == 'Header'
     header = @wiki.find_page('Header')
     return unless header
-    text = '\n<div id="wiki_extentions_header">'
+    text = "\n"
+	text << '<div id="wiki_extentions_header">'
     text << "\n\n"
     text << header.content.text
     text << "\n\n</div>"
