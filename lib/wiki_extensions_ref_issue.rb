@@ -122,12 +122,14 @@ module WikiExtensionsRefIssue
       # オプションにカスタムクエリがあればカスタムクエリを名前から取得
       if customQueryId then
         @query = Query.find_by_id(customQueryId);
+        @query = nil if !@query.visible?
         raise "can not find CustomQuery ID:'#{customQueryId}'" if !@query;
       elsif customQueryName then
         cond = "project_id IS NULL"
         cond << " OR project_id = #{@project.id}" if @project
         cond = "(#{cond}) AND name = '#{customQueryName}'";
-        @query = Query.find(:first, :conditions=>cond);
+        @query = Query.find(:first, :conditions=>cond+" AND user_id=#{User.current.id}")
+        @query = Query.find(:first, :conditions=>cond+" AND is_public=TRUE") if !@query
         raise "can not find CustomQuery Name:'#{customQueryName}'" if !@query;
       else
         @query = Query.new(:name => "_", :filters => {});
