@@ -29,13 +29,43 @@ ActionView::Base.class_eval do
   include ActionView::Helpers::WikiExtensionsHelper
 end
 
+require 'dispatcher'
+Dispatcher.to_prepare :redmine_wiki_extensions do
+  require_dependency 'projects_helper'
+  # Guards against including the module multiple time (like in tests)
+  # and registering multiple callbacks
+  unless ProjectsHelper.included_modules.include? WikiExtensionsProjectsHelperPatch
+    ProjectsHelper.send(:include, WikiExtensionsProjectsHelperPatch)
+  end
+  
+  unless Redmine::WikiFormatting::Textile::Formatter.included_modules.include? WikiExtensionsFormatterPatch
+    Redmine::WikiFormatting::Textile::Formatter.send(:include, WikiExtensionsFormatterPatch)
+  end
+  
+  unless Redmine::WikiFormatting::Textile::Helper.included_modules.include? WikiExtensionsHelperPatch
+    Redmine::WikiFormatting::Textile::Helper.send(:include, WikiExtensionsHelperPatch)
+  end
+  
+  unless Redmine::Notifiable.included_modules.include? WikiExtensionsNotifiablePatch
+    Redmine::Notifiable.send(:include, WikiExtensionsNotifiablePatch)
+  end
+  
+  unless WikiController.included_modules.include? WikiExtensionsWikiControllerPatch
+    WikiController.send(:include, WikiExtensionsWikiControllerPatch)
+  end
+  
+  unless WikiPage.included_modules.include? WikiExtensionsWikiPagePatch
+    WikiPage.send(:include, WikiExtensionsWikiPagePatch)
+  end
+end
+
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'
   author 'Haruyuki Iida'
   author_url 'http://twitter.com/haru_iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en"
-  version '0.3.6'
+  version '0.3.7'
   requires_redmine :version_or_higher => '1.2.0'
 
   project_module :wiki_extensions do

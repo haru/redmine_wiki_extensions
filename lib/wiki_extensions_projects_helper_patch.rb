@@ -41,4 +41,4 @@ module ProjectsHelperMethodsWikiExtensions
   end
 end
 
-ProjectsHelper.send(:include, WikiExtensionsProjectsHelperPatch)
+

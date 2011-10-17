@@ -104,5 +104,5 @@ module InstanceMethodsForWikiExtensionWikiController
   end
 end
 
-WikiController.send(:include, WikiExtensionsWikiControllerPatch)
+
 

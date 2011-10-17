@@ -22,4 +22,4 @@ module NotifiableMethods
   end
 end
 
-Redmine::Notifiable.send(:include, WikiExtensionsNotifiablePatch)
+
