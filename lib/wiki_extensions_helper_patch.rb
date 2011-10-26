@@ -54,7 +54,7 @@ module HelperMethodsWikiExtensions
     heads_for_wiki_formatter_without_wiki_smiles
     return if ie6_or_ie7?
     unless @heads_for_wiki_smiles_included
-      baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => @project) + '/../../..'
+      baseurl = Redmine::Utils.relative_url_root
       imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
       content_for :header_tags do
         o = stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_smiles.css")
