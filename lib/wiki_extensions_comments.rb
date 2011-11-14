@@ -70,9 +70,7 @@ module WikiExtensionsComments
       return unless page
       data = page.wiki_extension_data
       comments = WikiExtensionsComment.find(:all, :conditions => ['wiki_page_id = (?)', page.id])
-      o = "<h2>#{l(:field_comments)}</h2>\n"
-      o << display_comments_tree(comments,nil,page,data)
-      return o
+      return display_comments_tree(comments,nil,page,data)
     end
   end
 end
