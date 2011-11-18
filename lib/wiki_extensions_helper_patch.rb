@@ -57,8 +57,8 @@ module HelperMethodsWikiExtensions
       baseurl = Redmine::Utils.relative_url_root
       imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
       content_for :header_tags do
-        o = stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_smiles.css")
-        o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_smiles.js")
+        o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
+        o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
         emoticons = WikiExtensions::Emoticons.new
         o << '<script type="text/javascript">'
         o << "\n"
@@ -84,13 +84,13 @@ module HelperMethodsWikiExtensions
       link_to(l(:label_help), url,
       :onclick => "window.open(\"#{ url }\", \"\", \"resizable=yes, location=no, width=900, height=640, menubar=no, status=no, scrollbars=yes\" ); return false;")
       
-    baseurl = url_for(:controller => 'wiki_extensions', :action => 'index', :id => @project) + '/../../..'
+    baseurl = Redmine::Utils.relative_url_root
     imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
     o = ""
-    o << stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_smiles.css") +javascript_include_tag('jstoolbar/jstoolbar')
+    o << stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions") +javascript_include_tag('jstoolbar/jstoolbar')
     o << javascript_include_tag('jstoolbar/textile')
     #here added a new js tag#
-    o << javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_smiles.js")
+    o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
     emoticons = WikiExtensions::Emoticons.new
     o << '<script type="text/javascript">'
     o << "\n"
