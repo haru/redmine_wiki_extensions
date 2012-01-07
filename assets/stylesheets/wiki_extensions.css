@@ -1,4 +1,9 @@
-.wiki_extensions_fn{
+a.wiki_extensions_fn{
+    vertical-align:super;
+    font-size:x-small;
+}
+
+div.wiki_extensions_fnlist ul li span.wiki_extensions_fn{
     vertical-align:super;
     font-size:x-small;
 }
@@ -9,12 +14,12 @@
     */
 }
 
-.wiki_extensions_fnlist ul li {
+div.wiki_extensions_fnlist ul li {
 list-style-type: none;
 list-style-image: none;
 }
 
-.wiki_extensions_fnlist ul {
+div.wiki_extensions_fnlist ul {
     padding-left:0;
 
 }
