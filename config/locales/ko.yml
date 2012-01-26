@@ -1,8 +1,8 @@
 # Translation by Ki Won Kim (http://blog.naver.com/xyz37, xyz37@naver.com)
 ko:
   wiki_extensions: "확장 위키"
-  label_wikiextensions_tags: "Tags"
-  label_wikiextensions_new: "New"
+  label_wikiextensions_tags: "태그"
+  label_wikiextensions_new: "신규"
   field_auto_preview_enabled: "자동 미리 보기 가능"
   label_wikiextensions_tab: "탭"
   wiki_extensions_add_tab: "프로젝트에 탭을 추가합니다."
@@ -11,14 +11,14 @@ ko:
   permission_delete_wiki_comments: "위키 설명 삭제"
   permission_edit_wiki_comments: "위키 설명 수정"
   permission_wiki_extensions_settings: "확장 위키 관리"
-  field_sidebar_disabled: Disable side bar
-  wiki_extensions_vote: vote
+  field_sidebar_disabled: "사이드 바 금지"
+  wiki_extensions_vote: "투표"
 
   
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
+  wiki_page_commented_header: '"%{project_name}" 프로젝트의 "%{page_title}" 위키 페이지의 설명이 %{author}에 의해 추가 되었습니다.'
+  wiki_page_commented_comment_head: "설명:"
+  wiki_page_commented_url: "아래 링크에서 설명을 볼 수 있습니다:"
+  label_wiki_comment_added: "위키 설명 추가"
+  label_wiki_comment_plural: "위키 설명"
   
-  wiki_extensions_new_wiki_page: 'New page'
+  wiki_extensions_new_wiki_page: "새 페이지"
