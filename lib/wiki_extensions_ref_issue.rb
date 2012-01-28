@@ -178,12 +178,21 @@ module WikiExtensionsRefIssue
   end
 
   def WikiExtensionsRefIssue.overwrite_sql_for_field(query)
-    def query.sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false);
+    def query.sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false)
       sql = ''
       case operator
       when "="
         if value.any?
-          sql = "#{db_table}.#{db_field} IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + ")"
+          case type_for(field)
+          when :date, :date_past
+            sql = date_clause(db_table, db_field, (Date.parse(value.first) rescue nil), (Date.parse(value.first) rescue nil))
+          when :integer
+            sql = "#{db_table}.#{db_field} = #{value.first.to_i}"
+          when :float
+            sql = "#{db_table}.#{db_field} BETWEEN #{value.first.to_f - 1e-5} AND #{value.first.to_f + 1e-5}"
+          else
+            sql = "#{db_table}.#{db_field} IN (" + value.collect{|val| "'#{connection.quote_string(val)}'"}.join(",") + ")"
+          end
         else
           # IN an empty set
           sql = "1=0"
@@ -202,32 +211,58 @@ module WikiExtensionsRefIssue
         sql = "#{db_table}.#{db_field} IS NOT NULL"
         sql << " AND #{db_table}.#{db_field} <> ''" if is_custom_filter
       when ">="
-        sql = "#{db_table}.#{db_field} >= #{value.first.to_i}"
+        if [:date, :date_past].include?(type_for(field))
+          sql = date_clause(db_table, db_field, (Date.parse(value.first) rescue nil), nil)
+        else
+          if is_custom_filter
+            sql = "CAST(#{db_table}.#{db_field} AS decimal(60,3)) >= #{value.first.to_f}"
+          else
+            sql = "#{db_table}.#{db_field} >= #{value.first.to_f}"
+          end
+        end
       when "<="
-        sql = "#{db_table}.#{db_field} <= #{value.first.to_i}"
+        if [:date, :date_past].include?(type_for(field))
+          sql = date_clause(db_table, db_field, nil, (Date.parse(value.first) rescue nil))
+        else
+          if is_custom_filter
+            sql = "CAST(#{db_table}.#{db_field} AS decimal(60,3)) <= #{value.first.to_f}"
+          else
+            sql = "#{db_table}.#{db_field} <= #{value.first.to_f}"
+          end
+        end
+      when "><"
+        if [:date, :date_past].include?(type_for(field))
+          sql = date_clause(db_table, db_field, (Date.parse(value[0]) rescue nil), (Date.parse(value[1]) rescue nil))
+        else
+          if is_custom_filter
+            sql = "CAST(#{db_table}.#{db_field} AS decimal(60,3)) BETWEEN #{value[0].to_f} AND #{value[1].to_f}"
+          else
+            sql = "#{db_table}.#{db_field} BETWEEN #{value[0].to_f} AND #{value[1].to_f}"
+          end
+        end
       when "o"
         sql = "#{IssueStatus.table_name}.is_closed=#{connection.quoted_false}" if field == "status_id"
       when "c"
         sql = "#{IssueStatus.table_name}.is_closed=#{connection.quoted_true}" if field == "status_id"
       when ">t-"
-        sql = date_range_clause(db_table, db_field, - value.first.to_i, 0)
+        sql = relative_date_clause(db_table, db_field, - value.first.to_i, 0)
       when "<t-"
-        sql = date_range_clause(db_table, db_field, nil, - value.first.to_i)
+        sql = relative_date_clause(db_table, db_field, nil, - value.first.to_i)
       when "t-"
-        sql = date_range_clause(db_table, db_field, - value.first.to_i, - value.first.to_i)
+        sql = relative_date_clause(db_table, db_field, - value.first.to_i, - value.first.to_i)
       when ">t+"
-        sql = date_range_clause(db_table, db_field, value.first.to_i, nil)
+        sql = relative_date_clause(db_table, db_field, value.first.to_i, nil)
       when "<t+"
-        sql = date_range_clause(db_table, db_field, 0, value.first.to_i)
+        sql = relative_date_clause(db_table, db_field, 0, value.first.to_i)
       when "t+"
-        sql = date_range_clause(db_table, db_field, value.first.to_i, value.first.to_i)
+        sql = relative_date_clause(db_table, db_field, value.first.to_i, value.first.to_i)
       when "t"
-        sql = date_range_clause(db_table, db_field, 0, 0)
+        sql = relative_date_clause(db_table, db_field, 0, 0)
       when "w"
         first_day_of_week = l(:general_first_day_of_week).to_i
         day_of_week = Date.today.cwday
         days_ago = (day_of_week >= first_day_of_week ? day_of_week - first_day_of_week : day_of_week + 7 - first_day_of_week)
-        sql = date_range_clause(db_table, db_field, - days_ago, - days_ago + 6)
+        sql = relative_date_clause(db_table, db_field, - days_ago, - days_ago + 6)
       when "~" # monkey patched for ref_issues: originally treat single value  -> extend multiple value
         if db_field=='subjectdescription' then
           sql = "(";
@@ -247,7 +282,10 @@ module WikiExtensionsRefIssue
         end
       when "!~"
         sql = "LOWER(#{db_table}.#{db_field}) NOT LIKE '%#{connection.quote_string(value.first.to_s.downcase)}%'"
+      else
+        raise "Unknown query operator #{operator}"
       end
+
       return sql
     end
   end
