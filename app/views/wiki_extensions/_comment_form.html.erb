@@ -1,0 +1,44 @@
+<% # Wiki Extensions plugin for Redmine
+# Copyright (C) 2012  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+-%>
+<%
+
+num = rand(10000)
+area_id = "add_comment_area_#{num}"
+div_id = "add_comment_form_div#{num}"
+
+url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id => @project)
+-%>
+
+<div class="icon icon-comment">
+  <%= link_to_function(l(:label_comment_add), "$('#{div_id}').show();") %>
+</div>
+<div id="<%=div_id%>" style="display:none">
+  <form method="post" action="<%=url%>">
+
+    <% if protect_against_forgery? -%>
+      <%= hidden_field_tag(:authenticity_token, form_authenticity_token) %>
+    <% end -%>
+    <%= hidden_field_tag(:wiki_page_id, page.id) %>
+    <%= text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => area_id,:accesskey => accesskey(:edit),
+      :class => 'wiki-edit') %>
+    <br/>
+    <%= submit_tag(l(:label_comment_add)) %>
+    <%= link_to_function(l(:button_cancel), "$('#{div_id}').hide();") %>
+    <%= wikitoolbar_for(area_id) %>
+  </form>
+</div>
