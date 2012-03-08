@@ -15,30 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-class WikiExtensionsIssueHooks < Redmine::Hook::ViewListener
-  
+class WikiExtensionsIssueHooks < Redmine::Hook::ViewListener  
   render_on :view_issues_form_details_bottom, :partial => 'wiki_extensions/issues_form_details_bottom'
-  render_on :view_issues_edit_notes_bottom, :partial => 'wiki_extensions/issues_edit_notes_bottom'
-
-  def view_issues_edit_notes_bottom_org(context = { })
-    project = context[:project]
-    return unless WikiExtensionsUtil.is_enabled?(project)
-    setting = WikiExtensionsSetting.find_or_create(project.id)
-    return '' unless setting.auto_preview_enabled
-
-    request = context[:request]
-    parameters = request.parameters
-    issue = context[:issue]
-
-    url = preview_issue_path(:id => issue.id, :project_id => project)
-    o =<<EOF
-<script type="text/javascript">
-document.observe('dom:loaded', function() {
-    setIssueNotesAutoPreview('#{url}');
-});
-</script>
-EOF
-    return o
-  end
-  
+  render_on :view_issues_edit_notes_bottom, :partial => 'wiki_extensions/issues_edit_notes_bottom'  
 end
