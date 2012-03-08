@@ -21,16 +21,16 @@ i = menu.menu_no - 1
 -%>
 <div>
   <%= check_box_tag "menus[#{i}][enabled]", true, menu.enabled == true %>
-      <b><%=h l(:label_wikiextensions_tab) %>#<%= menu.menu_no%> </b>
-      <%= hidden_field_tag "menus[#{i}][menu_no]", menu.menu_no %>
-      
-      <p>
-        <label><%=h l(:field_title)%></label>
-        <%= text_field_tag "menus[#{i}][title]", menu.title, :size => 70, :required => true, :disabled => !menu.enabled %>
-      </p>
-      <p>
-        <label><%=h l(:label_wiki_page)%></label>
-        <%= text_field_tag "menus[#{i}][page_name]", menu.page_name, :size => 70, :required => true, :disabled => !menu.enabled %>
-      </p>
-      <%= observe_field "menus_#{i}_enabled", :function => "if (value == 'true'){$('menus_#{i}_title').enable();$('menus_#{i}_page_name').enable();}else{$('menus_#{i}_title').disable();$('menus_#{i}_page_name').disable();}" %>
+  <b><%=h l(:label_wikiextensions_tab) %>#<%= menu.menu_no%> </b>
+  <%= hidden_field_tag "menus[#{i}][menu_no]", menu.menu_no %>
+
+  <p>
+    <label><%=h l(:field_title)%></label>
+    <%= text_field_tag "menus[#{i}][title]", menu.title, :size => 70, :required => true, :disabled => !menu.enabled %>
+  </p>
+  <p>
+    <label><%=h l(:label_wiki_page)%></label>
+    <%= text_field_tag "menus[#{i}][page_name]", menu.page_name, :size => 70, :required => true, :disabled => !menu.enabled %>
+  </p>
+  <%= observe_field "menus_#{i}_enabled", :function => "if (value == 'true'){$('menus_#{i}_title').enable();$('menus_#{i}_page_name').enable();}else{$('menus_#{i}_title').disable();$('menus_#{i}_page_name').disable();}" %>
 </div>

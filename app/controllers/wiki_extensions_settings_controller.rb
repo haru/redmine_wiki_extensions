@@ -30,7 +30,7 @@ class WikiExtensionsSettingsController < ApplicationController
       setting.transaction do
         menus.each_value {|menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
-          menu_setting.attributes = menu
+          menu_setting.safe_attributes = menu
           menu_setting.enabled = (menu[:enabled] == 'true')
           menu_setting.save!
         }

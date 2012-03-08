@@ -15,13 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsMenu < ActiveRecord::Base
+  include Redmine::SafeAttributes
   unloadable
   belongs_to :project
   validates_presence_of :project_id
   validates_presence_of :menu_no
-  validates_uniqueness_of :menu_no, :scope => :project_id
-  #validates_uniqueness_of :page_name, :scope => :project_id
-  #validates_uniqueness_of :title, :scope => :project_id
+  
+  safe_attributes 'enabled', 'menu_no', 'title', 'page_name'
 
   def self.find_or_create(pj_id, no)
     menu = WikiExtensionsMenu.find(:first,
