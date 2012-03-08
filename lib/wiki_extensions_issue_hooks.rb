@@ -17,29 +17,10 @@
 
 class WikiExtensionsIssueHooks < Redmine::Hook::ViewListener
   
-  
-  def view_issues_form_details_bottom(context = { })
-    project = context[:project]
-    return unless WikiExtensionsUtil.is_enabled?(project)
-    setting = WikiExtensionsSetting.find_or_create(project.id)
-    return '' unless setting.auto_preview_enabled
+  render_on :view_issues_form_details_bottom, :partial => 'wiki_extensions/issues_form_details_bottom'
+  render_on :view_issues_edit_notes_bottom, :partial => 'wiki_extensions/issues_edit_notes_bottom'
 
-    request = context[:request]
-    parameters = request.parameters
-    issue = context[:issue]
-
-    url = preview_issue_path(:project_id => project)
-    o =<<EOF
-<script type="text/javascript">
-document.observe('dom:loaded', function() {
-    setIssueAutoPreview('#{url}');
-});
-</script>
-EOF
-    return o
-  end
-
-  def view_issues_edit_notes_bottom(context = { })
+  def view_issues_edit_notes_bottom_org(context = { })
     project = context[:project]
     return unless WikiExtensionsUtil.is_enabled?(project)
     setting = WikiExtensionsSetting.find_or_create(project.id)
