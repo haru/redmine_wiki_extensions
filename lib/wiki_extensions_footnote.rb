@@ -28,8 +28,8 @@ module WikiExtensionsFootnote
     macro :fn do |obj, args|
       return nil if args.length < 2
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      word = args[0]
-      description = args[1]
+      word = args.shift
+      description = args.join(",").strip
       page = obj.page if obj
       page = WikiExtensionsFootnote.preview_page unless page
       data = page.wiki_extension_data
