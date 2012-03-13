@@ -1,9 +1,6 @@
 require 'mailer'
 
 class WikiExtensionsCommentsMailer < Mailer
-  # Modifiyng view paths to make our mail-views visible for plugin
-  self.instance_variable_get("@inheritable_attributes")[:view_paths] << RAILS_ROOT + "/vendor/plugins/redmine_wiki_extensions/app/views" 
-
   def wiki_commented(comment, wiki_page)
     project = wiki_page.project
     author = comment.user
