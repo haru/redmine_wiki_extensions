@@ -79,7 +79,4 @@ module WikiExtensionsRefIssue
       return disp;
     end
   end
-
-  
-
 end

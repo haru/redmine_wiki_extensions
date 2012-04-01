@@ -11,7 +11,7 @@ module WikiExtensions
       attr_reader :searchWordsS, :searchWordsD, :searchWordsW, :columns,
         :customQueryName, :customQueryId
       def initialize(args = nil)
-        parse_args args unless args
+        parse_args args if args
       end
       
       def parse_args(args)
@@ -25,11 +25,11 @@ module WikiExtensions
           if arg=~/^\-([^\=]*)(\=.*)?$/
             case $1
             when 's','sw','Dw','sDw','Dsw'              
-              @searchWordsS.push getWords(arg)
+              @searchWordsS.push get_words(arg)
             when 'd','dw','Sw','Sdw','dSw'             
-              @searchWordsD.push getWords(arg)
+              @searchWordsD.push get_words(arg)
             when 'w','sdw'              
-              @searchWordsW.push getWords(arg)
+              @searchWordsW.push get_words(arg)
             when 'q'
               if arg=~/^[^\=]+\=(.*)$/
                 @customQueryName = $1;
@@ -97,7 +97,7 @@ module WikiExtensions
         
       private
         
-      def getWords(arg)
+      def get_words(arg)
         if arg=~/^[^\=]+\=(.*)$/
           $1.split('|')
         else
@@ -114,7 +114,7 @@ module WikiExtensions
         raise "unknown column:#{name}"
       end
       
-      def WikiExtensionsRefIssue.overwrite_sql_for_field(query)
+      def overwrite_sql_for_field(query)
         def query.sql_for_field(field, operator, value, db_table, db_field, is_custom_filter=false)
           sql = ''
           case operator
