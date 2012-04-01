@@ -4,7 +4,10 @@
 module WikiExtensions
   module RefIssues
     class Parser
-      COLUMNS = []
+      COLUMNS = [:project, :tracker, :parent, :status, :priority, :subject,
+        :author, :assigned_to, :updated_on, :category, :fixed_version, 
+        :start_date, :due_date, :estimated_hours, :done_ratio, :created_on]
+      
       attr_reader :searchWordsS, :searchWordsD, :searchWordsW, :columns,
         :customQueryName, :customQueryId
       def initialize(args = nil)
@@ -19,7 +22,7 @@ module WikiExtensions
         @columns = []
         args.each do |arg|
           arg.strip!;
-          if arg=~/^\-([^\=]*)(\=.*)?$/ then # オプション表記発見
+          if arg=~/^\-([^\=]*)(\=.*)?$/
             case $1
             when 's','sw','Dw','sDw','Dsw'              
               @searchWordsS.push getWords(arg)
@@ -28,13 +31,13 @@ module WikiExtensions
             when 'w','sdw'              
               @searchWordsW.push getWords(arg)
             when 'q'
-              if arg=~/^[^\=]+\=(.*)$/ then
+              if arg=~/^[^\=]+\=(.*)$/
                 @customQueryName = $1;
               else
                 raise "no CustomQuery name:#{arg}"
               end
             when 'i'
-              if arg=~/^[^\=]+\=(.*)$/ then
+              if arg=~/^[^\=]+\=(.*)$/
                 @customQueryId = $1;
               else
                 raise "no CustomQuery ID:#{arg}"
@@ -45,46 +48,9 @@ module WikiExtensions
               raise "unknown option:#{arg}"
             end
           else
-            case arg
-            when 'project'
-              @columns.push(:project);
-            when 'tracker'
-              @columns.push(:tracker);
-            when 'parent'
-              @columns.push(:parent);
-            when 'status'
-              @columns.push(:status);
-            when 'priority'
-              @columns.push(:priority);
-            when 'subject'
-              @columns.push(:subject);
-            when 'author'
-              @columns.push(:author);
-            when 'assigned_to', 'assigned'
-              @columns.push(:assigned_to);
-            when 'updated_on', 'updated'
-              @columns.push(:updated_on);
-            when 'category'
-              @columns.push(:category);
-            when 'fixed_version'
-              @columns.push(:fixed_version);
-            when 'start_date'
-              @columns.push(:start_date);
-            when 'due_date'
-              @columns.push(:due_date);
-            when 'estimated_hours'
-              @columns.push(:estimated_hours);
-            when 'done_ratio'
-              @columns.push(:done_ratio);
-            when 'created_on', 'created'
-              @columns.push(:created_on);
-            else
-              raise "unknown column:#{arg}"
-            end
+            @columns << get_column(arg)            
           end
-        end
-        
-        
+        end        
       end
       
       def same_project?
@@ -122,7 +88,7 @@ module WikiExtensions
         @query.available_filters["description"] = { :type => :text, :order => 8 };
         @query.available_filters["subjectdescription"] = { :type => :text, :order => 8 };
 
-        if same_project? then
+        if same_project?
           @query.project = project;
         end
         
@@ -132,11 +98,20 @@ module WikiExtensions
       private
         
       def getWords(arg)
-        if arg=~/^[^\=]+\=(.*)$/ then
+        if arg=~/^[^\=]+\=(.*)$/
           $1.split('|')
         else
           raise "need words divided by '|':#{arg}>"
         end
+      end
+      
+      def get_column(name)
+        name_sym = name.to_sym
+        return name_sym if COLUMNS.include?(name_sym)
+        return :assigned_to if name_sym == :assigned
+        return :updated_on if name_sym == :updated
+        return :created_on if name_sym == :created
+        raise "unknown column:#{name}"
       end
       
       def WikiExtensionsRefIssue.overwrite_sql_for_field(query)
