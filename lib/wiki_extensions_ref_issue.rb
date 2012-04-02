@@ -65,10 +65,8 @@ module WikiExtensionsRefIssue
       parser.searchWordsW.each do |words|
         @query.add_filter("subjectdescription","~", words)
       end
-
-      if !parser.columns.empty? then
-        @query.column_names = columns;
-      end
+      
+      @query.column_names = parser.columns unless parser.columns.empty?
 
       @issues = @query.issues(:order => sort_clause, 
                               :include => [:assigned_to, :tracker, :priority, :category, :fixed_version]);
