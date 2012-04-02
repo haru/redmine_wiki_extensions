@@ -156,12 +156,36 @@ class RefIssuesParserTest < ActiveSupport::TestCase
       @parser.parse_args ['-q=name']
       assert_equal('name', @parser.customQueryName)
     end
+    
+    should "raise error if args is '-q'" do
+      assert_raise RuntimeError do
+        @parser.parse_args ['-q']
+      end
+    end
   end
   
   context "customQueryId" do
     should "return 100 if args is '-i=100'" do
       @parser.parse_args ['-i=100']
       assert_equal('100', @parser.customQueryId)
+    end
+    
+    should "raise error if args is '-i'" do
+      assert_raise RuntimeError do
+        @parser.parse_args ['-i']
+      end
+    end
+  end
+  
+  context "same_project?" do
+    should "return true fi args is '-p" do
+      @parser.parse_args ['-p', '-q=aaa']
+      assert @parser.same_project?
+    end
+    
+    should "return false fi -p is not specified" do
+      @parser.parse_args ['-q=aaa']
+      assert !@parser.same_project?
     end
   end
   
