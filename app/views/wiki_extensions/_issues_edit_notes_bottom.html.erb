@@ -20,7 +20,7 @@
   <%
   setting = WikiExtensionsSetting.find_or_create(project.id)
   if setting.auto_preview_enabled
-    url = preview_issue_path(:id => issue.id, :project_id => project)
+    url = preview_edit_issue_path(:project_id => @project, :id => issue)
     -%>
 
     <script type="text/javascript">
