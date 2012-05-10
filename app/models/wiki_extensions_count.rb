@@ -50,6 +50,6 @@ class WikiExtensionsCount < ActiveRecord::Base
     conditions = ['project_id = ?', project_id] if term == 0
     conditions = ['project_id = ? and date > ?', project_id, Date.today - term.to_i] if term > 0
     WikiExtensionsCount.sum(:count, :group => :page_id,
-      :conditions => conditions, :select => :count, :order => 'sum(count) desc')
+      :conditions => conditions, :select => :count, :order => 'sum(count) desc').map{|x| [x[0], x[1].to_i]}
   end
 end

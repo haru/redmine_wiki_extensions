@@ -66,7 +66,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author_url 'http://twitter.com/haru_iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en"
-  version '0.4.0'
+  version '0.4.1'
   requires_redmine :version_or_higher => '1.4.0'
 
   project_module :wiki_extensions do
