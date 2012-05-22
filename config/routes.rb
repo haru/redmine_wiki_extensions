@@ -17,5 +17,5 @@
 
 RedmineApp::Application.routes.draw do
   match 'projects/:id/wiki_extensions/:action', :controller => 'wiki_extensions', :via => [:get, :post]
-  match 'projects/:id/wiki_extensions_settings/:action', :controller => 'wiki_extensions_settings', :via => [:get, :post]
+  match 'projects/:id/wiki_extensions_settings/:action', :controller => 'wiki_extensions_settings', :via => [:get, :post, :put]
 end

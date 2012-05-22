@@ -21,7 +21,7 @@
     @wiki_extensions_setting = WikiExtensionsSetting.find_or_create(@project.id)
 %>
 
-<% labelled_tabular_form_for :setting, @wiki_extensions_setting,
+<%= labelled_form_for :setting, @wiki_extensions_setting,
                              :url => {:controller => 'wiki_extensions_settings',
                              :action => 'update', :id => @project, :tab => 'wiki_extensions',
                              :partial => 'wiki_extensions_settings/update',

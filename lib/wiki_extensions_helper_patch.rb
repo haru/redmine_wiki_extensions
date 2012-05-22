@@ -103,7 +103,7 @@ module HelperMethodsWikiExtensions
     o << '</script>'
     o << javascript_include_tag("jstoolbar/lang/jstoolbar-#{current_language.to_s.downcase}")
     o << javascript_tag("var wikiToolbar = new jsToolBar($('#{field_id}')); wikiToolbar.setHelpLink('#{help_link}'); wikiToolbar.draw();")
-    o
+    raw o
   end
 
   private
