@@ -20,7 +20,7 @@ require 'config/initializers/session_store.rb'
 rescue LoadError
 end
 require 'redcloth3'
-require 'wiki_extensions_menu'
+
 require_dependency 'wiki_extensions_notifiable_patch'
 Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
   next unless /\.rb$/ =~ file
@@ -30,8 +30,7 @@ ActionView::Base.class_eval do
   include ActionView::Helpers::WikiExtensionsHelper
 end
 
-require 'dispatcher'
-Dispatcher.to_prepare :redmine_wiki_extensions do
+Rails.configuration.to_prepare do
   require_dependency 'projects_helper'
   # Guards against including the module multiple time (like in tests)
   # and registering multiple callbacks
@@ -67,7 +66,7 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en"
   version '0.4.1'
-  requires_redmine :version_or_higher => '1.4.0'
+  requires_redmine :version_or_higher => '2.0.0'
 
   project_module :wiki_extensions do
     permission :wiki_extensions_vote, {:wiki_extensions => [:vote, :show_vote]}, :public => true
