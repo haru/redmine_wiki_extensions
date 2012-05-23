@@ -27,7 +27,8 @@ module WikiExtensionsComments
       end
       page = obj.page
       return unless page
-      @controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page}})     
+      o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page}})  
+      raw o
     end
   end
 
@@ -39,8 +40,8 @@ module WikiExtensionsComments
       end
       page = obj.page
       return unless page
-      @controller.send(:render_to_string, {:partial => "wiki_extensions/comments", :locals =>{:page => page}})
-      
+      o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comments", :locals =>{:page => page}})
+      raw o
     end
   end
 end
