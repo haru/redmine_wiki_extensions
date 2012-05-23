@@ -20,7 +20,7 @@ module WikiExtensionsNewPageMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Create new page.\n\n"
     macro :new_page do |obj, args|
-      @controller.send(:render_to_string, {:partial => "wiki_extensions/new_page_macro"})
+      @_controller.send(:render_to_string, {:partial => "wiki_extensions/new_page_macro"})
     end
   end
 end
