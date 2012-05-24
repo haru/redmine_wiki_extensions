@@ -1,5 +1,5 @@
 <% # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011  Haruyuki Iida
+# Copyright (C) 2011-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -35,7 +35,7 @@ div_id = "newpage_form_id_#{randnum}"
 -%>
 <%= link_to_function l(:wiki_extensions_new_wiki_page), "$('#{div_id}').visualEffect('BlindDown')" %>
 <div id ="<%=div_id%>" style="display: none;">
-<% form_tag({:controller => 'wiki', :action => 'show', :project_id => @project}) do -%>
+<%= form_tag({:controller => 'wiki', :action => 'show', :project_id => @project}) do -%>
   <span><b><%=l(:field_title)%>:</b></span><%= text_field_tag element_id %>
   <%= link_to_function l(:button_create), "create_new_wikipage($('#{element_id}').value)"%>
 <% end %>
