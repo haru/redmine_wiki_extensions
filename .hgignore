@@ -2,3 +2,4 @@
 ^rails/
 ^VERSION$
 ^pkg/
+^Gemfile.lock$
