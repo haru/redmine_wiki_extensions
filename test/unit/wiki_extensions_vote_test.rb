@@ -40,7 +40,7 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
     end
 
     should "return object if target_class_name and target_id were setted." do
-      project = Project.generate!
+      project = Project.find(1)
       @vote.target_class_name = project.class.name
       @vote.target_id = project.id
       project2 = @vote.target
@@ -52,7 +52,7 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
   context "target=" do
     setup do
       @vote = WikiExtensionsVote.new
-      @project = Project.generate!
+      @project = Project.find(1)
     end
 
     should "set target_class_name" do
@@ -69,7 +69,7 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
   context "save" do
     setup do
       @vote = WikiExtensionsVote.new
-      @project = Project.generate!
+      @project = Project.find(1)
     end
 
     should "save" do
@@ -103,8 +103,10 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
 
   context "find_or_create" do
     setup do
-      @project = Project.generate!
-      @vote = WikiExtensionsVote.generate!(:target => @project, :count => 1, :keystr => 'aaa')
+      @project = Project.find(1)
+      @vote = WikiExtensionsVote.new
+      @vote.attributes = {:target => @project, :count => 1, :keystr => 'aaa'}
+      @vote.save!
     end
 
     should "return new instance which count is 0 if target not found." do
