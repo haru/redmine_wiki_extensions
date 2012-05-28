@@ -21,7 +21,11 @@
   <%
   setting = WikiExtensionsSetting.find_or_create(project.id)
   if setting.auto_preview_enabled
-    url =  preview_edit_issue_path(:project_id => @project, :id => @issue)
+    if @issue.id.blank? 
+      url =  preview_new_issue_path(:project_id => @project, :id => @issue)
+    else
+      url =  preview_edit_issue_path(:project_id => @project, :id => @issue)
+    end
   -%>
 
     <script type="text/javascript">
