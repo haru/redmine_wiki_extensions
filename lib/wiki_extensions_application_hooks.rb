@@ -68,7 +68,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
       o << "<div #{style}" + ' id="tag_line_' + line.to_s + '" >'
       4.times {
         value = ''
-        value = 'value="' + tags[i].name  + '"' if tags[i]
+        value = 'value="' + h(tags[i].name)  + '"' if tags[i]
         o << '<span class="tag_field">'
         o << '<input id="extension_tags[' + i.to_s + ']" type="text" size="20" name="extension[tags][' + i.to_s + ']" ' +
           value + ' class="wikiext_tag_inputs"/>'
@@ -98,7 +98,7 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
     i = 0;
     all_tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
     all_tags.each {|tag|
-      o << "taglist[#{i}] = '#{tag.name.gsub(/'/, "\\\\'")}';"
+      o << "taglist[#{i}] = '#{h(tag.name.gsub(/'/, "\\\\'"))}';"
       o << "\n"
       i = i+1
     }
