@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,7 +30,7 @@ module WikiExtensionsWikiMacro
 
       o = '<ul class="wikiext-tags">'
       page.tags.each{|tag|
-        o << '<li>' + link_to("#{tag.name}", {:controller => 'wiki_extensions',
+        o << '<li>' + link_to("#{h(tag.name)}", {:controller => 'wiki_extensions',
               :action => 'tag', :id => project, :tag_id => tag.id}) + '</li>'
       }
       o << '</ul>'
@@ -53,7 +53,7 @@ module WikiExtensionsWikiMacro
       max_count = tags.sort{|a, b| a.page_count <=> b.page_count}.last.page_count.to_f
       tags.sort.each{|tag|
         index = ((tag.page_count / max_count) * (classes.size - 1)).round
-        o << link_to("#{tag.name}(#{tag.page_count})", {:controller => 'wiki_extensions',
+        o << link_to("#{h(tag.name)}(#{tag.page_count})", {:controller => 'wiki_extensions',
               :action => 'tag', :id => project, :tag_id => tag.id}, :class => classes[index])
         o << ' '
       }
