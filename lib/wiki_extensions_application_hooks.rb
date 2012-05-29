@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2010  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,34 +22,6 @@ class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   render_on :view_layouts_base_html_head, :partial => 'wiki_extensions/html_header'
   render_on :view_layouts_base_body_bottom, :partial => 'wiki_extensions/body_bottom'
     
-  def view_layouts_base_body_bottom_org(context = { })
-    project = context[:project]
-    return unless WikiExtensionsUtil.is_enabled?(project)
-    controller = context[:controller]
-    return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
-    return add_boards_auto_preview(context) if controller.class.name == 'BoardsController'
-
-    return unless controller.class.name == 'WikiController'
-    action_name = controller.action_name
-    request = context[:request]
-    params = request.parameters if request
-    page_name = params[:id] if params
-    wiki = project.wiki
-    return unless wiki
-    page = wiki.find_page(page_name) if page_name
-    o = ''
-    if action_name == 'edit' or (action_name == 'show' and page_name and page == nil)
-      o = ''
-      o << add_wiki_ext_tags_form(context)
-      o << add_wiki_auto_preview(context)
-      return raw(o)
-    end
-
-    o << javascript_tag('wiki_extension_create_table_header();')
-    
-    return o
-  end
-
 end
 
 def add_wiki_ext_tags_form(context)
@@ -144,10 +116,9 @@ def add_boards_auto_preview(context)
   project = context[:project]
   setting = WikiExtensionsSetting.find_or_create(project.id)
   return '' unless setting.auto_preview_enabled
-  request = context[:request]
-  params = request.parameters if request
-  board = params[:id] if params
-  url = url_for :controller => 'messages', :action => 'preview', :board_id => board
+  return '' unless @board
+  return '' unless @board.id
+  url = url_for :controller => 'messages', :action => 'preview', :board_id => @board
   o = ''
   o << javascript_tag("setBoardsAutoPreview('#{url}');")
   return o

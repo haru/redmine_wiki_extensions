@@ -20,6 +20,8 @@
 
 return unless WikiExtensionsUtil.is_enabled?(project)
 
+context = {:project => project, :controller => controller, :request => request}
+
 return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
 return add_boards_auto_preview(context) if controller.class.name == 'BoardsController'
 
