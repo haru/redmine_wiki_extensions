@@ -73,7 +73,7 @@ def add_wiki_ext_tags_form(context)
   i = 0;
   all_tags = WikiExtensionsTag.find(:all, :conditions => ['project_id = ?', project.id])
   all_tags.each {|tag|
-    o << "taglist[#{i}] = '#{tag.name.gsub(/'/, "\\\\'")}';"
+    o << "taglist[#{i}] = '#{h(tag.name.gsub(/'/, "\\\\'"))}';"
     o << "\n"
     i = i+1
   }
