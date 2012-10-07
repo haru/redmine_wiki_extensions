@@ -1,6 +1,6 @@
 <%
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2011  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@
 i = menu.menu_no - 1
 -%>
 <div>
-  <%= check_box_tag "menus[#{i}][enabled]", true, menu.enabled == true %>
+  <%= check_box_tag "menus[#{i}][enabled]", true, menu.enabled == true, :onclick => "click_wiki_menu_tab(#{i})" %>
   <b><%=h l(:label_wikiextensions_tab) %>#<%= menu.menu_no%> </b>
   <%= hidden_field_tag "menus[#{i}][menu_no]", menu.menu_no %>
 
@@ -32,5 +32,5 @@ i = menu.menu_no - 1
     <label><%=h l(:label_wiki_page)%></label>
     <%= text_field_tag "menus[#{i}][page_name]", menu.page_name, :size => 70, :required => true, :disabled => !menu.enabled %>
   </p>
-  <%= observe_field "menus_#{i}_enabled", :function => "if (value == 'true'){$('menus_#{i}_title').enable();$('menus_#{i}_page_name').enable();}else{$('menus_#{i}_title').disable();$('menus_#{i}_page_name').disable();}" %>
+  <%# observe_field "menus_#{i}_enabled", :function => "if (value == 'true'){$('menus_#{i}_title').enable();$('menus_#{i}_page_name').enable();}else{$('menus_#{i}_title').disable();$('menus_#{i}_page_name').disable();}" %>
 </div>
