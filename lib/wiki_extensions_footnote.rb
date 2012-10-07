@@ -42,7 +42,7 @@ module WikiExtensionsFootnote
       o << '<a href="#wiki_extensins_fn_' +"#{data[:footnotes].length}" + '" class="wiki_extensions_fn" title="' + description + '" name="wiki_extensins_fn_src_' +"#{data[:footnotes].length}" + '">'
       o << "*#{data[:footnotes].length}"
       o << '</a>'
-      return o
+      return o.html_safe
     end
   end
 
@@ -65,7 +65,7 @@ module WikiExtensionsFootnote
       o << '</ul>'
       o << '</div>'
       WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
-      return o
+      return o.html_safe
     end
   end
 end
