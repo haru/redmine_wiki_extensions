@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -45,7 +45,7 @@ module WikiExtensionsRecentMacro
         o << '<br/>'
       }
       o << '</div>'
-      return o
+      return o.html_safe
     end
   end
 end

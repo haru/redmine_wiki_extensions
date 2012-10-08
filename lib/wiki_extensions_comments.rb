@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2010  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -28,7 +28,7 @@ module WikiExtensionsComments
       page = obj.page
       return unless page
       o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page}})  
-      raw o
+      raw o.html_safe
     end
   end
 
@@ -41,7 +41,7 @@ module WikiExtensionsComments
       page = obj.page
       return unless page
       o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comments", :locals =>{:page => page}})
-      raw o
+      raw o.html_safe
     end
   end
 end

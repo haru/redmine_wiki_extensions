@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,7 +23,7 @@ module WikiExtensionsWikiMacro
       o = '<span class="wiki_extensions_lastupdated_at">'
       o << l(:label_updated_time, time_tag(obj.updated_on))
       o << '</span>'
-      o
+      o.html_safe
     end
   end
 end

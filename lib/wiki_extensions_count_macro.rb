@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -41,7 +41,7 @@ module WikiExtensionsCountMacro
       page = obj.page
       count = WikiExtensionsCount.access_count(page.id)
 
-      return "#{count}"
+      return "#{count}".html_safe
     end
   end
 
@@ -72,7 +72,7 @@ module WikiExtensionsCountMacro
         break if (cnt >= max and max > 0)
       }
       o << '</ol>'
-      return o
+      return o.html_safe
     end
   end
 end

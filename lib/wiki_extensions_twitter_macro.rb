@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2010  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -26,7 +26,7 @@ module WikiExtensionsTwitterMacro
       user_name = args[0].strip
       o = ""
       o << link_to(h("@#{user_name}"), "http://www.twitter.com/#{user_name}")
-      return o
+      return o.html_safe
     end
   end
 end

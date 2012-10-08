@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011  Haruyuki Iida
+# Copyright (C) 2011-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,7 +20,7 @@ module WikiExtensionsNewPageMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Create new page.\n\n"
     macro :new_page do |obj, args|
-      @_controller.send(:render_to_string, {:partial => "wiki_extensions/new_page_macro"})
+      @_controller.send(:render_to_string, {:partial => "wiki_extensions/new_page_macro"}).html_safe
     end
   end
 end
