@@ -33,11 +33,11 @@ randnum = rand(10000)
 element_id = "new_page_title_#{randnum}"
 div_id = "newpage_form_id_#{randnum}"
 -%>
-<%= link_to_function l(:wiki_extensions_new_wiki_page), "$('#{div_id}').visualEffect('BlindDown')" %>
+<%= link_to_function l(:wiki_extensions_new_wiki_page), "$('##{div_id}').show('blind')" %>
 <div id ="<%=div_id%>" style="display: none;">
 <%= form_tag({:controller => 'wiki', :action => 'show', :project_id => @project}) do -%>
   <span><b><%=l(:field_title)%>:</b></span><%= text_field_tag element_id %>
-  <%= link_to_function l(:button_create), "create_new_wikipage($('#{element_id}').value)"%>
+  <%= link_to_function l(:button_create), "create_new_wikipage($('##{element_id}').val())"%>
 <% end %>
 </div>
 
