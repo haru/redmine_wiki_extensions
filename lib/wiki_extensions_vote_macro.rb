@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2010  Haruyuki Iida
+# Copyright (C) 2010-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -32,14 +32,15 @@ module WikiExtensionsWikiMacro
       vote = WikiExtensionsVote.find_or_create(obj.class.name, obj.id, key)
 
       o = '<span class="wikiext-vote">'
-      o << link_to_remote(label, :update => voteid, :url => {:controller => 'wiki_extensions', :action => 'vote',
-        :id => @project, :target_class_name => obj.class.name, :target_id => obj.id,
-        :key => key, :url => @_request.url})
+      url = url_for({:controller => 'wiki_extensions', :action => 'vote',
+          :id => @project, :target_class_name => obj.class.name, :target_id => obj.id,
+          :key => key, :url => @_request.url})
+      o << link_to_function(label, "$('##{voteid}').load('#{url}')")
       o << '<span id="' + voteid + '"> '
       o << " #{vote.count}"
       o << '</span>'
       o << '</span>'
-      return o
+      return o.html_safe
     end
   end
 
@@ -56,7 +57,7 @@ module WikiExtensionsWikiMacro
       o = '<span class="wikiext-show-vote">'
       o << "#{vote.count}"
       o << '</span>'
-      return o
+      return o.html_safe
     end
   end
 end
