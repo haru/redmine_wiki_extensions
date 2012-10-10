@@ -25,7 +25,7 @@ url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id =>
 -%>
 
 <div class="icon icon-comment">
-  <%= link_to_function(l(:label_comment_add), "$('#{div_id}').show();") %>
+  <%= link_to_function(l(:label_comment_add), "$('##{div_id}').show();") %>
 </div>
 <div id="<%=div_id%>" style="display:none">
   <form method="post" action="<%=url%>">
@@ -38,7 +38,7 @@ url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id =>
       :class => 'wiki-edit') %>
     <br/>
     <%= submit_tag(l(:label_comment_add)) %>
-    <%= link_to_function(l(:button_cancel), "$('#{div_id}').hide();") %>
+    <%= link_to_function(l(:button_cancel), "$('##{div_id}').hide();") %>
     <%= wikitoolbar_for(area_id) %>
   </form>
 </div>

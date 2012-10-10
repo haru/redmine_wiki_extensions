@@ -45,11 +45,11 @@ module ActionView
               ret << '<div class="contextual">'
               
               if  k != 25
-                reply_link = link_to_function(l(:button_reply), "$('#{form_reply_id}').show();", :class => 'icon icon-comment')
+                reply_link = link_to_function(l(:button_reply), "$('##{form_reply_id}').show();", :class => 'icon icon-comment')
                 ret << reply_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'reply_comment'}, @project)
               end  
 
-              edit_link = link_to_function(l(:button_edit), "$('#{div_comment_id}').hide();$('#{form_div_id}').show();$('#{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
+              edit_link = link_to_function(l(:button_edit), "$('##{div_comment_id}').hide();$('##{form_div_id}').show();$('##{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
               ret << edit_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'update_comment'}, @project) or User.current.id == comment.user.id or User.current.admin
               if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'destroy_comment'}, @project) or User.current.admin
                 del_link =  link_to_if_authorized(l(:button_delete), {:controller => 'wiki_extensions',
@@ -93,7 +93,7 @@ module ActionView
               
               ret << '<br/>'
               ret << submit_tag(l(:button_apply))
-              ret << link_to_function(l(:button_cancel), "$('#{div_comment_id}').show();$('#{form_div_id}').hide();")
+              ret << link_to_function(l(:button_cancel), "$('##{div_comment_id}').show();$('##{form_div_id}').hide();")
               ret << "\n"
               ret << wikitoolbar_for(textarea_id)
               ret << '</form>'
@@ -117,7 +117,7 @@ module ActionView
                 :class => 'wiki-edit')
               ret << '<br/>'
               ret << submit_tag(l(:button_reply))
-              ret << link_to_function(l(:button_cancel), "$('#{form_reply_id}').hide();")
+              ret << link_to_function(l(:button_cancel), "$('##{form_reply_id}').hide();")
               ret << "\n"
               ret << wikitoolbar_for(textarea_id)
               ret << '</form>'
