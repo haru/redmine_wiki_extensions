@@ -16,35 +16,21 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
-function add_wiki_extension_sidebar() {
-    var sidebar = $('sidebar');
-    if (sidebar == null) {
-        return;
-    }
-
-    var sidebar_area = $('wiki_extentions_sidebar');
-    sidebar_area.remove();
-    sidebar.insert(sidebar_area);
-    sidebar_area.show();
-
-}
 
 function add_wiki_extensions_tags_form() {
     var tags_form = $('#wiki_extensions_tag_form');
-    var wiki_form = $('#wiki_form');
     var content_comments = $('#content_comments');
-    //tags_form.parentNode.removeChild(tags_form);
-    //new Insertion.After(content_comments.parentNode, tags_form);
-    content_comments.parent().after(tags_form);
-    
-    
+    content_comments.parent().after(tags_form);    
 }
 
 function set_tag_atuto_complete(taglist) {
-    var inputs = $$('.wikiext_tag_inputs');
-    for (var i = 0; i < inputs.length; i++) {
-        new Autocompleter.Local(inputs[i], "wikiext_taglist_complete", taglist, {});
-    }
+    var inputs = $('.wikiext_tag_inputs');
+
+    inputs.each(function(index, obj){
+        $(obj).autocomplete({
+            source: taglist
+        })
+    })
 }
 
 function setWikiAutoPreview(url) {
@@ -143,30 +129,30 @@ var IE;
 var Firefox;
 
 function do_some(src, evt) {
-  if (!Firefox) {
-     cls = src.parentNode.className;
-     if (cls=='list_item ExpandOpen') {
-        src.parentNode.className = 'list_item ExpandClosed';
-     } else {
-        src.parentNode.className = 'list_item ExpandOpen';
-     }
-     window.event.cancelBubble = true;
-  } else {
-     if (evt.eventPhase!=3) {
+    if (!Firefox) {
         cls = src.parentNode.className;
         if (cls=='list_item ExpandOpen') {
             src.parentNode.className = 'list_item ExpandClosed';
         } else {
             src.parentNode.className = 'list_item ExpandOpen';
         }
-     }
-  }
+        window.event.cancelBubble = true;
+    } else {
+        if (evt.eventPhase!=3) {
+            cls = src.parentNode.className;
+            if (cls=='list_item ExpandOpen') {
+                src.parentNode.className = 'list_item ExpandClosed';
+            } else {
+                src.parentNode.className = 'list_item ExpandOpen';
+            }
+        }
+    }
 }
 
 function Check() {
-   if (!Firefox) {
-      window.event.cancelBubble = true;
-   }
+    if (!Firefox) {
+        window.event.cancelBubble = true;
+    }
 }
 
 DOM = document.getElementById;
