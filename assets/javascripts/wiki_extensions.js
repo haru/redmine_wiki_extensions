@@ -17,6 +17,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
+var auto_preview_interval = 2000;
+
 function add_wiki_extensions_tags_form() {
     var tags_form = $('#wiki_extensions_tag_form');
     var content_comments = $('#content_comments');
@@ -33,59 +35,60 @@ function set_tag_atuto_complete(taglist) {
     })
 }
 
+function setAutPreviewCallback(url, preview_id, form_id, content_id) {
+    var content_org = $(content_id).val();
+    
+    setInterval(function(){
+        var content_new = $(content_id).val();
+        if (content_new != content_org) {
+            $(preview_id).load(url, $(form_id).we_serialize2json());
+            content_org = content_new;
+        }
+    },auto_preview_interval);
+}
+
 function setWikiAutoPreview(url) {
-    new Field.Observer('content_text',2, function(){
-        new Ajax.Updater('preview', url, {
-            asynchronous:true,
-            evalScripts:true,
-            method:'post',
-            parameters:Form.serialize('wiki_form')
-        });
-    });
+    setAutPreviewCallback(url, '#preview', '#wiki_form', '#content_text');
 }
 
 function setMessagesAutoPreview(url) {
-    new Field.Observer('message_content',2, function(){
-        new Ajax.Updater('preview', url, {
-            asynchronous:true,
-            evalScripts:true,
-            method:'post',
-            parameters:Form.serialize('message-form')
-        });
-    });
+    setAutPreviewCallback(url, '#preview', '#message-form', '#message_content');
 }
 
 function setBoardsAutoPreview(url) {
-    new Field.Observer('message_content',2, function(){
-        new Ajax.Updater('preview', url, {
-            asynchronous:true,
-            evalScripts:true,
-            method:'post',
-            parameters:Form.serialize('message-form')
-        });
-    });
+    setAutPreviewCallback(url, '#preview', '#message-form', '#message_content');
+//    new Field.Observer('message_content',2, function(){
+//        new Ajax.Updater('preview', url, {
+//            asynchronous:true,
+//            evalScripts:true,
+//            method:'post',
+//            parameters:Form.serialize('message-form')
+//        });
+//    });
 }
 
 function setIssueAutoPreview(url) {
-    new Field.Observer('issue_description',2, function(){
-        new Ajax.Updater('preview', url, {
-            asynchronous:true,
-            evalScripts:true,
-            method:'post',
-            parameters:Form.serialize('issue-form')
-        });
-    });
+    setAutPreviewCallback(url, '#preview', '#issue-form', '#issue_description');
+//    new Field.Observer('issue_description',2, function(){
+//        new Ajax.Updater('preview', url, {
+//            asynchronous:true,
+//            evalScripts:true,
+//            method:'post',
+//            parameters:Form.serialize('issue-form')
+//        });
+//    });
 }
 
 function setIssueNotesAutoPreview(url) {
-    new Field.Observer('notes',2, function(){
-        new Ajax.Updater('preview', url, {
-            asynchronous:true,
-            evalScripts:true,
-            method:'post',
-            parameters:Form.serialize('issue-form')
-        });
-    });
+    setAutPreviewCallback(url, '#preview', '#issue-form', '#notes');
+//    new Field.Observer('notes',2, function(){
+//        new Ajax.Updater('preview', url, {
+//            asynchronous:true,
+//            evalScripts:true,
+//            method:'post',
+//            parameters:Form.serialize('issue-form')
+//        });
+//    });
 }
 
 function is_table_for_sort(tbody) {
@@ -159,3 +162,21 @@ DOM = document.getElementById;
 Opera = window.opera && DOM;
 IE = document.all && !Opera;
 Firefox = navigator.userAgent.indexOf("Gecko") >= 0;
+
+
+$.fn.we_serialize2json = function()
+{
+    var o = {};
+    var a = this.serializeArray();
+    $.each(a, function() {
+        if (o[this.name]) {
+            if (!o[this.name].push) {
+                o[this.name] = [o[this.name]];
+            }
+            o[this.name].push(this.value || '');
+        } else {
+            o[this.name] = this.value || '';
+        }
+    });
+    return o;
+};
