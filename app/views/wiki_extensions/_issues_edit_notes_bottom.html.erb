@@ -24,7 +24,7 @@
     -%>
 
     <script type="text/javascript">
-      document.observe('dom:loaded', function() {
+      $(document).ready(function() {
         setIssueNotesAutoPreview('<%=url%>');
       });
     </script>
