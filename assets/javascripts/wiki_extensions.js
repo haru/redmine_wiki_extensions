@@ -57,38 +57,14 @@ function setMessagesAutoPreview(url) {
 
 function setBoardsAutoPreview(url) {
     setAutPreviewCallback(url, '#preview', '#message-form', '#message_content');
-//    new Field.Observer('message_content',2, function(){
-//        new Ajax.Updater('preview', url, {
-//            asynchronous:true,
-//            evalScripts:true,
-//            method:'post',
-//            parameters:Form.serialize('message-form')
-//        });
-//    });
 }
 
 function setIssueAutoPreview(url) {
     setAutPreviewCallback(url, '#preview', '#issue-form', '#issue_description');
-//    new Field.Observer('issue_description',2, function(){
-//        new Ajax.Updater('preview', url, {
-//            asynchronous:true,
-//            evalScripts:true,
-//            method:'post',
-//            parameters:Form.serialize('issue-form')
-//        });
-//    });
 }
 
 function setIssueNotesAutoPreview(url) {
     setAutPreviewCallback(url, '#preview', '#issue-form', '#notes');
-//    new Field.Observer('notes',2, function(){
-//        new Ajax.Updater('preview', url, {
-//            asynchronous:true,
-//            evalScripts:true,
-//            method:'post',
-//            parameters:Form.serialize('issue-form')
-//        });
-//    });
 }
 
 function is_table_for_sort(tbody) {
@@ -105,7 +81,7 @@ function is_table_for_sort(tbody) {
 }
 function wiki_extension_create_table_header() {
 
-    var tbodys = $$('.wiki table tbody');
+    var tbodys = $('.wiki table tbody');
     for (var i = 0; i < tbodys.length; i++) {
         var tbody = tbodys[i];
         if (!is_table_for_sort(tbody)) {
@@ -115,11 +91,12 @@ function wiki_extension_create_table_header() {
         var header = tbody.removeChild(tbody.firstChild);
         var thead = table.insertBefore(document.createElement('thead'), tbody);
         thead.appendChild(header);
-        var ths = thead.getElementsByTagName('th');
-        for (var j = 0; j < ths.length; j++) {
-            ths[j].addClassName('nocase');
-        }
+
     }
+
+    $('table').each(function(i) {
+        $(this).tablesorter();
+    });
 
 }
 

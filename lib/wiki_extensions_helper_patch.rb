@@ -43,14 +43,15 @@ module HelperMethodsWikiExtensions
         emoticons = WikiExtensions::Emoticons.new
         o << javascript_tag do
           oo = ""
-        oo << "redmine_base_url = '#{baseurl}';\n"
+        oo << raw("redmine_base_url = '#{baseurl}';\n")
         oo << 'var buttons = [];'
         emoticons.emoticons.each{|emoticon|
           oo << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);\n"
         }
         oo << "setEmoticonButtons(buttons, '#{imageurl}');\n"
+        oo.html_safe
         end
-        o
+        o.html_safe
       end
       @heads_for_wiki_smiles_included = true
     end
