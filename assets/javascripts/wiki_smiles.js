@@ -73,10 +73,11 @@ jsTooltip.prototype = {
         this.div.id = 'group_of_smiles';
 
         // Draw toolbar elements
-        var b, tool, newTool,k;
+        var k;
 
         k = 0;
         for (var i in this.elements) {
+            var b, tool, newTool;
             b = this.elements[i];
 
             var disabled =
@@ -117,21 +118,22 @@ jsToolBar.prototype.elements.space5 = {
 }
 
 //buttons for smiles:
-
 function setEmoticonButtons(buttons, url) {
     emoticons_image_url = url;
-    buttons.each(function(button) {
+    for (var i = 0; i < buttons.length; i++) {
+        var button = buttons[i];
+        var func = new Function('this.encloseSelection("' + button[0] + ' ");');
+        
         jsTooltip.prototype.elements[button[1]] = {
             type: 'button',
             title: button[2],
             icon: url + '/' + button[1] + '?dummy_param',
+            string: button[0],
             fn: {
-                wiki: function() {
-                    this.encloseSelection(button[0] + " ")
-                }
+                wiki: func
             }
         }
-    })
+    }
 }
 
 
