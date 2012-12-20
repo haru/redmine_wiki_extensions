@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2012  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -29,6 +29,7 @@ module WikiExtensionsWikiControllerPatch
     base.class_eval do
       unloadable # Send unloadable so it will not be unloaded in development
       after_filter :wiki_extensions_save_tags, :only => [:edit, :update]
+      alias_method_chain :respond_to, :wiki_extensions
       alias_method_chain :render, :wiki_extensions
       class << self
         
@@ -45,13 +46,20 @@ module InstanceMethodsForWikiExtensionWikiController
     if args and @project and WikiExtensionsUtil.is_enabled?(@project)
       if (args[:partial] == 'common/preview')
         WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
-      elsif (args[:action] == 'show')
+      end
+    end
+    render_without_wiki_extensions(args)
+  end
+
+  def respond_to_with_wiki_extensions(&block)
+    if @project and WikiExtensionsUtil.is_enabled?(@project)
+      if (@_action_name == 'show')
         wiki_extensions_include_header
         wiki_extensions_add_fnlist 
         wiki_extensions_include_footer
       end
     end
-    render_without_wiki_extensions(args)
+    respond_to_without_wiki_extensions(&block)
   end
 
   def wiki_extensions_get_current_page
