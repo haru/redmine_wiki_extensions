@@ -296,19 +296,6 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
-  context "ref_issues" do
-    should "success" do
-      text = ''
-      text << "{{ref_issues}}\n"
-      text << "{{ref_issues(-rw=test,project,tracker,subject,status,author,assigned,created,updated)}}\n"
-
-      setContent(text)
-      @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
-      assert_response :success
-    end
-  end
-
   private
 
   def setContent(text)
