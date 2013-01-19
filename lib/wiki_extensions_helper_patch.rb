@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011  Haruyuki Iida
+# Copyright (C) 2011-2013  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -59,7 +59,7 @@ module HelperMethodsWikiExtensions
     
   private
   def ie6_or_ie7?
-    useragent = request.env['HTTP_USER_AGENT']
+    useragent = request.env['HTTP_USER_AGENT'].to_s
     return useragent.match(/IE[ ]+[67]./) != nil
   end
   
