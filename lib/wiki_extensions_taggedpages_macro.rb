@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2010  Haruyuki Iida
+# Copyright (C) 2010-2013  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -66,7 +66,7 @@ module WikiExtensionsWikiMacro
         o << '<li>' + link_to(page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => page.project, :id => page.title) + '</li>'
       }
       o << '</ul>'
-      return o
+      return o.html_safe
     end
   end
 end
