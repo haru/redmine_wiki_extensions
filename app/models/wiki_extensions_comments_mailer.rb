@@ -10,15 +10,18 @@ class WikiExtensionsCommentsMailer < Mailer
                     'Author' => author
     message_id wiki_page
     # Send notification to watchers of wiki page
-    recipients wiki_page.watchers.collect{|watcher| watcher.user.mail}
-    subject "[#{project.name} - Wiki - #{wiki_page.title}] commented"
-    body = {
-      :project => project,
-      :author => author,
-      :text => text,
-      :wiki_page_title => wiki_page.title,
-      :wiki_page_url => url_for(:controller => 'wiki', :action => 'show', :project_id => project, :id => wiki_page.title)
-    }
-    render_multipart('wiki_commented', body)
+    recipients = wiki_page.watchers.collect { |watcher| watcher.user.mail }
+
+    subject = "[#{project.name} - Wiki - #{wiki_page.title}] commented"
+
+    @project = project
+    @author = author
+    @text = text
+    @wiki_page_title = wiki_page.title
+    @wiki_page_url = url_for(:controller => 'wiki', :action => 'show', :project_id => project, :id => wiki_page.title)
+
+    mail :to => recipients,
+         :subject => subject
+
   end
 end

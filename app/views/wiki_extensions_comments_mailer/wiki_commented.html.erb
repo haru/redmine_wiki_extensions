@@ -14,6 +14,5 @@ l(:wiki_page_commented_comment_head)
 l(:wiki_page_commented_url)
 %>
 <br />
-<%=
-"<a href=\"" + @wiki_page_url + "\">" + @wiki_page_url + "<a/>"
-%>
+<%= link_to(h(@wiki_page_url),  @wiki_page_url)
+-%>
