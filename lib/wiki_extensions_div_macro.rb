@@ -21,9 +21,10 @@ module WikiExtensionsWikiMacro
       " !{{div_start_tag(id_name)}}" + "'\n" +
       " !{{div_start_tag(id_name, class_name)}}"
     macro :div_start_tag do |obj, args|
-      return '<div>' if args.length == 0
-      return '<div id="' + args[0].strip + '">' if args.length == 1
-      return '<div id="' + args[0].strip + '" class="' + args[1].strip + '">'
+      o = '<div>' if args.length == 0
+      o = '<div id="' + args[0].strip + '">' if args.length == 1
+      o = '<div id="' + args[0].strip + '" class="' + args[1].strip + '">' if args.length == 2
+      o.html_safe
     end
   end
 end
@@ -33,7 +34,7 @@ module WikiExtensionsWikiMacro
     desc "Displays a <pre></div></pre>\n\n" +
       "  !{{div_end_tag}}"
     macro :div_end_tag do |obj, args|
-      return '</div>'
+      return '</div>'.html_safe
     end
   end
 end
