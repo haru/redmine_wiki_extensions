@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2012  Haruyuki Iida
+# Copyright (C) 2009-2013  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -25,8 +25,8 @@ module WikiExtensionsComments
       unless User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'add_comment'}, @project)
         return ''
       end
-      page = obj.page
-      return unless page
+      page = obj.page if obj
+
       o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page}})  
       raw o.html_safe
     end
@@ -35,6 +35,7 @@ module WikiExtensionsComments
   Redmine::WikiFormatting::Macros.register do
     desc "Display comments of the page."
     macro :comments do |obj, args|
+      return '' unless obj
       unless User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'show_comments'}, @project)
         return ''
       end

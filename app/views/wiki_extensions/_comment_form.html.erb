@@ -1,5 +1,5 @@
 <% # Wiki Extensions plugin for Redmine
-# Copyright (C) 2012  Haruyuki Iida
+# Copyright (C) 2012-2013  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -33,11 +33,11 @@ url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id =>
     <% if protect_against_forgery? -%>
       <%= hidden_field_tag(:authenticity_token, form_authenticity_token) %>
     <% end -%>
-    <%= hidden_field_tag(:wiki_page_id, page.id) %>
+    <%= hidden_field_tag(:wiki_page_id, page.id) if page %>
     <%= text_area_tag(:comment, '', :rows => 5, :cols => 70, :id => area_id,:accesskey => accesskey(:edit),
       :class => 'wiki-edit') %>
     <br/>
-    <%= submit_tag(l(:label_comment_add)) %>
+    <%= submit_tag(l(:label_comment_add)) if page %>
     <%= link_to_function(l(:button_cancel), "$('##{div_id}').hide();") %>
     <%= wikitoolbar_for(area_id) %>
   </form>
