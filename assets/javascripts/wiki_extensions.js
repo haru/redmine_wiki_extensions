@@ -21,8 +21,7 @@ var auto_preview_interval = 2000;
 
 function add_wiki_extensions_tags_form() {
     var tags_form = $('#wiki_extensions_tag_form');
-    var content_comments = $('#content_comments');
-    content_comments.parent().after(tags_form);    
+    $('#attachments_fields').parent().after(tags_form);
 }
 
 function set_tag_atuto_complete(taglist) {

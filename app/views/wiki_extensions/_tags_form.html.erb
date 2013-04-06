@@ -1,0 +1,72 @@
+<%
+   page = controller.wiki_extensions_get_current_page
+   tags = page.tags.sort { |a, b| a.name <=> b.name }
+   baseurl = Redmine::Utils.relative_url_root
+   img = baseurl + "/images/add.png"
+-%>
+
+
+<p id="wiki_extensions_tag_form">
+
+
+
+<label><%= l(:label_wikiextensions_tags) %></label>
+<span>
+    <%
+       i = 0
+       maxline = 5
+    %>
+    <%
+       maxline.times { |line|
+         style = ''
+         style = 'style="display:none;"' if line != 0 and line > (tags.length - 1) / 4
+    %>
+      <span <%= raw style %>  id="<%= "tag_line_#{line.to_s}" %>">
+        <%
+           4.times {
+             value = ''
+             value = 'value="' + tags[i].name + '"' if tags[i]
+        %>
+  <span class="tag_field">
+  <input id="extension_tags[<%= i.to_s %>]" type="text" size="20" name="extension[tags][<%= i.to_s %>]"
+         <%= raw value %> class="wikiext_tag_inputs"/>
+      </span>
+        <%
+           i = i + 1
+           }
+
+           nextline = line + 1
+        %>
+
+        <% if (line < maxline - 1) %>
+  <span style="cursor:pointer;">
+      <%= image_tag(img, :onclick => raw("$('#tag_line_#{nextline.to_s}').show()")) %>
+      </span>
+        <% end %>
+
+      </span> <br/>
+  <%
+     }
+  %>
+  <span id="wikiext_taglist_complete"></span>
+
+</span>
+</p>
+<script type="text/javascript">
+    //<![CDATA'
+    add_wiki_extensions_tags_form();
+    var taglist = [];
+    <%
+    i = 0;
+    all_tags = WikiExtensionsTag.where('project_id = ?', project.id).all
+    all_tags.each {|tag|
+      %>
+    taglist[<%=i%>] = '<%= h(tag.name.gsub(/'/, "\\\\'"))%>';
+    <%
+        i = i+1
+
+    }
+       %>
+    set_tag_atuto_complete(taglist);
+    //]]>
+</script>
