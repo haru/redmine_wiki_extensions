@@ -1,52 +1,52 @@
 <% # Wiki Extensions plugin for Redmine
-# Copyright (C) 2012  Haruyuki Iida
-#
-# This program is free software; you can redistribute it and/or
-# modify it under the terms of the GNU General Public License
-# as published by the Free Software Foundation; either version 2
-# of the License, or (at your option) any later version.
-#
-# This program is distributed in the hope that it will be useful,
-# but WITHOUT ANY WARRANTY; without even the implied warranty of
-# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
-# GNU General Public License for more details.
-#
-# You should have received a copy of the GNU General Public License
-# along with this program; if not, write to the Free Software
-# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   # Copyright (C) 2012-2013  Haruyuki Iida
+   #
+   # This program is free software; you can redistribute it and/or
+   # modify it under the terms of the GNU General Public License
+   # as published by the Free Software Foundation; either version 2
+   # of the License, or (at your option) any later version.
+   #
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+   #
+   # You should have received a copy of the GNU General Public License
+   # along with this program; if not, write to the Free Software
+   # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 -%>
 
 <%
 
-return unless WikiExtensionsUtil.is_enabled?(project)
+   return unless WikiExtensionsUtil.is_enabled?(project)
 
-context = {:project => project, :controller => controller, :request => request}
+   context = {:project => project, :controller => controller, :request => request}
 
-return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
-return add_boards_auto_preview(context) if controller.class.name == 'BoardsController'
+   return add_messages_auto_preview(context) if controller.class.name == 'MessagesController'
+   return add_boards_auto_preview(context) if controller.class.name == 'BoardsController'
 
-return unless controller.class.name == 'WikiController'
-action_name = controller.action_name
+   return unless controller.class.name == 'WikiController'
+   action_name = controller.action_name
 
-params = request.parameters if request
-page_name = params[:id] if params
-wiki = project.wiki
-return unless wiki
-page = wiki.find_page(page_name) if page_name
+   params = request.parameters if request
+   page_name = params[:id] if params
+   wiki = project.wiki
+   return unless wiki
+   page = wiki.find_page(page_name) if page_name
 
-context = {:project => project, :controller => controller, :request => request}
+   context = {:project => project, :controller => controller, :request => request}
 %>
 
 <% if action_name == 'edit' or (action_name == 'show' and page_name and page == nil) %>
     <%= render :partial => 'wiki_extensions/tags_form', :locals => context %>
-  <%= raw add_wiki_auto_preview(context) %>
+    <%= raw add_wiki_auto_preview(context) %>
 
 <% else %>
 
-<script type="text/javascript">
+    <script type="text/javascript">
 
-  
-</script>
-  <%= raw javascript_tag('wiki_extension_create_table_header();') %>
+
+    </script>
+    <%= raw javascript_tag('wiki_extension_create_table_header();') %>
 
 <% end %>
