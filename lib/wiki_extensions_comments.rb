@@ -27,7 +27,12 @@ module WikiExtensionsComments
       end
       page = obj.page if obj
 
-      o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page}})  
+      num = rand(10000)
+      area_id = "add_comment_area_#{num}"
+      div_id = "add_comment_form_div#{num}"
+
+      o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page, :area_id => area_id, :div_id => div_id}})
+      o << raw(wikitoolbar_for(area_id))
       raw o.html_safe
     end
   end
@@ -41,8 +46,12 @@ module WikiExtensionsComments
       end
       page = obj.page
       return unless page
-      o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comments", :locals =>{:page => page}})
-      raw o.html_safe
+
+      data = page.wiki_extension_data
+      comments = WikiExtensionsComment.find(:all, :conditions => ['wiki_page_id = (?)', page.id])
+
+      raw display_comments_tree(comments,nil,page,data)
+
     end
   end
 end

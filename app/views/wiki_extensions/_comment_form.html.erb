@@ -17,10 +17,6 @@
 -%>
 <%
 
-num = rand(10000)
-area_id = "add_comment_area_#{num}"
-div_id = "add_comment_form_div#{num}"
-
 url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id => @project)
 -%>
 
@@ -39,6 +35,5 @@ url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id =>
     <br/>
     <%= submit_tag(l(:label_comment_add)) if page %>
     <%= link_to_function(l(:button_cancel), "$('##{div_id}').hide();") %>
-    <%= wikitoolbar_for(area_id) %>
   </form>
 </div>
