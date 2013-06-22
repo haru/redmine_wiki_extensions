@@ -127,7 +127,7 @@ class WikiControllerTest < ActionController::TestCase
 
   def test_tags
     page = @wiki.find_or_new_page(@page_name)
-    page.tags << WikiExtensionsTag.find(1)
+    page.wiki_ext_tags << WikiExtensionsTag.find(1)
     page.save!
     text = "{{tags}}\n"
     text << "{{tagcloud}}\n"
