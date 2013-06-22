@@ -26,10 +26,10 @@ module WikiExtensionsWikiMacro
       return unless page
       project = page.project
 
-      return '' if page.tags.empty?
+      return '' if page.wiki_ext_tags.empty?
 
       o = '<ul class="wikiext-tags">'
-      page.tags.each{|tag|
+      page.wiki_ext_tags.each{|tag|
         o << '<li>' + link_to("#{tag.name}", {:controller => 'wiki_extensions',
               :action => 'tag', :id => project, :tag_id => tag.id}) + '</li>'
       }
