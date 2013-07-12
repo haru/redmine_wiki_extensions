@@ -296,6 +296,23 @@ class WikiControllerTest < ActionController::TestCase
     end
   end
 
+  context "page_break" do
+    setup do
+      setContent("{{page_break}}\n")
+
+      @request.session[:user_id] = 1
+      get :show, :project_id => 1, :id => @page_name
+    end
+
+    should "success" do
+      assert_response :success
+    end
+
+    should "be rendered correctly" do
+      assert response.body.include?('<div class="wikiext-page-break">')
+    end
+  end
+
   private
 
   def setContent(text)
