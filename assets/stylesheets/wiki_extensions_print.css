@@ -1,0 +1,9 @@
+/**
+ * Styles for page_break macro
+ */
+.wiki .wikiext-page-break {
+  page-break-before: always;
+  margin: 0 !important;
+  border: 0 !important;
+  visibility: hidden;
+}

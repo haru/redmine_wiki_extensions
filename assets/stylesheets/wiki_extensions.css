@@ -138,3 +138,12 @@ li.list_item {list-style-type: none;}
 ul.list {display:block;list-style-type: none;list-style-image: none;}
 ul.IsRoot { margin-left:0px; list-style-type:none;}
 
+/**
+ * Styles for page_break macro
+ */
+.wiki .wikiext-page-break {
+  height: 1px;
+  width: 95%;
+  border-top: 1px dashed #ccc;
+  margin: 3em auto;
+}
