@@ -24,7 +24,7 @@ module WikiExtensionsFootnote
 
   Redmine::WikiFormatting::Macros.register do
     desc "Create a footnote.\n\n" +
-      " \{{fn(word, description}}"
+      " \{{fn(word, description)}}"
     macro :fn do |obj, args|
       return nil if args.length < 2
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
