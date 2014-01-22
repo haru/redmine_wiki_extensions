@@ -3,8 +3,8 @@
  * modified by Haruyuki Iida.
  */
 
-emoticons_image_url = ""
-redmine_base_url = ""
+emoticons_image_url = "";
+redmine_base_url = "";
 /**
  * This class used to add group of elements in tooltip.
  * @param {Object} title
@@ -23,25 +23,25 @@ function jsTooltip(title, scope, className) {
 jsTooltip.prototype = {
 
     mode: 'wiki',
-    elements:{},
+    elements: {},
 
-    getMode: function() {
+    getMode: function () {
         return this.mode;
     },
 
-    setMode: function(mode) {
+    setMode: function (mode) {
         this.mode = mode || 'wiki';
     },
 
-    button: function(toolName) {
+    button: function (toolName) {
         var tool = this.elements[toolName];
         if (typeof tool.fn[this.mode] != 'function') return null;
-        var b = new jsButton(tool.title, tool.fn[this.mode], this.scope, 'jstb_'+toolName);
+        var b = new jsButton(tool.title, tool.fn[this.mode], this.scope, 'jstb_' + toolName);
         if (tool.icon != undefined) b.icon = tool.icon;
         return b;
     },
 
-    draw: function(){
+    draw: function () {
         if (!this.scope) return null;
 
         this.tooltip = document.createElement('div');
@@ -65,7 +65,7 @@ jsTooltip.prototype = {
         this.img = document.createElement('img');
         this.img.title = 'Smiles';
         this.img.src = redmine_base_url + '/plugin_assets/redmine_wiki_extensions/images/main_smile.png?dummy_param';
-        this.img.id = 'smiles_img'
+        this.img.id = 'smiles_img';
         this.img.tabIndex = 200;
         this.a.appendChild(this.img);
 
@@ -81,14 +81,14 @@ jsTooltip.prototype = {
             b = this.elements[i];
 
             var disabled =
-            b.type == undefined || b.type == ''
-            || (b.disabled != undefined && b.disabled)
-            || (b.context != undefined && b.context != null && b.context != this.context);
+                b.type == undefined || b.type == ''
+                    || (b.disabled != undefined && b.disabled)
+                    || (b.context != undefined && b.context != null && b.context != this.context);
 
             if (!disabled && typeof this[b.type] == 'function') {
                 tool = this[b.type](i);
                 if (tool) newTool = tool.draw();
-                if ( k%7 == 0 && k != 0) this.div.appendChild(document.createElement('br'));
+                if (k % 7 == 0 && k != 0) this.div.appendChild(document.createElement('br'));
                 if (newTool) {
                     this.toolNodes[i] = newTool;
                     this.div.appendChild(newTool);
@@ -102,20 +102,20 @@ jsTooltip.prototype = {
 
         return this.tooltip;
     }
-}
+};
 
-jsToolBar.prototype.tooltip =  function(toolName) {
+jsToolBar.prototype.tooltip = function (toolName) {
     var tool = this.elements[toolName];
-    var b = new jsTooltip(tool.title,this,'jstt_'+toolName);
+    var b = new jsTooltip(tool.title, this, 'jstt_' + toolName);
     if (tool.icon != undefined) b.icon = tool.icon;
     return b;
-}
+};
 
 
 // spacer
 jsToolBar.prototype.elements.space5 = {
     type: 'space'
-}
+};
 
 //buttons for smiles:
 function setEmoticonButtons(buttons, url) {
@@ -142,4 +142,4 @@ function setEmoticonButtons(buttons, url) {
 jsToolBar.prototype.elements.smiles = {
     type: 'tooltip',
     title: 'Smiles'
-}
+};
