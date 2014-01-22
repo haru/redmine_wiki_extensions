@@ -30,7 +30,7 @@ class WikiExtensionsTag < ActiveRecord::Base
 
   def pages
     return @pages if @pages
-    relations = WikiExtensionsTagRelation.find(:all, :conditions =>['tag_id = ?', id])
+    relations = WikiExtensionsTagRelation.where(:tag_id => id).all
     @pages = []
     relations.each{|relation|
       @pages << relation.wiki_page

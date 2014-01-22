@@ -21,10 +21,10 @@ class WikiExtensionsSettingTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_settings, :wiki_extensions_menus
 
   def test_find_or_create
-    assert(!WikiExtensionsSetting.find(:first, :conditions => 'project_id = 5'))
+    assert(!WikiExtensionsSetting.find_by_project_id(5))
     setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
-    assert(WikiExtensionsSetting.find(:first, :conditions => 'project_id = 5'))
+    assert(WikiExtensionsSetting.find_by_project_id(5))
     setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
   end

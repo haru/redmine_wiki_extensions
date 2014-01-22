@@ -24,8 +24,7 @@ class WikiExtensionsMenu < ActiveRecord::Base
   safe_attributes 'enabled', 'menu_no', 'title', 'page_name'
 
   def self.find_or_create(pj_id, no)
-    menu = WikiExtensionsMenu.find(:first,
-      :conditions => ['project_id = ? and menu_no = ?', pj_id, no])
+    menu = WikiExtensionsMenu.where(:project_id => pj_id).where(:menu_no => no).first
     unless menu
       menu = WikiExtensionsMenu.new
       menu.project_id = pj_id

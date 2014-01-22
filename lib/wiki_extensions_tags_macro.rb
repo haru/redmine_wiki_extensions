@@ -43,7 +43,7 @@ module WikiExtensionsWikiMacro
       "  !{{tagcloud}}\n"
     macro :tagcloud do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      classes = ['tag_level1', 'tag_level2', 'tag_level3', 'tag_level4', 'tag_level5']
+      classes = %w(tag_level1 tag_level2 tag_level3 tag_level4 tag_level5)
       page = obj.page
       return unless page
       project = page.project

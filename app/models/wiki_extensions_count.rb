@@ -26,8 +26,7 @@ class WikiExtensionsCount < ActiveRecord::Base
 
   def self.countup(wiki_page_id, date = nil)
     date = Date.today unless date
-    count = WikiExtensionsCount.find(:first,
-      :conditions => ['date = ? and page_id = ?', date, wiki_page_id])
+    count = WikiExtensionsCount.where(:date => date).where(:page_id => wiki_page_id).first
     unless count
       page = WikiPage.find(wiki_page_id)
       count = WikiExtensionsCount.new
