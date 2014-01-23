@@ -43,10 +43,10 @@ class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
     assert relation.save
     relation_id = relation.id
     tag_id = tag.id
-    assert_not_nil(WikiExtensionsTag.find(:first, :conditions => ['name = ?', tag_name]))
-    assert_not_nil(WikiExtensionsTagRelation.find(:first, :conditions => ['id = ?', relation_id]))
+    assert_not_nil(WikiExtensionsTag.where(:name => tag_name).first)
+    assert_not_nil(WikiExtensionsTagRelation.where(:id => relation_id).first)
     relation.destroy
-    assert_nil(WikiExtensionsTagRelation.find(:first, :conditions => ['id = ?', relation_id]))
-    assert_nil(WikiExtensionsTag.find(:first, :conditions => ['name = ?', tag_name]))
+    assert_nil(WikiExtensionsTagRelation.where(:id => relation_id).first)
+    assert_nil(WikiExtensionsTag.where(:name => tag_name).first)
   end
 end

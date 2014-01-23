@@ -69,7 +69,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     @request.session[:user_id] = 1
     post :destroy_comment, :id => 1, :comment_id => comment.id
     assert_response :redirect
-    comment = WikiExtensionsComment.find(:first, :conditions => ['id = ?', comment.id])
+    comment = WikiExtensionsComment.where(:id => comment.id).first
     assert_nil(comment)
   end
 
@@ -96,10 +96,10 @@ class WikiExtensionsControllerTest < ActionController::TestCase
   context "vote" do
     should "success if new vote." do
       @request.session[:user_id] = 1
-      count = WikiExtensionsVote.find(:all).length
+      count = WikiExtensionsVote.all.length
       post :vote, :id => 1, :target_class_name => 'Project', :target_id => 1,
         :key => 'aaa', :url => 'http://localhost:3000'
-      assert_equal(count + 1, WikiExtensionsVote.find(:all).length)
+      assert_equal(count + 1, WikiExtensionsVote.all.length)
       assert_response :success
     end
   end
