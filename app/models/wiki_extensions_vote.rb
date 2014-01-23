@@ -38,9 +38,7 @@ class WikiExtensionsVote < ActiveRecord::Base
   end
 
   def self.find_or_create(class_name, obj_id, key_str)
-    vote = WikiExtensionsVote.find(:first,
-      :conditions => ['target_class_name = ? and target_id = ? and keystr = ?',
-        class_name, obj_id, key_str])
+    vote = WikiExtensionsVote.where(:target_class_name => class_name).where(:target_id => obj_id).where(:keystr => key_str).first
     unless vote
       vote = WikiExtensionsVote.new
       vote.count = 0

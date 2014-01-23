@@ -44,7 +44,7 @@ module WikiExtensionsWikiMacro
       end
       first_time = true
       tag_names.each {|tag_name|
-        tag = WikiExtensionsTag.find(:first, :conditions => ["project_id = ? and name = ?", project.id, tag_name])
+        tag = WikiExtensionsTag.where(:project_id => project.id).where(:name => tag_name).first
         if and_op
           if tag
             if first_time
