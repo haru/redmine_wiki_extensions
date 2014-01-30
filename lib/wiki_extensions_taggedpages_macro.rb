@@ -23,6 +23,7 @@ module WikiExtensionsWikiMacro
       "  !{{taggedpages(tagname, project)}}\n"
     macro :taggedpages do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
 
       return nil if args.length < 1
       tag_names = []

@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2014  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,6 @@ class WikiExtensionsSettingsController < ApplicationController
   def update    
     menus = params[:menus]
 
-    auto_preview_enabled = (params[:setting][:auto_preview_enabled].to_i == 1)
     setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
@@ -34,12 +33,13 @@ class WikiExtensionsSettingsController < ApplicationController
           menu_setting.enabled = (menu[:enabled] == 'true')
           menu_setting.save!
         }
-        setting.auto_preview_enabled = auto_preview_enabled
+        #setting.auto_preview_enabled = auto_preview_enabled
+        setting.attributes = params[:setting]
         setting.save!
       end
       flash[:notice] = l(:notice_successful_update)
-    rescue
-      flash[:error] = "Updating failed."
+    rescue => e
+      flash[:error] = "Updating failed." + e.message
     end
     
     redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'

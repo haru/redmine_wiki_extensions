@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2014  Haruyuki Iida
+# Copyright (C) 2014 Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -15,15 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-class WikiExtensionsUtil
-  def WikiExtensionsUtil.is_enabled?(project)
-    return false unless project
-    project.module_enabled? 'wiki_extensions'
+class AddDisableTags < ActiveRecord::Migration
+ 
+  def self.up
+    add_column(:wiki_extensions_settings, "tag_disabled", :boolean, :default => false)
   end
 
-  def WikiExtensionsUtil.tag_enabled?(project)
-    return false unless project
-    setting = WikiExtensionsSetting.find_by_project_id(project.id)
-    !setting.tag_disabled
+  def self.down
+    remove_column(:wiki_extensions_settings, "tag_disabled")
   end
 end

@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2012  Haruyuki Iida
+# Copyright (C) 2009-2014  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -22,6 +22,7 @@ module WikiExtensionsWikiMacro
       "  !{{tags}}\n"
     macro :tags do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
       page = obj.page
       return unless page
       project = page.project
@@ -43,6 +44,7 @@ module WikiExtensionsWikiMacro
       "  !{{tagcloud}}\n"
     macro :tagcloud do |obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
       classes = %w(tag_level1 tag_level2 tag_level3 tag_level4 tag_level5)
       page = obj.page
       return unless page
