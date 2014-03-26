@@ -18,6 +18,9 @@
 - emoticon: '(/)'
   image: check.png
   title: Check
+- emoticon: '(x)'
+  image: x_mark.png
+  title: X_mark
 - emoticon: '(!)'
   image: warning.png
   title: Warning
