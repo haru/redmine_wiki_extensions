@@ -44,7 +44,7 @@ end
 module InstanceMethodsForWikiExtensionWikiController
   def render_with_wiki_extensions(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project) and @content
-      if (args[:partial] == 'common/preview')
+      if (args.class == Hash and args[:partial] == 'common/preview')
         WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
       end
     end
