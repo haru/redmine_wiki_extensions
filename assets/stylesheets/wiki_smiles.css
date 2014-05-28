@@ -98,6 +98,6 @@
 .jstElements button {
 	float:left;
 }
-.jstElements {
+.jstElements, .jstSpacer {
 	float:left;
 }
