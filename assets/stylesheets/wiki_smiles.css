@@ -1,67 +1,28 @@
 /* Here added styles for smiles */
 
 .jstb_smile {
-	background-image: url(../images/smile.gif);
+	background-image: url(../images/smile.png);
 }
 .jstb_sad {
-	background-image: url(../images/sad.gif);
+	background-image: url(../images/sad.png);
 }
 .jstb_tongue {
-	background-image: url(../images/tongue.gif);
+	background-image: url(../images/tongue.png);
 }
 .jstb_biggrin {
-	background-image: url(../images/biggrin.gif);
+	background-image: url(../images/biggrin.png);
 }
 .jstb_wink {
-	background-image: url(../images/wink.gif);
-}
-.jstb_thumbs_up {
-	background-image: url(../images/thumbs_up.gif);
-}
-.jstb_thumbs_down {
-	background-image: url(../images/thumbs_down.gif);
-}
-.jstb_inf {
-	background-image: url(../images/information.gif);
+	background-image: url(../images/wink.png);
 }
 .jstb_check {
-	background-image: url(../images/check.gif);
-}
-.jstb_error {
-	background-image: url(../images/error.gif);
+	background-image: url(../images/check.png);
 }
 .jstb_warn {
-	background-image: url(../images/warning.gif);
+	background-image: url(../images/warning.png);
 }
 .jstb_add {
-	background-image: url(../images/add.gif);
-}
-.jstb_forbidden {
-	background-image: url(../images/forbidden.gif);
-}
-.jstb_help_16 {
-	background-image: url(../images/help_16.gif);
-}
-.jstb_lightbulb_on {
-	background-image: url(../images/lightbulb_on.gif);
-}
-.jstb_lightbulb_off {
-	background-image: url(../images/lightbulb.gif);
-}
-.jstb_star {
-	background-image: url(../images/star_yellow.gif);
-}
-.jstb_star_red {
-	background-image: url(../images/star_red.gif);
-}
-.jstb_star_green {
-	background-image: url(../images/star_green.gif);
-}
-.jstb_star_blue {
-	background-image: url(../images/star_blue.gif);
-}
-.jstb_star_yellow {
-	background-image: url(../images/star_yellow.gif);
+	background-image: url(../images/add.png);
 }
 
 .jstt_smiles #smiles_img {
