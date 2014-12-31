@@ -6,3 +6,4 @@
 syntax: glob
 test/coverage
 *.orig
+Gemfile

@@ -16,11 +16,12 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsTag < ActiveRecord::Base
   unloadable
+  attr_accessible :name, :project_id
   validates_presence_of :name, :project_id
   validates_uniqueness_of :name, :scope => :project_id
 
   def WikiExtensionsTag.find_or_create(project_id, name)
-    obj = WikiExtensionsTag.find_or_create_by_name_and_project_id(name, project_id)
+    obj = WikiExtensionsTag.find_or_create_by(name: name, project_id: project_id)
   end
 
   def ==(obj)

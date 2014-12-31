@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2011  Haruyuki Iida
+# Copyright (C) 2009-2015  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -42,13 +42,13 @@ class WikiExtensionsCount < ActiveRecord::Base
   def self.access_count(wiki_page_id, date = nil)
     conditions = ['page_id = ?', wiki_page_id] unless date
     conditions = ['date >= ? and page_id = ?', date, wiki_page_id] if date
-    total = WikiExtensionsCount.sum(:count, :conditions => conditions)
+    #total = WikiExtensionsCount.sum(:count, :conditions => conditions)
+    WikiExtensionsCount.where(conditions).sum(:count)
   end
 
   def self.popularity(project_id, term = 0)
     conditions = ['project_id = ?', project_id] if term == 0
     conditions = ['project_id = ? and date > ?', project_id, Date.today - term.to_i] if term > 0
-    WikiExtensionsCount.sum(:count, :group => :page_id,
-      :conditions => conditions, :select => :count, :order => 'sum(count) desc').map{|x| [x[0], x[1].to_i]}
+    WikiExtensionsCount.where(conditions).group(:page_id).sum(:count).to_a.sort_by{|x|0 - x[1]}.map{|x| [x[0], x[1].to_i]}
   end
 end
