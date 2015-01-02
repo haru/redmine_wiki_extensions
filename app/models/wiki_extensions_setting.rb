@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011-2014  Haruyuki Iida
+# Copyright (C) 2011-2015  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,9 +17,10 @@
 class WikiExtensionsSetting < ActiveRecord::Base
   unloadable
   belongs_to :project
+  attr_accessible :auto_preview_enabled
 
   def self.find_or_create(pj_id)
-    setting = WikiExtensionsSetting.find_by_project_id(pj_id)
+    setting = WikiExtensionsSetting.find_by(project_id: pj_id)
     unless setting
       setting = WikiExtensionsSetting.new
       setting.project_id = pj_id
