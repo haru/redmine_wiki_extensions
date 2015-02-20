@@ -38,6 +38,11 @@ class WikiExtensionsComment < ActiveRecord::Base
                             :permission => :view_wiki_edits,
                             :timestamp => "updated_at",
                             :author_key => "user_id",
-                            :find_options => {:include => {:wiki_page => {:wiki => :project}}}
+                            :scope => select("#{WikiExtensionsComment.table_name}.updated_at, #{WikiExtensionsComment.table_name}.comment, #{WikiExtensionsComment.table_name}.user_id, #{WikiExtensionsComment.table_name}.wiki_page_id")
+                                          .joins("LEFT JOIN #{WikiPage.table_name} ON #{WikiPage.table_name}.id = #{WikiExtensionsComment.table_name}.wiki_page_id " +
+                                "LEFT JOIN #{Wiki.table_name} ON #{Wiki.table_name}.id = #{WikiPage.table_name}.wiki_id " +
+   "LEFT JOIN #{Project.table_name} ON #{Project.table_name}.id = #{Wiki.table_name}.project_id")
+
+  #:find_options => {:include => {:wiki_page => {:wiki => :project}}}
 
 end

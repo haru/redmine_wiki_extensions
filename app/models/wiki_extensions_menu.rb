@@ -20,8 +20,8 @@ class WikiExtensionsMenu < ActiveRecord::Base
   belongs_to :project
   validates_presence_of :project_id
   validates_presence_of :menu_no
-  
-  safe_attributes 'enabled', 'menu_no', 'title', 'page_name'
+
+  attr_accessible 'enabled', 'menu_no', 'title', 'page_name'
 
   def self.find_or_create(pj_id, no)
     menu = WikiExtensionsMenu.where(:project_id => pj_id).where(:menu_no => no).first

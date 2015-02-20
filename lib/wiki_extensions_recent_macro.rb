@@ -29,13 +29,13 @@ module WikiExtensionsRecentMacro
       days = args[0].strip.to_i if args.length > 0
 
       return nil if days < 1      
-      contents = WikiContent.find(:all,
-        :joins => "left join #{WikiPage.table_name} on #{WikiPage.table_name}.id = #{WikiContent.table_name}.page_id ",
-        :conditions => ["wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Date.today - days],
-        :order => "#{WikiContent.table_name}.updated_on desc")
+
+      pages = WikiPage.includes(:content).where([" #{WikiPage.table_name}.wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Date.today - days])
+                                  .order("#{WikiContent.table_name}.updated_on desc")
       o = '<div class="wiki_extensions_recent">'
       date = nil
-      contents.each {|content|
+      pages.each {|page|
+        content = page.content
         updated_on = Date.new(content.updated_on.year, content.updated_on.month, content.updated_on.day)
         if date != updated_on
           date = updated_on

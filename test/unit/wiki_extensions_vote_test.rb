@@ -105,7 +105,9 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
     setup do
       @project = Project.find(1)
       @vote = WikiExtensionsVote.new
-      @vote.attributes = {:target => @project, :count => 1, :keystr => 'aaa'}
+      @vote.target = @project
+      @vote.count = 1
+      @vote.keystr = 'aaa'
       @vote.save!
     end
 

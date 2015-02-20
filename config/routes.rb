@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2012  Haruyuki Iida
+# Copyright (C) 2012-2015  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,5 +17,5 @@
 
 RedmineApp::Application.routes.draw do
   match 'projects/:id/wiki_extensions/:action', :controller => 'wiki_extensions', :via => [:get, :post]
-  match 'projects/:id/wiki_extensions_settings/:action', :controller => 'wiki_extensions_settings', :via => [:get, :post, :put]
+  match 'projects/:id/wiki_extensions_settings/:action', :controller => 'wiki_extensions_settings', :via => [:get, :post, :put, :patch]
 end

@@ -29,12 +29,12 @@ class WikiExtensionsSettingsController < ApplicationController
       setting.transaction do
         menus.each_value {|menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
-          menu_setting.safe_attributes = menu
+          menu_setting.assign_attributes(menu)
           menu_setting.enabled = (menu[:enabled] == 'true')
           menu_setting.save!
         }
         #setting.auto_preview_enabled = auto_preview_enabled
-        setting.attributes = params[:setting]
+        setting.assign_attributes(params[:setting])
         setting.save!
       end
       flash[:notice] = l(:notice_successful_update)
