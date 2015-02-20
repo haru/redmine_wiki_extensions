@@ -17,7 +17,7 @@
 class WikiExtensionsSetting < ActiveRecord::Base
   unloadable
   belongs_to :project
-  attr_accessible :auto_preview_enabled
+  attr_accessible :auto_preview_enabled, :tag_disabled
 
   def self.find_or_create(pj_id)
     setting = WikiExtensionsSetting.find_by(project_id: pj_id)
