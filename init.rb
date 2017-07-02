@@ -19,7 +19,7 @@ begin
 require 'config/initializers/session_store.rb'
 rescue LoadError
 end
-require 'redcloth3'
+require 'redmine/wiki_formatting/textile/redcloth3'
 
 require_dependency 'wiki_extensions_notifiable_patch'
 Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
@@ -37,23 +37,23 @@ Rails.configuration.to_prepare do
   unless ProjectsHelper.included_modules.include? WikiExtensionsProjectsHelperPatch
     ProjectsHelper.send(:include, WikiExtensionsProjectsHelperPatch)
   end
-  
+
   unless Redmine::WikiFormatting::Textile::Formatter.included_modules.include? WikiExtensionsFormatterPatch
     Redmine::WikiFormatting::Textile::Formatter.send(:include, WikiExtensionsFormatterPatch)
   end
-  
+
   unless Redmine::WikiFormatting::Textile::Helper.included_modules.include? WikiExtensionsHelperPatch
     Redmine::WikiFormatting::Textile::Helper.send(:include, WikiExtensionsHelperPatch)
   end
-  
+
   unless Redmine::Notifiable.included_modules.include? WikiExtensionsNotifiablePatch
     Redmine::Notifiable.send(:include, WikiExtensionsNotifiablePatch)
   end
-  
+
   unless WikiController.included_modules.include? WikiExtensionsWikiControllerPatch
     WikiController.send(:include, WikiExtensionsWikiControllerPatch)
   end
-  
+
   unless WikiPage.included_modules.include? WikiExtensionsWikiPagePatch
     WikiPage.send(:include, WikiExtensionsWikiPagePatch)
   end
@@ -65,8 +65,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   author_url 'http://twitter.com/haru_iida'
   description 'This is a Wiki Extensions plugin for Redmine'
   url "http://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en"
-  version '0.7.0'
-  requires_redmine :version_or_higher => '3.0.0'
+  version '0.8.0'
+  requires_redmine :version_or_higher => '3.4.0'
 
   project_module :wiki_extensions do
     permission :wiki_extensions_vote, {:wiki_extensions => [:vote, :show_vote]}, :public => true
@@ -91,7 +91,6 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   }
 
   RedCloth3::ALLOWED_TAGS << "div"
-    
+
   activity_provider :wiki_comment, :class_name => 'WikiExtensionsComment', :default => false
 end
-
