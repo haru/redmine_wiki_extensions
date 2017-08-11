@@ -18,7 +18,11 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
-  fixtures :wiki_extensions_tag_relations
+  fixtures :wiki_extensions_tag_relations, :wiki_extensions_tags,
+           :projects, :users, :email_addresses, :roles, :members, :member_roles,
+           :enabled_modules, :wikis, :wiki_pages, :wiki_contents,
+           :wiki_content_versions, :attachments,
+           :issues, :issue_statuses, :trackers
 
   # Replace this with your real tests.
   def test_create
@@ -29,7 +33,7 @@ class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
     tag = WikiExtensionsTag.find_or_create(1, 'bbb')
     relation.tag = tag
     relation.wiki_page_id = 1
-    assert relation.save
+    assert relation.save!
 
     relation.destroy
   end
@@ -40,7 +44,7 @@ class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
     relation = WikiExtensionsTagRelation.new
     relation.tag = tag
     relation.wiki_page_id = 1
-    assert relation.save
+    assert relation.save!
     relation_id = relation.id
     tag_id = tag.id
     assert_not_nil(WikiExtensionsTag.where(:name => tag_name).first)
