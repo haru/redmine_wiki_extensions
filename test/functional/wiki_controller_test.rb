@@ -1,5 +1,5 @@
 # Code Review plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -23,8 +23,8 @@ class WikiControllerTest < ActionController::TestCase
 
   def setup
     @controller = WikiController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @request    = ActionController::TestRequest.create(self.class.controller_class)
+    #@response   = ActionController::TestResponse.new
     @request.env["HTTP_REFERER"] = '/'
     @project = Project.find(1)
     @wiki = @project.wiki
@@ -62,7 +62,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{comments}}"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
 
   end
@@ -76,7 +76,7 @@ class WikiControllerTest < ActionController::TestCase
     comment.comment = "aaa"
     comment.save!
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -87,7 +87,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{div_end_tag}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
 
   end
@@ -98,7 +98,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{fnlist}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
 
   end
@@ -110,7 +110,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{new(2009-03-01, 4)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -121,7 +121,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{project(#{@project.id}), bar}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -133,7 +133,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{tagcloud}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -145,17 +145,17 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{wiki(#{@project.id}, #{@page_name}, bar)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
   def test_edit
     @request.session[:user_id] = 1
-    get :edit, :project_id => 1, :id => @page_name
+    get :edit, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
 
-    post :edit, :project_id => 1, :id => @page_name, :content => {:text => 'aaa'},
-      :extension => {:tags =>{"0" => "aaa", "1" => "bbb"}}
+    post :edit, :params => {:project_id => 1, :id => @page_name, :content => {:text => 'aaa'},
+      :extension => {:tags =>{"0" => "aaa", "1" => "bbb"}}}
     assert_response :success
   end
 
@@ -166,7 +166,7 @@ class WikiControllerTest < ActionController::TestCase
     
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -176,7 +176,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -186,7 +186,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -197,7 +197,7 @@ class WikiControllerTest < ActionController::TestCase
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :project_id => 1, :id => @page_name
+    get :show, :params => {:project_id => 1, :id => @page_name}
     assert_response :success
   end
 
@@ -208,7 +208,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -220,7 +220,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -232,7 +232,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
 
@@ -243,7 +243,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -255,7 +255,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -267,7 +267,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -279,7 +279,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -291,7 +291,7 @@ class WikiControllerTest < ActionController::TestCase
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
       assert_response :success
     end
   end
@@ -301,7 +301,7 @@ class WikiControllerTest < ActionController::TestCase
       setContent("{{page_break}}\n")
 
       @request.session[:user_id] = 1
-      get :show, :project_id => 1, :id => @page_name
+      get :show, :params => {:project_id => 1, :id => @page_name}
     end
 
     should "success" do

@@ -24,8 +24,8 @@ class WikiExtensionsControllerTest < ActionController::TestCase
 
   def setup
     @controller = WikiExtensionsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @request    = ActionController::TestRequest.create(self.class.controller_class)
+    #@response   = ActionController::TestResponse.new
     @request.env["HTTP_REFERER"] = '/'
     @project = Project.find(1)
     @wiki = @project.wiki
@@ -50,13 +50,13 @@ class WikiExtensionsControllerTest < ActionController::TestCase
 
   def test_add_comment
     @request.session[:user_id] = 1
-    post :add_comment, :id => 1, :wiki_page_id => @page.id, :comment => 'aaa'
+    post :add_comment, :params => {:id => 1, :wiki_page_id => @page.id, :comment => 'aaa'}
     assert_response :redirect
   end
 
   def test_tag
     @request.session[:user_id] = 1
-    get :tag, :id => 1, :tag_id => 1
+    get :tag, :params => {:id => 1, :tag_id => 1}
     #assert assigns[:tag]
   end
 
@@ -67,7 +67,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     comment.comment = "aaa"
     comment.save!
     @request.session[:user_id] = 1
-    post :destroy_comment, :id => 1, :comment_id => comment.id
+    post :destroy_comment, :params => {:id => 1, :comment_id => comment.id}
     assert_response :redirect
     comment = WikiExtensionsComment.where(:id => comment.id).first
     assert_nil(comment)
@@ -81,7 +81,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     comment.save!
     message = "newcomment"
     @request.session[:user_id] = 1
-    post :update_comment, :id => 1, :comment_id => comment.id, :comment => message
+    post :update_comment, :params => {:id => 1, :comment_id => comment.id, :comment => message}
     assert_response :redirect
     comment = WikiExtensionsComment.find(comment.id)
     assert_equal(message, comment.comment)
@@ -89,7 +89,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
 
   def test_forwad_wiki_page
     @request.session[:user_id] = 1
-    get :forward_wiki_page, :id => 1, :menu_id => 1
+    get :forward_wiki_page, :params => {:id => 1, :menu_id => 1}
     assert_response :redirect
   end
 
@@ -97,8 +97,8 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     should "success if new vote." do
       @request.session[:user_id] = 1
       count = WikiExtensionsVote.all.length
-      post :vote, :id => 1, :target_class_name => 'Project', :target_id => 1,
-        :key => 'aaa', :url => 'http://localhost:3000'
+      post :vote, :params => {:id => 1, :target_class_name => 'Project', :target_id => 1,
+        :key => 'aaa', :url => 'http://localhost:3000'}
       assert_equal(count + 1, WikiExtensionsVote.all.length)
       assert_response :success
     end

@@ -34,24 +34,9 @@ Rails.configuration.to_prepare do
   require_dependency 'projects_helper'
   # Guards against including the module multiple time (like in tests)
   # and registering multiple callbacks
-  unless ProjectsHelper.included_modules.include? WikiExtensionsProjectsHelperPatch
-    ProjectsHelper.send(:include, WikiExtensionsProjectsHelperPatch)
-  end
 
   unless Redmine::WikiFormatting::Textile::Formatter.included_modules.include? WikiExtensionsFormatterPatch
     Redmine::WikiFormatting::Textile::Formatter.send(:include, WikiExtensionsFormatterPatch)
-  end
-
-  unless Redmine::WikiFormatting::Textile::Helper.included_modules.include? WikiExtensionsHelperPatch
-    Redmine::WikiFormatting::Textile::Helper.send(:include, WikiExtensionsHelperPatch)
-  end
-
-  unless Redmine::Notifiable.included_modules.include? WikiExtensionsNotifiablePatch
-    Redmine::Notifiable.send(:include, WikiExtensionsNotifiablePatch)
-  end
-
-  unless WikiController.included_modules.include? WikiExtensionsWikiControllerPatch
-    WikiController.send(:include, WikiExtensionsWikiControllerPatch)
   end
 
   unless WikiPage.included_modules.include? WikiExtensionsWikiPagePatch

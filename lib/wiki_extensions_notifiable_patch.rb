@@ -1,25 +1,26 @@
-module WikiExtensionsNotifiablePatch
-  def self.included(base) # :nodoc:
-    @is_wrap = false 
-    base.extend NotifiableMethods
-    base.class_eval do
-      unloadable
-      class << self
-        if !@is_wrap
-          alias_method_chain :all, :wiki_comments
-          @is_wrap = true
-        end
-      end
-    end
-  end
-end
+# Wiki Extensions plugin for Redmine
+# Copyright (C) 2009-2017  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 module NotifiableMethods
-  def all_with_wiki_comments
-    notifications = all_without_wiki_comments
+  def all
+    notifications = super
     notifications << Redmine::Notifiable.new('wiki_comment_added')
     notifications
   end
 end
 
-
+Redmine::Notifiable.prepend(NotifiableMethods)

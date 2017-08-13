@@ -1,5 +1,5 @@
 # Code Review plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,8 +24,8 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
 
   def setup
     @controller = WikiExtensionsSettingsController.new
-    @request    = ActionController::TestRequest.new
-    @response   = ActionController::TestResponse.new
+    @request    = ActionController::TestRequest.create(self.class.controller_class)
+    #@response   = ActionController::TestResponse.new
     @request.env["HTTP_REFERER"] = '/'
     @request.session[:user_id] = 1
     @project = Project.find(1)
@@ -41,8 +41,8 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
       menus = {}
       menus[0] = {:enabled => 'true',:menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
       menus[1] = {:enabled => 'true',:menu_no => 2, :title => 'my_title2', :page_name => 'my_page_name2'}
-      post :update, :setting => {:auto_preview_enabled => 1},
-        :menus => menus, :id => @project
+      post :update, :params => {:setting => {:auto_preview_enabled => 1},
+        :menus => menus, :id => @project}
       assert_response :redirect
       setting = WikiExtensionsSetting.find_or_create @project.id
       assert_equal(true, setting.auto_preview_enabled)

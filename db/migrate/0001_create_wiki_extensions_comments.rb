@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-class CreateWikiExtensionsComments < ActiveRecord::Migration
+class CreateWikiExtensionsComments < ActiveRecord::Migration[4.2]
   def self.up
     create_table :wiki_extensions_comments do |t|
       t.column :wiki_page_id, :integer
