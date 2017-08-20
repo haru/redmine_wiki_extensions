@@ -27,10 +27,9 @@ class WikiExtensionsSettingsController < ApplicationController
     setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
-        menus.parameters.each {|menu|
+        menus.each_pair {|menu_no, menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
-          menu_setting.assign_attributes(menu)
-          menu_setting.enabled = (menu[:enabled] == 'true')
+          menu_setting.attributes = menu.permit(:enabled, :menu_no, :title, :page_name)
           menu_setting.save!
         }
         #setting.auto_preview_enabled = auto_preview_enabled
@@ -40,6 +39,7 @@ class WikiExtensionsSettingsController < ApplicationController
       flash[:notice] = l(:notice_successful_update)
     rescue => e
       flash[:error] = "Updating failed." + e.message
+      throw e
     end
     
     redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'
