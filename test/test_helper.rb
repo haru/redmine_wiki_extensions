@@ -1,6 +1,11 @@
 require 'simplecov'
 require 'simplecov-rcov'
-SimpleCov.formatter = SimpleCov::Formatter::RcovFormatter
+require 'coveralls'
+
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+  SimpleCov::Formatter::RcovFormatter,
+  Coveralls::SimpleCov::Formatter
+]
 
 SimpleCov.start do
   root File.expand_path(File.dirname(__FILE__) + '/..')
