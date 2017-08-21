@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2015  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -30,19 +30,6 @@ ActionView::Base.class_eval do
   include ActionView::Helpers::WikiExtensionsHelper
 end
 
-Rails.configuration.to_prepare do
-  require_dependency 'projects_helper'
-  # Guards against including the module multiple time (like in tests)
-  # and registering multiple callbacks
-
-  unless Redmine::WikiFormatting::Textile::Formatter.included_modules.include? WikiExtensionsFormatterPatch
-    Redmine::WikiFormatting::Textile::Formatter.send(:include, WikiExtensionsFormatterPatch)
-  end
-
-  unless WikiPage.included_modules.include? WikiExtensionsWikiPagePatch
-    WikiPage.send(:include, WikiExtensionsWikiPagePatch)
-  end
-end
 
 Redmine::Plugin.register :redmine_wiki_extensions do
   name 'Redmine Wiki Extensions plugin'
