@@ -1,6 +1,6 @@
 /*
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2014  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -21,7 +21,7 @@ var auto_preview_interval = 2000;
 
 function add_wiki_extensions_tags_form() {
     var tags_form = $('#wiki_extensions_tag_form');
-    $('#attachments_fields').parent().after(tags_form);
+    $('#wiki_form div.box').append(tags_form);
 }
 
 function set_tag_atuto_complete(taglist) {
@@ -36,7 +36,7 @@ function set_tag_atuto_complete(taglist) {
 
 function setAutPreviewCallback(url, preview_id, form_id, content_id) {
     var content_org = $(content_id).val();
-    
+
     setInterval(function(){
         var content_new = $(content_id).val();
         if (content_new != content_org) {
