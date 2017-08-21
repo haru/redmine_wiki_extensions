@@ -17,6 +17,10 @@
 
 require_dependency 'wiki_controller'
 
+class WikiController
+  after_action :wiki_extensions_save_tags, :only => [:edit, :update]
+end
+
 module InstanceMethodsForWikiExtensionWikiController
   def render(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project) and @content

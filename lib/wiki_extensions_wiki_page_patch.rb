@@ -21,13 +21,16 @@ class WikiPage
   has_many :wiki_extensions_tag_relations, :dependent => :destroy
   has_many :wiki_ext_tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations, :source => :tag
   has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
+end
+
+module WikiExtensionsWikiPageMethods
   def wiki_extension_data
     @wiki_extension_data ||= {}
   end
 
   def set_tags(tag_list = {})
     tag_array = []
-    tag_list.each_value{|name|
+    tag_list.each_pair{|num, name|
       next if name.blank?
       tag_array << name.strip
     }
@@ -45,8 +48,9 @@ class WikiPage
       relation.wiki_page_id = self.id
       relation.save
     }
-
   end
 
 end
+
+WikiPage.prepend(WikiExtensionsWikiPageMethods)
 
