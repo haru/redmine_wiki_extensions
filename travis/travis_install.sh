@@ -44,10 +44,6 @@ fi
 
 # checkout redmine
 git clone $REDMINE_GIT_REPO $PATH_TO_REDMINE
-if [ -d test/fixtures ]
-then
-  cp test/fixtures/* ${PATH_TO_REDMINE}/test/fixtures/
-fi
 
 cd $PATH_TO_REDMINE
 if [ ! "$REDMINE_GIT_TAG" = "master" ];
