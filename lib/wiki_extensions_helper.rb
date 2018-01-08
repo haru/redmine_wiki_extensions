@@ -42,24 +42,27 @@ module ActionView
               end
              
               ret << "<div>"
-              ret << '<div class="contextual">'
-              
-              if  k != 25
-                reply_link = link_to_function(l(:button_reply), "$('##{form_reply_id}').show();", :class => 'icon icon-comment')
-                ret << reply_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'reply_comment'}, @project)
-              end  
+              if formats.include?(:html)
+                ret << '<div class="contextual">'
 
-              edit_link = link_to_function(l(:button_edit), "$('##{div_comment_id}').hide();$('##{form_div_id}').show();$('##{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
-              ret << edit_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'update_comment'}, @project) or User.current.id == comment.user.id or User.current.admin
-              if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'destroy_comment'}, @project) or User.current.admin
-                del_link =  link_to_if_authorized(l(:button_delete), {:controller => 'wiki_extensions',
-                    :action => 'destroy_comment', :id => @project, :comment_id => comment.id},
-                  :class => "icon icon-del", :confirm => l(:text_are_you_sure))
-                ret << del_link if del_link
+                if k != 25 && User.current.allowed_to?({controller: 'wiki_extensions', action: 'reply_comment'}, @project)
+                  reply_link = link_to_function(l(:button_reply), "$('##{form_reply_id}').show();", :class => 'icon icon-comment')
+                  ret << reply_link
+                end
+
+                edit_link = link_to_function(l(:button_edit), "$('##{div_comment_id}').hide();$('##{form_div_id}').show();$('##{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
+                ret << edit_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'update_comment'}, @project) or User.current.id == comment.user.id or User.current.admin
+                if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'destroy_comment'}, @project) or User.current.admin
+                  del_link =  link_to_if_authorized(l(:button_delete), {:controller => 'wiki_extensions',
+                      :action => 'destroy_comment', :id => @project, :comment_id => comment.id},
+                    :class => "icon icon-del", :confirm => l(:text_are_you_sure))
+                  ret << (del_link || '')
+                end
+
+                ret << "\n"
+                ret << "</div>\n"
               end
-          
-              ret << "\n"
-              ret << "</div>\n"
+
               ret << '<h4 class="wiki_left">'
               ret << "#{avatar(comment.user, :size => "20")}"
               ret << "\n"
@@ -72,61 +75,64 @@ module ActionView
               ret << "</h4>\n"
               ret << '<div id="' + div_comment_id + '" class="wiki_left">' + "\n"
               ret << textilizable(comment, :comment)
-              ret << "</div>\n"
-        
-              ret << '<div id="' + form_div_id + '" style="display:none;" class="wiki_left">' + "\n"
+              ret << "</div>"
 
-              url = url_for(:controller => 'wiki_extensions', :action => 'update_comment', :id => @project)
-        
-              ret << '<form method="post" action="' + url + '">'
-              if protect_against_forgery?
-                ret << hidden_field_tag(:authenticity_token, form_authenticity_token)
+              if formats.include?(:html)
                 ret << "\n"
-              end
-              ret << "\n"
-              ret << hidden_field_tag(:comment_id, comment.id)
-              ret << "\n"
-              
-              textarea_id = "wiki_extensions_comment_edit_area_#{comment.id}"
-              
-              ret << text_area_tag(:comment, comment.comment, :rows => 5, :cols => 70, :id => textarea_id,:accesskey => accesskey(:edit), :class => "wiki-edit")
-              
-              ret << '<br/>'
-              ret << submit_tag(l(:button_apply))
-              ret << link_to_function(l(:button_cancel), "$('##{div_comment_id}').show();$('##{form_div_id}').hide();")
-              ret << "\n"
-              ret << wikitoolbar_for(textarea_id)
-              ret << '</form>'
+                ret << '<div id="' + form_div_id + '" style="display:none;" class="wiki_left">' + "\n"
 
-              ret << '</div>'
-        
-              ret << '<div id="' + form_reply_id + '" style="display:none;" class="wiki_left">' + "\n"
-              url = url_for(:controller => 'wiki_extensions', :action => 'reply_comment', :id => @project)
-        
-              ret << '<form method="post" action="' + url + '">'
-              if protect_against_forgery?
-                ret << hidden_field_tag(:authenticity_token, form_authenticity_token)
+                url = url_for(:controller => 'wiki_extensions', :action => 'update_comment', :id => @project)
+
+                ret << '<form method="post" action="' + url + '">'
+                if protect_against_forgery?
+                  ret << hidden_field_tag(:authenticity_token, form_authenticity_token)
+                  ret << "\n"
+                end
                 ret << "\n"
+                ret << hidden_field_tag(:comment_id, comment.id)
+                ret << "\n"
+
+                textarea_id = "wiki_extensions_comment_edit_area_#{comment.id}"
+
+                ret << text_area_tag(:comment, comment.comment, :rows => 5, :cols => 70, :id => textarea_id,:accesskey => accesskey(:edit), :class => "wiki-edit")
+
+                ret << '<br/>'
+                ret << submit_tag(l(:button_apply))
+                ret << link_to_function(l(:button_cancel), "$('##{div_comment_id}').show();$('##{form_div_id}').hide();")
+                ret << "\n"
+                ret << wikitoolbar_for(textarea_id)
+                ret << '</form>'
+
+                ret << '</div>'
+
+                ret << '<div id="' + form_reply_id + '" style="display:none;" class="wiki_left">' + "\n"
+                url = url_for(:controller => 'wiki_extensions', :action => 'reply_comment', :id => @project)
+
+                ret << '<form method="post" action="' + url + '">'
+                if protect_against_forgery?
+                  ret << hidden_field_tag(:authenticity_token, form_authenticity_token)
+                  ret << "\n"
+                end
+                ret << "\n"
+                ret << hidden_field_tag(:comment_id, comment.id)
+                ret << hidden_field_tag(:wiki_page_id, page.id)
+                ret << "\n"
+                textarea_id = "wiki_extensions_comment_reply_area_#{comment.id}"
+                ret << text_area_tag(:reply,'', :rows => 5, :cols => 70, :id => textarea_id, :accesskey => accesskey(:edit),
+                  :class => 'wiki-edit')
+                ret << '<br/>'
+                ret << submit_tag(l(:button_reply))
+                ret << link_to_function(l(:button_cancel), "$('##{form_reply_id}').hide();")
+                ret << "\n"
+                ret << wikitoolbar_for(textarea_id)
+                ret << '</form>'
+                ret << '</div>'
               end
-              ret << "\n"
-              ret << hidden_field_tag(:comment_id, comment.id)
-              ret << hidden_field_tag(:wiki_page_id, page.id)
-              ret << "\n"
-              textarea_id = "wiki_extensions_comment_reply_area_#{comment.id}"
-              ret << text_area_tag(:reply,'', :rows => 5, :cols => 70, :id => textarea_id, :accesskey => accesskey(:edit),
-                :class => 'wiki-edit')
-              ret << '<br/>'
-              ret << submit_tag(l(:button_reply))
-              ret << link_to_function(l(:button_cancel), "$('##{form_reply_id}').hide();")
-              ret << "\n"
-              ret << wikitoolbar_for(textarea_id)
-              ret << '</form>'
-              ret << '</div>'
         
               ret << "</div>"
         
               ret << display_comments_tree(comments_tree, comment.id,page,data,k) unless check
-              ret << "\t</li>\n"
+              ret << "</li>"
             end
           end
         end
