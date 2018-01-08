@@ -37,3 +37,4 @@ url = url_for(:controller => 'wiki_extensions', :action => 'add_comment', :id =>
     <%= link_to_function(l(:button_cancel), "$('##{div_id}').hide();") %>
   </form>
 </div>
+<%= raw(wikitoolbar_for(area_id)) %>
