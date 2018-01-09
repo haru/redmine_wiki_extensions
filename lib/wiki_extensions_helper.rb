@@ -36,12 +36,11 @@ module ActionView
               
               unless check
                 ret << '<li id='+li_comment_id+' class="list_item ExpandOpen">'
-                ret << '<div class="Expand" onClick="do_some(this, event);"></div>'
+                ret << '<div class="Expand" onClick="do_some(this, event);"></div>' if formats.include?(:html)
               else
                 ret << '<li id='+li_comment_id+' class="list_item ExpandLeaf">'
               end
-             
-              ret << "<div>"
+
               if formats.include?(:html)
                 ret << '<div class="contextual">'
 
@@ -75,7 +74,6 @@ module ActionView
               ret << "</h4>\n"
               ret << '<div id="' + div_comment_id + '" class="wiki_left">' + "\n"
               ret << textilizable(comment, :comment)
-              ret << "</div>"
 
               if formats.include?(:html)
                 ret << "\n"
