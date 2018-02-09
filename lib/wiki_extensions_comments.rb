@@ -32,7 +32,6 @@ module WikiExtensionsComments
       div_id = "add_comment_form_div#{num}"
 
       o = @_controller.send(:render_to_string, {:partial => "wiki_extensions/comment_form", :locals =>{:page => page, :area_id => area_id, :div_id => div_id}})
-      o << raw(wikitoolbar_for(area_id))
       raw o.html_safe
     end
   end
