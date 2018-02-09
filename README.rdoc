@@ -2,7 +2,7 @@
 
 Wiki Extensions is a plugin which adds several useful wiki macros to Redmine.
 
-http://www.r-labs.org/wiki/r-labs/Wiki_Extensions_en
+https://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en
 
 === Plugin installation
 
