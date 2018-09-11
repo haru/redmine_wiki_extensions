@@ -89,10 +89,10 @@ module InstanceMethodsForWikiExtensionWikiController
     header = @wiki.find_page('Header')
     return unless header
     text = "\n"
-    text << '<div id="wiki_extentions_header">'
+    text << '<code></code>{{div_start_tag(wiki_extentions_header)}}'
     text << "\n\n"
     text << header.content.text
-    text << "\n\n</div>"
+    text << "\n\n<code></code>{{div_end_tag}}"
     text << "\n\n"
     text << @content.text
     @content.text = text
@@ -105,10 +105,10 @@ module InstanceMethodsForWikiExtensionWikiController
     return unless footer
     text = @content.text
     text << "\n"
-    text << '<div id="wiki_extentions_footer">'
+    text << '<code></code>{{div_start_tag(wiki_extentions_footer)}}'
     text << "\n\n"
     text << footer.content.text
-    text << "\n\n</div>"
+    text << "\n\n<code></code>{{div_end_tag}}"
 
   end
 end
