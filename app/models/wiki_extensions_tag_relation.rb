@@ -22,10 +22,10 @@ class WikiExtensionsTagRelation < ActiveRecord::Base
   validates_uniqueness_of :tag_id, :scope => :wiki_page_id
 
   def destroy
-    target_tag_id = tag_id
-    super
+    ret = super
     target_tag = WikiExtensionsTag.find(tag_id) if tag_id
-    target_tag.destroy if target_tag.page_count == 0
+    target_tag.destroy if target_tag.page_count.zero?
+    ret
   end
 
 end
