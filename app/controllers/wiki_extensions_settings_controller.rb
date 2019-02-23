@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2014  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -19,27 +19,27 @@ class WikiExtensionsSettingsController < ApplicationController
   unloadable
   layout 'base'
 
-  before_filter :find_project, :authorize, :find_user
+  before_action :find_project, :authorize, :find_user
 
-  def update    
+  def update
     menus = params[:menus]
 
     setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
-        menus.each_value {|menu|
+        menus.each_pair {|menu_no, menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
-          menu_setting.assign_attributes(menu)
-          menu_setting.enabled = (menu[:enabled] == 'true')
+          menu_setting.attributes = menu.permit(:enabled, :menu_no, :title, :page_name)
           menu_setting.save!
         }
         #setting.auto_preview_enabled = auto_preview_enabled
-        setting.assign_attributes(params[:setting])
+        setting.attributes = params.require(:setting).permit(:auto_preview_enabled, :tag_disabled)
         setting.save!
       end
       flash[:notice] = l(:notice_successful_update)
     rescue => e
       flash[:error] = "Updating failed." + e.message
+      throw e
     end
     
     redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'

@@ -19,7 +19,7 @@
 class WikiExtensionsController < ApplicationController
   unloadable
   menu_item :wiki
-  before_filter :find_project, :authorize, :find_user
+  before_action :find_project, :authorize, :find_user
 
   def add_comment
 
