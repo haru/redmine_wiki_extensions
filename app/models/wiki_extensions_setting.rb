@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011-2015  Haruyuki Iida
+# Copyright (C) 2011-2019  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -24,7 +24,7 @@ class WikiExtensionsSetting < ActiveRecord::Base
     unless setting
       setting = WikiExtensionsSetting.new
       setting.project_id = pj_id
-      setting.save!      
+      setting.save!
     end
     5.times do |i|
       WikiExtensionsMenu.find_or_create(pj_id, i + 1)
@@ -32,7 +32,11 @@ class WikiExtensionsSetting < ActiveRecord::Base
     return setting
   end
 
+  def auto_preview_enabled
+    false
+  end
+
   def menus
-    WikiExtensionsMenu.where(:project_id => project_id).order('menu_no')
+    WikiExtensionsMenu.where(:project_id => project_id).order("menu_no")
   end
 end

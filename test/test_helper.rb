@@ -1,6 +1,7 @@
 require 'simplecov'
 require 'simplecov-rcov'
 require 'coveralls'
+require 'shoulda'
 
 SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
   SimpleCov::Formatter::RcovFormatter,

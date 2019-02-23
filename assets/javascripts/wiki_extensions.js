@@ -1,6 +1,6 @@
 /*
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2017  Haruyuki Iida
+# Copyright (C) 2009-2019  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 */
 
-var auto_preview_interval = 2000;
 
 function add_wiki_extensions_tags_form() {
     var tags_form = $('#wiki_extensions_tag_form');
@@ -34,37 +33,7 @@ function set_tag_atuto_complete(taglist) {
     })
 }
 
-function setAutPreviewCallback(url, preview_id, form_id, content_id) {
-    var content_org = $(content_id).val();
 
-    setInterval(function(){
-        var content_new = $(content_id).val();
-        if (content_new != content_org) {
-            $(preview_id).load(url, $(form_id).we_serialize2json());
-            content_org = content_new;
-        }
-    },auto_preview_interval);
-}
-
-function setWikiAutoPreview(url) {
-    setAutPreviewCallback(url, '#preview', '#wiki_form', '#content_text');
-}
-
-function setMessagesAutoPreview(url) {
-    setAutPreviewCallback(url, '#preview', '#message-form', '#message_content');
-}
-
-function setBoardsAutoPreview(url) {
-    setAutPreviewCallback(url, '#preview', '#message-form', '#message_content');
-}
-
-function setIssueAutoPreview(url) {
-    setAutPreviewCallback(url, '#preview', '#issue-form', '#issue_description');
-}
-
-function setIssueNotesAutoPreview(url) {
-    setAutPreviewCallback(url, '#preview', '#issue-form', '#notes');
-}
 
 function is_table_for_sort(tbody) {
     var trs = tbody.getElementsByTagName('tr');

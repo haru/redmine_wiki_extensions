@@ -45,7 +45,7 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
         :menus => menus, :id => @project}
       assert_response :redirect
       setting = WikiExtensionsSetting.find_or_create @project.id
-      assert_equal(true, setting.auto_preview_enabled)
+      assert_equal(false, setting.auto_preview_enabled)
       menus = setting.menus
       assert_equal(5, menus.length)
       assert(menus[0].enabled)
