@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011  Haruyuki Iida
+# Copyright (C) 2011-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,25 +17,13 @@
 
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
-module WikiExtensionsFormatterPatch
-  def self.included(base) # :nodoc:
-    base.send(:include, FormatterMethodsWikiExtensions)
-    
-    
-    base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
-      
-    end
-  end
-end
-
 module FormatterMethodsWikiExtensions
-  
+
   Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
 
 
   private
-  
+
   def inline_smiles(text)
     baseurl = Redmine::Utils.relative_url_root
     src = baseurl + "/plugin_assets/redmine_wiki_extensions/images/"
@@ -48,3 +36,4 @@ module FormatterMethodsWikiExtensions
   end
 end
 
+Redmine::WikiFormatting::Textile::Formatter.prepend(FormatterMethodsWikiExtensions)

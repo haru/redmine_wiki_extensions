@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2011  Haruyuki Iida
+# Copyright (C) 2009-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,38 +16,21 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require_dependency 'wiki_page'
 
-module WikiExtensionsWikiPagePatch
-  def self.included(base) # :nodoc:
-    base.extend(ClassMethodsForWikiExtension)
-
-    base.send(:include, InstanceMethodsForWikiExtension)
-
-    base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development
-      has_many :wiki_extensions_tag_relations, :dependent => :destroy
-      has_many :wiki_ext_tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations, :source => :tag
-      has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
-      class << self
-        # I dislike alias method chain, it's not the most readable backtraces
-        
-      end
-      
-    end
-
-  end
-end
-module ClassMethodsForWikiExtension
-  
+class WikiPage
+  unloadable
+  has_many :wiki_extensions_tag_relations, :dependent => :destroy
+  has_many :wiki_ext_tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations, :source => :tag
+  has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
 end
 
-module InstanceMethodsForWikiExtension
+module WikiExtensionsWikiPageMethods
   def wiki_extension_data
     @wiki_extension_data ||= {}
-  end  
+  end
 
   def set_tags(tag_list = {})
     tag_array = []
-    tag_list.each_value{|name|
+    tag_list.each_pair{|num, name|
       next if name.blank?
       tag_array << name.strip
     }
@@ -57,7 +40,7 @@ module InstanceMethodsForWikiExtension
     wiki_extensions_tag_relations.each {|relation|
       relation.destroy
     }
-    
+
     tag_array.each{|name|
       tag = WikiExtensionsTag.find_or_create(self.project.id, name)
       relation = WikiExtensionsTagRelation.new
@@ -65,9 +48,9 @@ module InstanceMethodsForWikiExtension
       relation.wiki_page_id = self.id
       relation.save
     }
-    
   end
-  
+
 end
 
+WikiPage.prepend(WikiExtensionsWikiPageMethods)
 

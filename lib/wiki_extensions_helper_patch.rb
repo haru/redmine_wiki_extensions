@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011-2013  Haruyuki Iida
+# Copyright (C) 2011-2017  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,52 +17,39 @@
 
 require_dependency "redmine/wiki_formatting/textile/helper"
 
-module WikiExtensionsHelperPatch
-  def self.included(base) # :nodoc:
-    base.send(:include, HelperMethodsWikiExtensions)
-    
-    
-    base.class_eval do
-      unloadable # Send unloadable so it will not be unloaded in development    
-      alias_method_chain :heads_for_wiki_formatter, :wiki_smiles    
-    end
-  end
-  
-end
-
 module HelperMethodsWikiExtensions
-  def heads_for_wiki_formatter_with_wiki_smiles
-    heads_for_wiki_formatter_without_wiki_smiles
+  def heads_for_wiki_formatter
+    super
     return if ie6_or_ie7?
     unless @heads_for_wiki_smiles_included
       baseurl = Redmine::Utils.relative_url_root
       imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
       content_for :header_tags do
-        o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
-        o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
-        emoticons = WikiExtensions::Emoticons.new
-        o << javascript_tag do
-          oo = ""
-        oo << raw("redmine_base_url = '#{baseurl}';\n")
-        oo << 'var buttons = [];'
-        emoticons.emoticons.each{|emoticon|
-          oo << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);\n"
-        }
-        oo << "setEmoticonButtons(buttons, '#{imageurl}');\n"
-        oo.html_safe
-        end
-        o.html_safe
+        # o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
+        # o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
+        # emoticons = WikiExtensions::Emoticons.new
+        # o << javascript_tag do
+        #   oo = ""
+        #   oo << raw("redmine_base_url = '#{baseurl}';\n")
+        #   oo << "var buttons = [];"
+        #   emoticons.emoticons.each { |emoticon|
+        #     oo << "buttons.push(['#{emoticon["emoticon"].gsub("'", "\\'")}', '#{emoticon["image"]}', '#{emoticon["title"]}']);\n"
+        #   }
+        #   oo << "setEmoticonButtons(buttons, '#{imageurl}');\n"
+        #   oo.html_safe
+        # end
+        # o.html_safe
       end
       @heads_for_wiki_smiles_included = true
     end
   end
-    
+
   private
+
   def ie6_or_ie7?
     useragent = request.env['HTTP_USER_AGENT'].to_s
     return useragent.match(/IE[ ]+[67]./) != nil
   end
-  
- 
 end
 
+Redmine::WikiFormatting::Textile::Helper.prepend(HelperMethodsWikiExtensions)
