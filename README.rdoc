@@ -1,3 +1,6 @@
+{<img src="https://travis-ci.org/haru/redmine_wiki_extensions.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/haru/redmine_wiki_extensions]
+{<img src="https://coveralls.io/repos/github/haru/redmine_wiki_extensions/badge.svg?branch=master" alt="Coverage Status" />}[https://coveralls.io/github/haru/redmine_wiki_extensions?branch=master]
+
 = Redmine Wiki Extensions Plugin
 
 Wiki Extensions is a plugin which adds several useful wiki macros to Redmine.
