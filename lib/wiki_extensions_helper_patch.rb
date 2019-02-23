@@ -25,32 +25,31 @@ module HelperMethodsWikiExtensions
       baseurl = Redmine::Utils.relative_url_root
       imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
       content_for :header_tags do
-        o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
-        o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
-        emoticons = WikiExtensions::Emoticons.new
-        o << javascript_tag do
-          oo = ""
-        oo << raw("redmine_base_url = '#{baseurl}';\n")
-        oo << 'var buttons = [];'
-        emoticons.emoticons.each{|emoticon|
-          oo << "buttons.push(['#{emoticon['emoticon'].gsub("'", "\\'")}', '#{emoticon['image']}', '#{emoticon['title']}']);\n"
-        }
-        oo << "setEmoticonButtons(buttons, '#{imageurl}');\n"
-        oo.html_safe
-        end
-        o.html_safe
+        # o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
+        # o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")
+        # emoticons = WikiExtensions::Emoticons.new
+        # o << javascript_tag do
+        #   oo = ""
+        #   oo << raw("redmine_base_url = '#{baseurl}';\n")
+        #   oo << "var buttons = [];"
+        #   emoticons.emoticons.each { |emoticon|
+        #     oo << "buttons.push(['#{emoticon["emoticon"].gsub("'", "\\'")}', '#{emoticon["image"]}', '#{emoticon["title"]}']);\n"
+        #   }
+        #   oo << "setEmoticonButtons(buttons, '#{imageurl}');\n"
+        #   oo.html_safe
+        # end
+        # o.html_safe
       end
       @heads_for_wiki_smiles_included = true
     end
   end
-    
+
   private
+
   def ie6_or_ie7?
     useragent = request.env['HTTP_USER_AGENT'].to_s
     return useragent.match(/IE[ ]+[67]./) != nil
   end
-  
- 
 end
 
 Redmine::WikiFormatting::Textile::Helper.prepend(HelperMethodsWikiExtensions)
