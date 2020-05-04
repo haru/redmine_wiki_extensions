@@ -7,6 +7,7 @@ rvm:
 env:
   - REDMINE_VER=master
   - REDMINE_VER=4.0-stable
+  - REDMINE_VER=4.1-stable
 install:
   - bash -x ./travis/travis_install.sh
 script:
