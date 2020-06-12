@@ -41,7 +41,7 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
       menus = {}
       menus[0] = {:enabled => 'true',:menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
       menus[1] = {:enabled => 'true',:menu_no => 2, :title => 'my_title2', :page_name => 'my_page_name2'}
-      post :update, :params => {:setting => {:auto_preview_enabled => 1},
+      post :update, :params => {
         :menus => menus, :id => @project}
       assert_response :redirect
       setting = WikiExtensionsSetting.find_or_create @project.id
