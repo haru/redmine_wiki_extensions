@@ -54,6 +54,18 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
       assert(menus[1].enabled)
       assert_equal('my_title2', menus[1].title)
       assert_equal('my_page_name2', menus[1].page_name)
+
+      menus = {}
+      menus[0] = {:enabled => 'true',:menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
+      menus[1] = {:menu_no => 2}
+      post :update, :params => {
+        :menus => menus, :id => @project}
+      assert_response :redirect
+      setting = WikiExtensionsSetting.find_or_create @project.id
+      menus = setting.menus
+      assert(menus[0].enabled)
+      assert(!menus[1].enabled)
+
     end
   end
   

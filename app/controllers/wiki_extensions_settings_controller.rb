@@ -29,6 +29,7 @@ class WikiExtensionsSettingsController < ApplicationController
       setting.transaction do
         menus.each_pair {|menu_no, menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
+          menu_setting.enabled = false
           menu_setting.attributes = menu.permit(:enabled, :menu_no, :title, :page_name)
           menu_setting.save!
         }
