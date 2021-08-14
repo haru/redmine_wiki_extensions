@@ -15,21 +15,39 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require_dependency 'projects_helper'
+module RedmineWikiExtensions
+  module Patches
+    module ProjectsHelperPatch
+      def self.included(base)
+        base.send(:include, InstanceMethods)
 
-module ProjectsHelperMethodsWikiExtensions
-  def project_settings_tabs
-    tabs = super
-    action = {:name => 'wiki_extensions', 
-      :controller => 'wiki_extensions_settings', 
-      :action => :show, 
-      :partial => 'wiki_extensions_settings/show', 
-      :label => :wiki_extensions}
+        base.class_eval do
+          unloadable
 
-    tabs << action if User.current.allowed_to?(action, @project)
+          alias_method :project_settings_tabs_without_wiki_extensions, :project_settings_tabs
+          alias_method :project_settings_tabs, :project_settings_tabs_with_wiki_extensions
+        end
+      end
 
-    tabs
+      module InstanceMethods
+        # include ContactsHelper
+
+        def project_settings_tabs_with_wiki_extensions
+          tabs = project_settings_tabs_without_wiki_extensions
+          action = {:name => 'wiki_extensions', 
+            :controller => 'wiki_extensions_settings', 
+            :action => :show, 
+            :partial => 'wiki_extensions_settings/show', 
+            :label => :wiki_extensions}
+          return tabs unless User.current.allowed_to?(action, @project)
+          tabs.push(action)
+          tabs
+        end
+      end
+    end
   end
 end
 
-ProjectsHelper.prepend(ProjectsHelperMethodsWikiExtensions)
+unless ProjectsHelper.included_modules.include?(RedmineWikiExtensions::Patches::ProjectsHelperPatch)
+  ProjectsHelper.send(:include, RedmineWikiExtensions::Patches::ProjectsHelperPatch)
+end
