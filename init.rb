@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2020  Haruyuki Iida
+# Copyright (C) 2009-2021  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -20,6 +20,10 @@ begin
 rescue LoadError
 end
 require 'redmine/wiki_formatting/textile/redcloth3'
+
+Rails.configuration.to_prepare do
+  ProjectsHelperMethodsWikiExtensions.apply
+end
 
 require_dependency 'wiki_extensions_notifiable_patch'
 Dir::foreach(File.join(File.dirname(__FILE__), 'lib')) do |file|
