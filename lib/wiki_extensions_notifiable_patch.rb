@@ -15,12 +15,18 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-module NotifiableMethods
-  def all
-    notifications = super
-    notifications << Redmine::Notifiable.new('wiki_comment_added')
-    notifications
+module NotifiablePatch
+  def self.included(base)
+    base.singleton_class.prepend(ClassMethods)
+  end
+
+  module ClassMethods
+    def all
+      notifications = super
+      notifications << Redmine::Notifiable.new('wiki_comment_added')
+      notifications
+    end
   end
 end
 
-Redmine::Notifiable.prepend(NotifiableMethods)
+RedmineExtensions::PatchManager.register_model_patch "Redmine::Notifiable", "NotifiablePatch"
