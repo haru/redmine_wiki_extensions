@@ -15,9 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-module NotifiablePatch
-  def self.included(base)
-    base.singleton_class.prepend(ClassMethods)
+module NotifiableMethods
+  def self.prepended(base)
+    class << base
+      self.prepend(ClassMethods)
+    end
   end
 
   module ClassMethods
@@ -29,4 +31,4 @@ module NotifiablePatch
   end
 end
 
-RedmineExtensions::PatchManager.register_model_patch "Redmine::Notifiable", "NotifiablePatch"
+Redmine::Notifiable.prepend(NotifiableMethods)
