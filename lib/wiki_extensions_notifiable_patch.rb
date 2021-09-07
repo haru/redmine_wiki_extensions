@@ -16,10 +16,18 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 module NotifiableMethods
-  def all
-    notifications = super
-    notifications << Redmine::Notifiable.new('wiki_comment_added')
-    notifications
+  def self.prepended(base)
+    class << base
+      self.prepend(ClassMethods)
+    end
+  end
+
+  module ClassMethods
+    def all
+      notifications = super
+      notifications << Redmine::Notifiable.new('wiki_comment_added')
+      notifications
+    end
   end
 end
 
