@@ -15,20 +15,31 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-module NotifiableMethods
-  def self.prepended(base)
-    class << base
-      self.prepend(ClassMethods)
-    end
-  end
+module RedmineWikiExtensions
+  module Patches
+    module NotifiablePatch
+      def self.included(base) # :nodoc:
+        base.extend(ClassMethods)
+        base.class_eval do
+          unloadable # Send unloadable so it will not be unloaded in development
+          class << self
+            alias_method :all_without_extensions, :all
+            alias_method :all, :all_with_extensions
+          end
+        end
+      end
 
-  module ClassMethods
-    def all
-      notifications = super
-      notifications << Redmine::Notifiable.new('wiki_comment_added')
-      notifications
+      module ClassMethods
+        def all_with_extensions
+          notifications = all_without_extensions
+          notifications << Redmine::Notifiable.new('wiki_comment_added')
+          notifications
+        end
+      end
     end
   end
 end
 
-Redmine::Notifiable.prepend(NotifiableMethods)
+unless Redmine::Notifiable.included_modules.include?(RedmineWikiExtensions::Patches::NotifiablePatch)
+  Redmine::Notifiable.send(:include, RedmineWikiExtensions::Patches::NotifiablePatch)
+end
