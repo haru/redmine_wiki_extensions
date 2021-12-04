@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2017  Haruyuki Iida
+# Copyright (C) 2009-2021  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -18,6 +18,9 @@
 require_dependency 'projects_helper'
 
 module ProjectsHelperMethodsWikiExtensions
+  def self.apply
+    ProjectsController.send :helper, ProjectsHelperMethodsWikiExtensions
+  end
   def project_settings_tabs
     tabs = super
     action = {:name => 'wiki_extensions', 
@@ -32,4 +35,4 @@ module ProjectsHelperMethodsWikiExtensions
   end
 end
 
-ProjectsHelper.prepend(ProjectsHelperMethodsWikiExtensions)
+

@@ -1,13 +1,14 @@
-{<img src="https://travis-ci.org/haru/redmine_wiki_extensions.svg?branch=master" alt="Build Status" />}[https://travis-ci.org/haru/redmine_wiki_extensions]
-{<img src="https://coveralls.io/repos/github/haru/redmine_wiki_extensions/badge.svg?branch=master" alt="Coverage Status" />}[https://coveralls.io/github/haru/redmine_wiki_extensions?branch=master]
+[![build](https://github.com/haru/redmine_wiki_extensions/actions/workflows/build.yml/badge.svg)](https://github.com/haru/redmine_wiki_extensions/actions/workflows/build.yml)
+[![Maintainability](https://api.codeclimate.com/v1/badges/35932ef513dece9c304c/maintainability)](https://codeclimate.com/github/haru/redmine_wiki_extensions/maintainability)
+[![codecov](https://codecov.io/gh/haru/redmine_wiki_extensions/branch/develop/graph/badge.svg?token=8WUARY4BRK)](https://codecov.io/gh/haru/redmine_wiki_extensions)
 
-= Redmine Wiki Extensions Plugin
+# Redmine Wiki Extensions Plugin
 
 Wiki Extensions is a plugin which adds several useful wiki macros to Redmine.
 
 https://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en
 
-=== Plugin installation
+## Plugin installation
 
 1. Copy the plugin directory into the plugins directory
 
@@ -18,11 +19,11 @@ https://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en
 
 4. Add wiki extensions module into your project.
 
-=== Note
+## Note
 
 This plugin works only on production mode.
 
-=== Language contributors
+## Language contributors
 
 * ru.yml - Dim A
 * fr.yml - Pascal Menut
