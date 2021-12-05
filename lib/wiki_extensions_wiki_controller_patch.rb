@@ -21,7 +21,7 @@ class WikiController
   after_action :wiki_extensions_save_tags, :only => [:edit, :update]
 end
 
-module InstanceMethodsForWikiExtensionWikiController
+module WikiExtensionsWikiControllerPatch
   def render(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project) and @content
       if (args.class == Hash and args[:partial] == 'common/preview')
@@ -93,6 +93,6 @@ module InstanceMethodsForWikiExtensionWikiController
   end
 end
 
-WikiController.prepend(InstanceMethodsForWikiExtensionWikiController)
+WikiController.prepend(WikiExtensionsWikiControllerPatch)
 
 

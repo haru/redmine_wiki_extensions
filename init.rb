@@ -21,8 +21,10 @@ rescue LoadError
 end
 require 'redmine/wiki_formatting/textile/redcloth3'
 
+$LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
+
 Rails.configuration.to_prepare do
-  ProjectsHelperMethodsWikiExtensions.apply
+  WikiExtensionsProjectsHelperPatch.apply
 end
 
 require_dependency 'wiki_extensions_notifiable_patch'

@@ -23,7 +23,7 @@ class WikiPage
   has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
 end
 
-module WikiExtensionsWikiPageMethods
+module WikiExtensionsWikiPagePatch
   def wiki_extension_data
     @wiki_extension_data ||= {}
   end
@@ -52,5 +52,5 @@ module WikiExtensionsWikiPageMethods
 
 end
 
-WikiPage.prepend(WikiExtensionsWikiPageMethods)
+WikiPage.prepend(WikiExtensionsWikiPagePatch)
 

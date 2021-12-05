@@ -17,7 +17,7 @@
 
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
-module FormatterMethodsWikiExtensions
+module WikiExtensionsFormatterPatch
 
   Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
 
@@ -28,7 +28,7 @@ module FormatterMethodsWikiExtensions
     baseurl = Redmine::Utils.relative_url_root
     src = baseurl + "/plugin_assets/redmine_wiki_extensions/images/"
 
-    @emoticons = WikiExtensions::Emoticons.new
+    @emoticons = WikiExtensionsEmoticons::Emoticons.new
     @emoticons.emoticons.each{|emoticon|
       text.gsub!(Regexp.new("#{Regexp.escape(emoticon['emoticon'])}(\\s|<br/>|</p>)"),
         "<img src=\""+src+"#{emoticon['image']}\" alt=\"#{emoticon['emoticon']}\">\\1")
@@ -36,4 +36,4 @@ module FormatterMethodsWikiExtensions
   end
 end
 
-Redmine::WikiFormatting::Textile::Formatter.prepend(FormatterMethodsWikiExtensions)
+Redmine::WikiFormatting::Textile::Formatter.prepend(WikiExtensionsFormatterPatch)

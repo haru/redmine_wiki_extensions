@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
-module WikiExtensionsWikiMacro
+module WikiExtensionsTaggedpagesMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays pages that have specified tag.\n\n"+
       "  !{{taggedpages(tagname)}}\n" +

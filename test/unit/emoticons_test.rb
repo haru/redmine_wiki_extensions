@@ -16,14 +16,14 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 require File.dirname(__FILE__) + '/../test_helper'
-require "emoticons"
+require "wiki_extensions_emoticons"
 
 class EmoticonsTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_comments
 
   context "emoticons" do
     setup do
-      @emoticons = WikiExtensions::Emoticons.new
+      @emoticons = WikiExtensionsEmoticons::Emoticons.new
     end
 
     should "not returns nil." do

@@ -2,7 +2,7 @@
 # and open the template in the editor.
 require "yaml"
 
-module WikiExtensions
+module WikiExtensionsEmoticons
   YAML_FILE = File.join(File.dirname(__FILE__), '../config/emoticons.yml')
   class Emoticons
     def emoticons
