@@ -17,9 +17,9 @@
 
 require_dependency 'projects_helper'
 
-module ProjectsHelperMethodsWikiExtensions
+module WikiExtensionsProjectsHelperPatch
   def self.apply
-    ProjectsController.send :helper, ProjectsHelperMethodsWikiExtensions
+    ProjectsController.send :helper, WikiExtensionsProjectsHelperPatch
   end
   def project_settings_tabs
     tabs = super

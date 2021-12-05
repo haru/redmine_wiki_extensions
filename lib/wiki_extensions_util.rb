@@ -23,7 +23,7 @@ class WikiExtensionsUtil
 
   def WikiExtensionsUtil.tag_enabled?(project)
     return false unless project
-    setting = WikiExtensionsSetting.find_or_create(project)
+    setting = WikiExtensionsSetting.find_or_create(project.id)
     !setting.tag_disabled
   end
 end

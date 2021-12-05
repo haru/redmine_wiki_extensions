@@ -17,7 +17,7 @@
 
 require_dependency "redmine/wiki_formatting/textile/helper"
 
-module HelperMethodsWikiExtensions
+module WikiExtensionsHelperPatch
   def heads_for_wiki_formatter
     super
     return if ie6_or_ie7?
@@ -52,4 +52,4 @@ module HelperMethodsWikiExtensions
   end
 end
 
-Redmine::WikiFormatting::Textile::Helper.prepend(HelperMethodsWikiExtensions)
+Redmine::WikiFormatting::Textile::Helper.prepend(WikiExtensionsHelperPatch)

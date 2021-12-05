@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
-module WikiExtensionsWikiMacro
+module WikiExtensionsNewMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a string 'new'.\n\n" +
       "  !{{new(yyyy-mm-dd)}}\n" +

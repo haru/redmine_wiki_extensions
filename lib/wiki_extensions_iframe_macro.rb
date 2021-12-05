@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-module WikiExtensionsWikiMacro
+module WikiExtensionsIframeMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Insert an iframe tag" + "\n\n" +
       "  !{{iframe(url, width, height)}}" + "\n\n"
