@@ -18,6 +18,8 @@ jobs:
             redmine_version: master
           - ruby_version: 2.4
             redmine_version: 5.0-stable
+          - ruby_version: 2.5
+            redmine_version: master
           - ruby_version: 2.7
             redmine_version: 4.1-stable
           - ruby_version: 3.0
