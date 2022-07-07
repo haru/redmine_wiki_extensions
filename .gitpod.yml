@@ -1,0 +1,21 @@
+---
+# List the start up tasks. Learn more https://www.gitpod.io/docs/config-start-tasks/
+tasks:
+  - init: sh -x ./.gitpod/setup.sh
+    command: pwd; sh -x /workspace/*/.gitpod/start.sh
+    env:
+      REDMINE_VERSION: '5.0-stable'
+
+# List the ports to expose. Learn more https://www.gitpod.io/docs/config-ports/
+ports:
+  - port: 3000
+    onOpen: open-browser
+
+workspaceLocation: "./redmine"
+
+vscode:
+  extensions:
+    - bung87.rails
+    - rebornix.ruby
+    - aliariff.vscode-erb-beautify
+    - mbessey.vscode-rufo
