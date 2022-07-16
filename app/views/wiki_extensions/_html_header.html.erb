@@ -24,9 +24,7 @@
   -%>
 
   <% if style_sheet -%>
-    <style type="text/css">
-    <%= raw style_sheet.text %>
-    </style>
+    <%=  stylesheet_link_tag( wiki_extensions_stylesheet_path(@project)) %>
   <% end -%>
 
 

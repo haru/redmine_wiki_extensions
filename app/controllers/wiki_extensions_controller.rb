@@ -19,7 +19,8 @@
 class WikiExtensionsController < ApplicationController
   unloadable
   menu_item :wiki
-  before_action :find_project, :authorize, :find_user
+  before_action :find_project, :find_user
+  before_action :authorize, except: :stylesheet
 
   def add_comment
 
@@ -100,6 +101,20 @@ class WikiExtensionsController < ApplicationController
     end
     
     render :inline => " #{vote.count}"
+  end
+
+  def stylesheet
+    stylesheet = WikiPage.find_by(wiki_id: @project.wiki.id, title: "StyleSheet")
+    unless stylesheet
+      render_404
+      return
+    end
+
+    unless stylesheet.visible?
+      render_403
+      return
+    end
+    render plain: stylesheet.content.text, content_type: 'text/css'
   end
   
   private
