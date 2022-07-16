@@ -93,6 +93,20 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     assert_response :redirect
   end
 
+  def test_stylesheet
+    @project.is_public = false
+    @project.save!
+    get :stylesheet, :params => { :id => 1 }
+    assert_response 403
+
+    @request.session[:user_id] = 1
+    get :stylesheet, :params => { :id => 1 }
+    assert_response :success
+
+    get :stylesheet, :params => { :id => 2 }
+    assert_response 404
+  end
+
   context 'vote' do
     should 'success if new vote.' do
       @request.session[:user_id] = 1
