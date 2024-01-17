@@ -1,3 +1,4 @@
+require 'rails'
 require 'simplecov'
 require 'shoulda'
 require 'simplecov-lcov'

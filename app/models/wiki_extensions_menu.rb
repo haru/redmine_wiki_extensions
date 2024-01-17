@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2011  Haruyuki Iida
+# Copyright (C) 2024  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -16,7 +16,6 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsMenu < ActiveRecord::Base
   include Redmine::SafeAttributes
-  unloadable
   belongs_to :project
   validates_presence_of :project_id
   validates_presence_of :menu_no
