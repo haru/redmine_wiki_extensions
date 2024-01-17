@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2011  Haruyuki Iida
+# Copyright (C) 2009-2024  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 
 
 class WikiExtensionsController < ApplicationController
-  unloadable
   menu_item :wiki
   before_action :find_project, :find_user
   before_action :authorize, except: :stylesheet
