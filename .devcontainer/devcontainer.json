@@ -42,7 +42,6 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"rebornix.Ruby",
 		"mtxr.sqltools",
 		"mtxr.sqltools-driver-pg",
 		"craigmaslowski.erb",
@@ -53,7 +52,8 @@
 		"ms-azuretools.vscode-docker",
 		"KoichiSasada.vscode-rdbg",
 		"Serhioromano.vscode-gitflow",
-		"github.vscode-github-actions"
+		"github.vscode-github-actions",
+		"Shopify.ruby-extensions-pack"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
