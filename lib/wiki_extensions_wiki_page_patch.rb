@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2017  Haruyuki Iida
+# Copyright (C) 2009-2024  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -17,7 +17,6 @@
 require_dependency 'wiki_page'
 
 class WikiPage
-  unloadable
   has_many :wiki_extensions_tag_relations, :dependent => :destroy
   has_many :wiki_ext_tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations, :source => :tag
   has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
