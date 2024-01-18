@@ -18,19 +18,19 @@ jobs:
           VERSION=$(echo ${{ github.ref }} | sed -e "s#refs/tags/##g")
           echo "version=$VERSION" >> $GITHUB_OUTPUT
           echo "filename=$REPOSITORY-$VERSION" >> $GITHUB_OUTPUT
-          echo "name=plugin=$REPOSITORY" >> $GITHUB_OUTPUT
+          echo "plugin=$REPOSITORY" >> $GITHUB_OUTPUT
       - uses: actions/checkout@v4
       - name: Archive
         run: |
-          cd ..; zip -r ${{ steps.version.outputs.filename }}.zip ${{ steps.version.outputs.plugin }}/ -x "*.git*"; mv ${{ steps.version.outputs.filename }}.zip ${{ steps.version.outputs.plugin }}/
+          cd ..; zip -r ${{ env.filename }}.zip ${{ env.plugin }}/ -x "*.git*"; mv ${{ env.filename }}.zip ${{ env.plugin }}/
       - name: Create Release
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: ${{ steps.version.outputs.version }}
-          release_name: ${{ steps.version.outputs.version }}
+          tag_name: ${{ env.version }}
+          release_name: ${{ env.version }}
           body: ''
           draft: false
           prerelease: true
@@ -41,6 +41,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }} 
-          asset_path: ${{ steps.version.outputs.filename }}.zip
-          asset_name: ${{ steps.version.outputs.filename }}.zip
+          asset_path: ${{ env.filename }}.zip
+          asset_name: ${{ env.filename }}.zip
           asset_content_type: application/zip
