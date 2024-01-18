@@ -33,6 +33,7 @@ module ActionView
               li_comment_id = "wikiextensions_comment_li_#{comment.id}"
               form_reply_id = "wikiextensions_reply_form_#{comment.id}"
               form_div_id = "wikiextensions_comment_form_#{comment.id}"
+              text_div_id = "wikiextensions_comment_text_#{comment.id}"
               
               unless check
                 ret << '<li id='+li_comment_id+' class="list_item ExpandOpen">'
@@ -49,7 +50,7 @@ module ActionView
                   ret << reply_link
                 end
 
-                edit_link = link_to_function(l(:button_edit), "$('##{div_comment_id}').hide();$('##{form_div_id}').show();$('##{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
+                edit_link = link_to_function(l(:button_edit), "$('##{text_div_id}').hide();$('##{form_div_id}').show();$('##{form_reply_id}').hide();",:class => 'icon icon-edit wiki_font_size')
                 ret << edit_link if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'update_comment'}, @project) or User.current.id == comment.user.id or User.current.admin
                 if User.current.allowed_to?({:controller => 'wiki_extensions', :action => 'destroy_comment'}, @project) or User.current.admin
                   del_link =  link_to_if_authorized(l(:button_delete), {:controller => 'wiki_extensions',
@@ -73,7 +74,9 @@ module ActionView
               end
               ret << "</h4>\n"
               ret << '<div id="' + div_comment_id + '" class="wiki_left">' + "\n"
+              ret << '<div id ="' + text_div_id + '">'
               ret << textilizable(comment, :comment)
+              ret << '</div>'
 
               if formats.include?(:html)
                 ret << "\n"
@@ -96,7 +99,7 @@ module ActionView
 
                 ret << '<br/>'
                 ret << submit_tag(l(:button_apply))
-                ret << link_to_function(l(:button_cancel), "$('##{div_comment_id}').show();$('##{form_div_id}').hide();")
+                ret << link_to_function(l(:button_cancel), "$('##{text_div_id}').show();$('##{form_div_id}').hide();")
                 ret << "\n"
                 ret << wikitoolbar_for(textarea_id)
                 ret << '</form>'
