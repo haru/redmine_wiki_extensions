@@ -2,7 +2,7 @@
 // https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ruby-rails-postgres
 // Update the VARIANT arg in docker-compose.yml to pick a Ruby version
 {
-	"name": "Ruby on Rails & Postgres",
+	"name": "Redmine plugin",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	
