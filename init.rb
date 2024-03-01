@@ -23,8 +23,14 @@ require 'redmine/wiki_formatting/textile/redcloth3'
 
 $LOAD_PATH.unshift "#{File.dirname(__FILE__)}/lib"
 
-Rails.configuration.to_prepare do
-  WikiExtensionsProjectsHelperPatch.apply
+if Rails.version > '6.0'
+  Rails.application.config.after_initialize do
+    WikiExtensionsProjectsHelperPatch.apply
+  end
+else
+  Rails.configuration.to_prepare do
+    WikiExtensionsProjectsHelperPatch.apply
+  end
 end
 
 require_dependency 'wiki_extensions_notifiable_patch'
