@@ -57,7 +57,7 @@ jobs:
       - uses: codecov/codecov-action@v3
       - name: Slack Notification on Failure
         uses: rtCamp/action-slack-notify@v2.0.2
-        if: failure()
+        if: failure() && env.SLACK_WEBHOOK != ''
         env:
           SLACK_CHANNEL: plugin-wiki_ext
           SLACK_TITLE: Test Failure
