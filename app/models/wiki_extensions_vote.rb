@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-class WikiExtensionsVote < ActiveRecord::Base
+class WikiExtensionsVote < ApplicationRecord
   validates_presence_of :target_class_name, :target_id, :keystr, :count
   validates_uniqueness_of :keystr, :scope => [:target_class_name, :target_id]
 
