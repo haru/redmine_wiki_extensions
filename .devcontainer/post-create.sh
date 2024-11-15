@@ -1,6 +1,13 @@
 #!/bin/sh
 cd $REDMINE_ROOT
 
+if [ -d .git.sv ]
+then
+    mv -s .git.sv .git
+    git pull
+    rm .git
+fi
+
 ln -s /workspaces/${PLUGIN_NAME} plugins/${PLUGIN_NAME}
 if [ -f plugins/${PLUGIN_NAME}/Gemfile_for_test ]
 then
@@ -9,8 +16,6 @@ fi
 
 
 bundle install 
-bundle exec rake redmine:plugins:migrate
-bundle exec rake redmine:plugins:migrate RAILS_ENV=test
 
 initdb() {
     bundle exec rake db:create
