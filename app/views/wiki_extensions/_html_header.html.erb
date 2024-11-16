@@ -28,8 +28,8 @@
   <% end -%>
 
 
-  <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/jquery.tablesorter.js") %>
-  <%=  stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions.css") %>
-  <%=  stylesheet_link_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/stylesheets/wiki_extensions_print.css", :media => 'print') %>
-  <%= javascript_include_tag(baseurl + "/plugin_assets/redmine_wiki_extensions/javascripts/wiki_extensions.js") %>
+  <%= javascript_include_tag("jquery.tablesorter.js", plugin: "redmine_wiki_extensions") %>
+  <%=  stylesheet_link_tag("wiki_extensions.css", plugin: "redmine_wiki_extensions") %>
+  <%=  stylesheet_link_tag("wiki_extensions_print.css", plugin: "redmine_wiki_extensions", media: 'print') %>
+  <%= javascript_include_tag("wiki_extensions.js", plugin: "redmine_wiki_extensions") %>
 <% end %>
