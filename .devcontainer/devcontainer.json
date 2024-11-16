@@ -1,8 +1,7 @@
-// For format details, see https://aka.ms/devcontainer.json. For config options, see the README at:
-// https://github.com/microsoft/vscode-dev-containers/tree/v0.202.5/containers/ruby-rails-postgres
-// Update the VARIANT arg in docker-compose.yml to pick a Ruby version
+// Redmine plugin boilerplate
+// version: 1.0.0
 {
-	"name": "Ruby on Rails & Postgres",
+	"name": "Redmine plugin",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
 	
@@ -10,7 +9,6 @@
 		"source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind"
 	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-	// "workspaceFolder": "/workspaces/dev.code-workspace",
     
 	// Set *default* container specific settings.json values on container create.
 	"settings": { 
@@ -42,7 +40,6 @@
 
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
-		"rebornix.Ruby",
 		"mtxr.sqltools",
 		"mtxr.sqltools-driver-pg",
 		"craigmaslowski.erb",
@@ -53,7 +50,9 @@
 		"ms-azuretools.vscode-docker",
 		"KoichiSasada.vscode-rdbg",
 		"Serhioromano.vscode-gitflow",
-		"github.vscode-github-actions"
+		"github.vscode-github-actions",
+		"Shopify.ruby-extensions-pack",
+		"ritwickdey.LiveServer"
 	],
 
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.

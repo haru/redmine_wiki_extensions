@@ -1,17 +1,21 @@
 #!/bin/sh
-cd /usr/local/redmine
+cd $REDMINE_ROOT
+
+if [ -d .git.sv ]
+then
+    mv -s .git.sv .git
+    git pull
+    rm .git
+fi
 
 ln -s /workspaces/${PLUGIN_NAME} plugins/${PLUGIN_NAME}
 if [ -f plugins/${PLUGIN_NAME}/Gemfile_for_test ]
 then
     cp plugins/${PLUGIN_NAME}/Gemfile_for_test plugins/${PLUGIN_NAME}/Gemfile 
 fi
-cp plugins/${PLUGIN_NAME}/test/fixtures/*.yml test/fixtures
-ln -s /workspaces/${PLUGIN_NAME}/.devcontainer/launch.json .vscode/launch.json
+
 
 bundle install 
-bundle exec rake redmine:plugins:migrate
-bundle exec rake redmine:plugins:migrate RAILS_ENV=test
 
 initdb() {
     bundle exec rake db:create
