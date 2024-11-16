@@ -22,8 +22,7 @@ module WikiExtensionsHelperPatch
     super
     return if ie6_or_ie7?
     unless @heads_for_wiki_smiles_included
-      baseurl = Redmine::Utils.relative_url_root
-      imageurl = baseurl + "/plugin_assets/redmine_wiki_extensions/images"
+
       content_for :header_tags do
         # o = stylesheet_link_tag("wiki_smiles.css", :plugin => "redmine_wiki_extensions")
         # o << javascript_include_tag("wiki_smiles.js", :plugin => "redmine_wiki_extensions")

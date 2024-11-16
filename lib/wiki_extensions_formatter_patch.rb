@@ -25,8 +25,7 @@ module WikiExtensionsFormatterPatch
   private
 
   def inline_smiles(text)
-    baseurl = Redmine::Utils.relative_url_root
-    src = baseurl + "/plugin_assets/redmine_wiki_extensions/images/"
+    src = "plugin_assets/redmine_wiki_extensions/images/"
 
     @emoticons = WikiExtensionsEmoticons::Emoticons.new
     @emoticons.emoticons.each{|emoticon|

@@ -64,7 +64,7 @@ jsTooltip.prototype = {
         this.a.className = 'smiles';
         this.img = document.createElement('img');
         this.img.title = 'Smiles';
-        this.img.src = redmine_base_url + '/plugin_assets/redmine_wiki_extensions/images/main_smile.png?dummy_param';
+        this.img.src = 'plugin_assets/redmine_wiki_extensions/images/main_smile.png?dummy_param';
         this.img.id = 'smiles_img';
         this.img.tabIndex = 200;
         this.a.appendChild(this.img);
