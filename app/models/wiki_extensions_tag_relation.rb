@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-class WikiExtensionsTagRelation < ActiveRecord::Base
+class WikiExtensionsTagRelation < ApplicationRecord
   belongs_to :wiki_page
   belongs_to :tag, :class_name => 'WikiExtensionsTag', :foreign_key => :tag_id
   validates_presence_of :wiki_page_id, :tag_id
