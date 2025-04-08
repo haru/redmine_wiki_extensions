@@ -18,20 +18,27 @@
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
 module WikiExtensionsFormatterPatch
-
   Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
-
 
   private
 
   def inline_smiles(text)
-    src = "plugin_assets/redmine_wiki_extensions/images/"
+    emoticon_path = WikiExtentionEmoticonPath.new
 
     @emoticons = WikiExtensionsEmoticons::Emoticons.new
-    @emoticons.emoticons.each{|emoticon|
-      text.gsub!(Regexp.new("#{Regexp.escape(emoticon['emoticon'])}(\\s|<br/>|</p>)"),
-        "<img src=\""+src+"#{emoticon['image']}\" alt=\"#{emoticon['emoticon']}\">\\1")
+    @emoticons.emoticons.each { |emoticon|
+      src = emoticon_path.get_emoticon_path(emoticon["image"])
+      text.gsub!(Regexp.new("#{Regexp.escape(emoticon["emoticon"])}(\\s|<br/>|</p>)"),
+                 "<img src=\"#{src}\" alt=\"#{emoticon["emoticon"]}\">\\1")
     }
+  end
+
+  class WikiExtentionEmoticonPath
+    include Rails.application.routes.url_helpers
+
+    def get_emoticon_path(emoticon)
+      wiki_extensions_emoticon_path(emoticon)
+    end
   end
 end
 

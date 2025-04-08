@@ -16,7 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 RedmineApp::Application.routes.draw do
-  match 'projects/:id/wiki_extensions/stylesheet', to: 'wiki_extensions#stylesheet', via: [:get, :post], as: 'wiki_extensions_stylesheet'
-  match 'projects/:id/wiki_extensions/:action', :controller => 'wiki_extensions', :via => [:get, :post]
-  match 'projects/:id/wiki_extensions_settings/:action', :controller => 'wiki_extensions_settings', :via => [:get, :post, :put, :patch]
+  match "projects/:id/wiki_extensions/stylesheet", to: "wiki_extensions#stylesheet", via: [:get, :post], as: "wiki_extensions_stylesheet"
+  match "projects/:id/wiki_extensions/:action", :controller => "wiki_extensions", :via => [:get, :post]
+  match "projects/:id/wiki_extensions_settings/:action", :controller => "wiki_extensions_settings", :via => [:get, :post, :put, :patch]
+  match "/wiki_extentions/emoticon/:icon_name", :controller => "wiki_extensions", :action => "emoticon", :via => [:get], :as => "wiki_extensions_emoticon"
 end
