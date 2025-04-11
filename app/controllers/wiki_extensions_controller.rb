@@ -15,14 +15,12 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-
 class WikiExtensionsController < ApplicationController
   menu_item :wiki
   before_action :find_project, :find_user
-  before_action :authorize, except: :stylesheet
+  before_action :authorize, except: [:stylesheet, :emoticon]
 
   def add_comment
-
     comment = WikiExtensionsComment.new
     comment.wiki_page_id = params[:wiki_page_id].to_i
     comment.user_id = @user.id
@@ -31,11 +29,10 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
+    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
   end
-  
+
   def reply_comment
-    
     comment = WikiExtensionsComment.new
     comment.parent_id = params[:comment_id].to_i
     comment.wiki_page_id = params[:wiki_page_id].to_i
@@ -45,7 +42,7 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
+    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
   end
 
   def tag
@@ -56,20 +53,20 @@ class WikiExtensionsController < ApplicationController
   def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => menu.page_name
+    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => menu.page_name
   end
 
   def destroy_comment
     comment_id = params[:comment_id].to_i
     comment = WikiExtensionsComment.find(comment_id)
     unless User.current.admin or User.current.id == comment.user.id
-      render_403 
+      render_403
       return false
     end
-    
+
     page = WikiPage.find(comment.wiki_page_id)
     comment.destroy
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
+    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
   end
 
   def update_comment
@@ -79,12 +76,11 @@ class WikiExtensionsController < ApplicationController
       render_403
       return false
     end
- 
+
     page = WikiPage.find(comment.wiki_page_id)
     comment.comment = params[:comment]
     comment.save
-    redirect_to :controller => 'wiki', :action => 'show', :project_id => @project, :id => page.title
-
+    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
   end
 
   def vote
@@ -98,7 +94,7 @@ class WikiExtensionsController < ApplicationController
       vote.save!
       session[:wiki_extension_voted][vote.id] = 1
     end
-    
+
     render :inline => " #{vote.count}"
   end
 
@@ -113,10 +109,24 @@ class WikiExtensionsController < ApplicationController
       render_403
       return
     end
-    render plain: stylesheet.content.text, content_type: 'text/css'
+    render plain: stylesheet.content.text, content_type: "text/css"
   end
-  
+
+  def emoticon
+    icon_name = params[:icon_name]
+    icon_name += ".#{params[:format]}" if params[:format].present?
+    directory = File.expand_path(File.dirname(__FILE__) + "/../../assets/images/")
+    icon_path = File.join(directory, icon_name)
+    # icon_pathが示すPNGファイルのバイナリデータをクライアントに返す
+    if File.exist?(icon_path)
+      send_file icon_path, type: "image/png", disposition: "inline"
+    else
+      render_404
+    end
+  end
+
   private
+
   def find_project
     # @project variable must be set before calling the authorize filter
     @project = Project.find(params[:id]) unless params[:id].blank?
@@ -125,5 +135,4 @@ class WikiExtensionsController < ApplicationController
   def find_user
     @user = User.current
   end
-
 end
