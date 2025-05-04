@@ -22,8 +22,8 @@ module WikiExtensionsDivMacro
       " !{{div_start_tag(id_name, class_name)}}"
     macro :div_start_tag do |obj, args|
       o = '<div>' if args.length == 0
-      o = '<div id="' + args[0].strip + '">' if args.length == 1
-      o = '<div id="' + args[0].strip + '" class="' + args[1].strip + '">' if args.length == 2
+      o = '<div id="' + h(args[0].strip) + '">' if args.length == 1
+      o = '<div id="' + h(args[0].strip) + '" class="' + h(args[1].strip) + '">' if args.length == 2
       o.html_safe
     end
   end
