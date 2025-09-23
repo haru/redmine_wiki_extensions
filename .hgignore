@@ -1,9 +1,0 @@
-^coverage/
-^rails/
-^VERSION$
-^pkg/
-^Gemfile.lock$
-syntax: glob
-test/coverage
-*.orig
-Gemfile
