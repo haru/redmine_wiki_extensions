@@ -4,10 +4,11 @@
 
 This is a **Redmine plugin** (not a standalone Rails app) that extends wiki functionality with macros, comments, tags, and voting. The plugin follows Redmine's plugin architecture patterns:
 
-- `init.rb` - Plugin registration, permissions, and menu definitions
+- `init.rb` - Plugin registration, permissions, and menu definitions  
 - `lib/` - Wiki macros and patches to Redmine core classes
 - `app/` - Standard Rails MVC structure for additional features
 - `db/migrate/` - Database migrations for plugin-specific tables
+- `build-scripts/` - Complex CI/test environment setup scripts
 
 ## Key Components
 
@@ -27,9 +28,14 @@ end
 **Important macros**: `count`, `wiki`, `tags`, `recent`, `vote`, `project`, `twitter`
 
 ### Patches (`lib/*_patch.rb`)
-Extend Redmine core functionality using Rails' `prepend` pattern. Key patches:
+Extend Redmine core functionality using Rails' `prepend` pattern. Critical patterns:
+- **Controller patches**: Use `after_action` hooks (e.g., `after_action :wiki_extensions_save_tags`)
+- **Method overrides**: Override `render()` and `respond_to()` in WikiController
+- **Module inclusion**: `ActionView::Base.class_eval { include WikiExtensionsHelper }`
+
+Key patches:
 - `wiki_extensions_wiki_controller_patch.rb` - Adds functionality to WikiController
-- `wiki_extensions_formatter_patch.rb` - Extends wiki formatting
+- `wiki_extensions_formatter_patch.rb` - Extends wiki formatting  
 - `wiki_extensions_helper_patch.rb` - Adds helper methods
 
 ### Models (`app/models/`)
@@ -56,14 +62,33 @@ The plugin uses a complex CI setup:
 - Matrix builds across Ruby 3.1-3.4 and Redmine 6.0-master
 - Tests against SQLite, MySQL, PostgreSQL
 - Build scripts in `build-scripts/` handle Redmine checkout and plugin setup
+- **Environment variables**: `TESTSPACE`, `PATH_TO_REDMINE`, `PATH_TO_PLUGIN` must be absolute paths
+- Fixtures are automatically copied from `test/fixtures/` to Redmine's test environment
 
 ## Coding Patterns
 
+### Plugin Module Enablement
+**CRITICAL**: Always check if plugin is enabled before any functionality:
+```ruby
+return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
+```
+This pattern appears in every macro and controller action. The plugin can be disabled per-project.
+
 ### Permission Checks
-Always check permissions before displaying features:
+Layer permission checks after module enablement:
 ```ruby
 return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
 User.current.allowed_to?({controller: 'wiki_extensions', action: 'action'}, @project)
+```
+
+### Session State Management
+Macros use session storage for stateful behavior (e.g., access counting):
+```ruby
+session[:access_count_table] = Hash.new unless session[:access_count_table]
+unless session[:access_count_table][page.id]
+  WikiExtensionsCount.countup(page.id)
+  session[:access_count_table][page.id] = 1
+end
 ```
 
 ### View Helpers
@@ -101,14 +126,17 @@ User.current.allowed_to?({controller: 'wiki_extensions', action: 'action'}, @pro
 2. Follow macro registration pattern
 3. Add tests in `test/unit/`
 4. Update permissions in `init.rb` if needed
+5. **Always include module enablement check**: `WikiExtensionsUtil.is_enabled?(@project)`
 
 ### Adding Model/Feature
 1. Create migration in `db/migrate/`
 2. Add model in `app/models/` with proper associations
 3. Add controller actions if web interface needed
 4. Update permissions and routes
+5. Add project-specific feature toggles via `WikiExtensionsSetting`
 
 ### Debugging
 - Plugin works "only on production mode" (per README)
 - Use Rails logger: `Rails.logger.info`
 - Check `WikiExtensionsUtil.is_enabled?` for feature availability
+- Verify per-project settings via `WikiExtensionsSetting.find_or_create(project.id)`
