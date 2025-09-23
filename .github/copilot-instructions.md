@@ -65,6 +65,31 @@ The plugin uses a complex CI setup:
 - **Environment variables**: `TESTSPACE`, `PATH_TO_REDMINE`, `PATH_TO_PLUGIN` must be absolute paths
 - Fixtures are automatically copied from `test/fixtures/` to Redmine's test environment
 
+### Git Workflow
+- **All commits must use English commit messages** - Never use Japanese or other languages
+- Follow conventional commit format: "verb + brief description"
+- Examples: "Add macro functionality", "Fix permission check", "Update documentation"
+- Keep commit messages concise (under 50 characters for subject line)
+- All pull requests must target the `develop` branch
+
+### Code Documentation
+- **All source code comments must be written in English** - Never use Japanese or other languages
+- Use clear, concise English for inline comments, method documentation, and code explanations
+- Follow Ruby documentation conventions using YARD format when appropriate
+- Examples of good comments:
+  ```ruby
+  # Check if the plugin module is enabled for the current project
+  return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
+  
+  # Register the macro with Redmine's wiki formatting system
+  Redmine::WikiFormatting::Macros.register do
+    desc "Display page access count with optional reset functionality"
+    macro :count do |obj, args|
+      # Implementation details...
+    end
+  end
+  ```
+
 ## Coding Patterns
 
 ### Plugin Module Enablement
