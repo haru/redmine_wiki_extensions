@@ -4,6 +4,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/35932ef513dece9c304c/maintainability)](https://codeclimate.com/github/haru/redmine_wiki_extensions/maintainability)
 [![Ask DeepWiki](https://deepwiki.com/badge.svg)](https://deepwiki.com/haru/redmine_wiki_extensions)
 [![codecov](https://codecov.io/gh/haru/redmine_wiki_extensions/branch/develop/graph/badge.svg?token=8WUARY4BRK)](https://codecov.io/gh/haru/redmine_wiki_extensions)
+![Redmine](https://img.shields.io/badge/redmine->=6.0-blue?logo=redmine&logoColor=%23B32024&labelColor=f0f0f0&link=https%3A%2F%2Fwww.redmine.org)
 
 A comprehensive Redmine plugin that extends wiki functionality with powerful macros, comments, tagging, voting, and enhanced formatting capabilities.
 
