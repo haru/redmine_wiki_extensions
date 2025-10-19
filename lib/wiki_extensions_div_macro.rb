@@ -19,11 +19,15 @@ module WikiExtensionsDivMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a <pre><div id=" + '"id_name"' + " class=" + '"' + 'class_name' + '"></pre>' + "\n\n" +
       " !{{div_start_tag(id_name)}}" + "'\n" +
-      " !{{div_start_tag(id_name, class_name)}}"
+      " !{{div_start_tag(id_name, class_name)}}"+ "'\n" +
+      " !{{div_start_tag(id_name, class_name, style=background-color: green;)}}"
     macro :div_start_tag do |obj, args|
+      args, options = extract_macro_options(args, :style)
+      style = options[:style]
       o = '<div>' if args.length == 0
       o = '<div id="' + h(args[0].strip) + '">' if args.length == 1
       o = '<div id="' + h(args[0].strip) + '" class="' + h(args[1].strip) + '">' if args.length == 2
+      o = o[0...-1] + ' style="' + h(style) + '">' if style
       o.html_safe
     end
   end
@@ -38,4 +42,3 @@ module WikiExtensionsDivMacro
     end
   end
 end
-
