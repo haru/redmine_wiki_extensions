@@ -42,7 +42,7 @@ module WikiExtensionsVideoMacro
       o = '<video src="' + attachment_path + '"'
       o += ' width="' + h(args[1].strip) + '"' if args.length >= 2
       o += ' height="' + h(args[2].strip) + '"' if args.length >= 3
-      o += args.length >= 3 ? ' ' + h(args[3].strip) : ' controls'
+      o += args.length >= 4 ? ' ' + h(args[3].strip) : ' controls'
       o += '>'
 
       o.html_safe
