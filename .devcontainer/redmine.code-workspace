@@ -4,7 +4,7 @@
 			"path": ".."
 		},
 		{
-			"path": "../../../usr/local/redmine"
+			"path": "/usr/local/redmine"
 		}
 	],
 	"settings": {}
