@@ -1,0 +1,43 @@
+<% # Wiki Extensions plugin for Redmine
+   # Copyright (C) 2013-2025  Haruyuki Iida
+   #
+   # This program is free software; you can redistribute it and/or
+   # modify it under the terms of the GNU General Public License
+   # as published by the Free Software Foundation; either version 2
+   # of the License, or (at your option) any later version.
+   #
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+   #
+   # You should have received a copy of the GNU General Public License
+   # along with this program; if not, write to the Free Software
+   # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   
+if WikiExtensionsUtil.draft_create? @project
+    page = controller.wiki_extensions_get_current_page
+    approval = WikiExtensionsApproval.for_wiki(page.id, page.version).first if page
+    setting = WikiExtensionsSetting.find_or_create(@project)
+
+    # status if its minimum approval start or approval required
+    disabled = setting.approval_required || (approval && approval.status_before_type_cast.to_i == WikiExtensionsApproval.statuses[:pending]) 
+
+    default = !setting.approval_required && (approval && approval.status_before_type_cast.to_i <= WikiExtensionsApproval.statuses[:pending]) 
+
+    status_hidden = disabled ? "draft" : "published"
+
+-%>
+    <p id="wiki_extensions_draft_form">
+        <label><%= l("wiki_extensions_approval.status.draft") %></label>
+        <%= hidden_field_tag 'status_disabled', disabled %>
+        <%= hidden_field_tag 'status', status_hidden %>
+        <%= check_box_tag 'status', "draft", default, disabled: disabled %>
+    </p>
+    <script type="text/javascript">
+        //<![CDATA'
+        add_wiki_extensions_edit_form('#wiki_extensions_draft_form');
+        //]]>
+    </script>
+
+<% end %>

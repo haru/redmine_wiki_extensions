@@ -1,0 +1,73 @@
+<% 
+   # Wiki Extensions plugin for Redmine
+   # Copyright (C) 2013-2025  Haruyuki Iida
+   #
+   # This program is free software; you can redistribute it and/or
+   # modify it under the terms of the GNU General Public License
+   # as published by the Free Software Foundation; either version 2
+   # of the License, or (at your option) any later version.
+   #
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+   #
+   # You should have received a copy of the GNU General Public License
+   # along with this program; if not, write to the Free Software
+   # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+  
+  return if @page.nil?
+
+  latest_version_id = @page.version
+  view_version_id = params[:version].nil? ? latest_version_id : params[:version].to_i
+  approval = WikiExtensionsApproval.for_wiki(@page.id, view_version_id).first
+  latest_public_approval = WikiExtensionsApproval.latest_public_version(@page.id).first
+
+
+  if approval && 
+     ((latest_public_approval && latest_public_approval.wiki_version_id == view_version_id) ||
+      (latest_version_id == view_version_id))
+-%>
+    <div>
+      <div class="contextual">
+        <span class="badge <%= WikiExtensionsUtil.wiki_extensions_approval_badge(approval.status) %>" style="bottom: 0px"><%= l("wiki_extensions_approval.status.#{approval.status}") %></span>
+      </div>
+      <h3><%= l(:label_wiki_extensions_approval_workflow) %></h3>
+      <ul>
+        <li style="font-size: 0.9em; margin-bottom: 5px;"><%= l("wiki_extensions_approval.status.#{approval.status}") %>: vor <%= time_ago_in_words(approval.created_at) %></li>
+        <li style="display: flex; align-items: center; gap: 10px; margin: 5px 5px;">
+          <%= avatar(approval.author, :size => 16, :title => approval.author.name) %> 
+          <div>
+            <div><%= approval.author.name %></div>
+            <div style="font-size: 0.85em; color: #888;">Autor</div>
+          </div>
+        <% if latest_version_id == view_version_id && latest_public_approval && latest_public_approval.wiki_version_id < latest_version_id %>
+          <li><%= link_to l(:wiki_extensions_approval_link_release), 
+                          { controller: 'wiki', action: 'show', project_id: @project.identifier, id: @page.title, version: latest_public_approval.wiki_version_id }, 
+                          { title: "Autor #{approval.author.name} · vor etwa #{time_ago_in_words(approval.created_at)}"} %> 
+          </li>
+        <% end %>
+        <% if view_version_id < latest_version_id %>
+          <li><%= link_to l(:wiki_extensions_approval_link_draft), 
+                          { controller: 'wiki', action: 'show', id: @page.title, version: latest_version_id }, 
+                          { title: "Autor #{approval.author.name} · vor etwa #{time_ago_in_words(approval.created_at)}"} %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <% if latest_public_approval && latest_public_approval.wiki_version_id == view_version_id %>
+    
+    <% content_for :header_tags do %>
+      <script>
+        document.addEventListener('DOMContentLoaded', function () {
+          hide_wiki_history_tags();
+        });
+      </script>
+    <% end %>
+
+  <% end %>
+
+
+

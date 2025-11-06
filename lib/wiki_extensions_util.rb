@@ -16,14 +16,51 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WikiExtensionsUtil
-  def WikiExtensionsUtil.is_enabled?(project)
+  def self.is_enabled?(project)
     return false unless project
+
     project.module_enabled? 'wiki_extensions'
   end
 
-  def WikiExtensionsUtil.tag_enabled?(project)
+  def self.tag_enabled?(project)
     return false unless project
+
     setting = WikiExtensionsSetting.find_or_create(project.id)
     !setting.tag_disabled
+  end
+
+  def self.draft_create?(project)
+    return false unless project
+
+    return true if WikiExtensionsSetting.find_or_create(project).approval_required
+
+    user = User.current.logged? ? User.current : User.anonymous
+    user.allowed_to?(:draft_create, project)
+  end
+
+  def self.is_allowed_to_show_last_version?(project)
+    return false unless is_enabled?(project)
+
+    user = User.current.logged? ? User.current : User.anonymous
+    user.allowed_to?(:view_wiki_edits, project)
+  end
+
+  def self.wiki_extensions_approval_badge(status)
+    case status
+    when 'draft'
+      return 'badge-status-locked'
+    when 'pending'
+      return 'badge-status-open'
+    when 'rejected'
+      return 'badge-private'
+    when 'released'
+      return 'badge-status-closed'
+    when 'published'
+      return 'badge-status-closed'
+    when 'canceled'
+      return 'badge-status-locked'
+    else
+      return 'badge-count'
+    end
   end
 end

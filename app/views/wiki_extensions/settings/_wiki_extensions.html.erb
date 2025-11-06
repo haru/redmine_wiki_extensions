@@ -1,0 +1,25 @@
+<fieldset class="box tabular settings"><legend><%= l(:label_settings) %></legend>
+
+  <p>
+    <%= content_tag :label, l(:label_wiki_extensions_settings_comment) %>
+    <%= select_tag 'settings[wiki_extensions_settings_comment]',
+          options_for_select(wiki_extensions_select_options, Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment']) %>
+  </p>
+  <p>
+    <%= content_tag :label, l(:label_wiki_extensions_settings_approval) %>
+    <%= select_tag 'settings[wiki_extensions_settings_approval]',
+          options_for_select(wiki_extensions_select_options, Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval']) %>
+  </p>
+    <p>
+    <%= content_tag :label, l(:label_wiki_extensions_settings_approval_version) %>
+    <%= select_tag 'settings[wiki_extensions_settings_approval_version]',
+          options_for_select(wiki_extensions_select_options, Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version']) %>
+    <em class="info"><%= t(:text_wiki_extensions_settings_approval_version) %></em>
+  </p>
+    <p>
+    <%= content_tag :label, l(:label_wiki_extensions_settings_tags) %>
+    <%= select_tag 'settings[wiki_extensions_settings_tags]',
+          options_for_select(wiki_extensions_select_options, Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags']) %>
+  </p>
+  
+</fieldset>

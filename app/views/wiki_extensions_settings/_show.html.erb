@@ -42,16 +42,43 @@ function click_wiki_menu_tab(num) {
                              :partial => 'wiki_extensions_settings/update',
                              :setting_id => @wiki_extensions_setting.id} do |f| %>
     <%= error_messages_for 'wiki_extensions_setting' %>
-    <div class="box">
+
+    <fieldset class="box tabular settings">
+      <legend><%= l(:label_settings) %></legend>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] == SettingsHelper::PROJECT %>
+      <p>  
+        <label><%= l(:label_wiki_extensions_settings_comment) %></label>
+        <%= hidden_field_tag 'comment_required', '0' %>
+        <%= check_box_tag 'comment_required', '1', @wiki_extensions_setting.comment_required %>
+      </p>
+      <% end %>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] == SettingsHelper::PROJECT %>
       <p>
-
-
+        <label><%= l(:label_wiki_extensions_settings_approval) %></label>
+        <%= hidden_field_tag 'approval_required', '0' %>
+        <%= check_box_tag 'approval_required', '1', @wiki_extensions_setting.approval_required %>
+      </p>
+      <% end %>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'] == SettingsHelper::PROJECT %>
+      <p>
+        <label><%= l(:label_wiki_extensions_settings_approval_version) %></label>
+        <%= hidden_field_tag 'approval_version_required', '0' %>
+        <%= check_box_tag 'approval_version_required', '1', @wiki_extensions_setting.approval_version_required %>
+      </p>
+      <% end %>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] == SettingsHelper::PROJECT %>
+      <p>
+        <label><%= l(:label_wiki_extensions_settings_tags) %></label>
+        <%= hidden_field_tag 'tag_disabled', '0' %>
+        <%= check_box_tag 'tag_disabled', '1', @wiki_extensions_setting.tag_disabled %>
+      </p>
+      <% end %>
       
-      <hr/>
-      <b><%=h l(:wiki_extensions_add_tab)%></b>
+    </fieldset>
+    <fieldset class="box tabular settings">
+      <legend><%= l(:wiki_extensions_add_tab)%></legend>
       <%= render :partial => "wiki_extensions_settings/menu", :collection => @wiki_extensions_setting.menus, :as => :menu %>
-      
-    </div>
+    </fieldset>
     <%= submit_tag l(:button_update) %>
 <% end %>
 </div>

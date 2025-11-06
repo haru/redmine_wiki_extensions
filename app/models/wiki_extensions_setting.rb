@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsSetting < ApplicationRecord
   belongs_to :project
-  #attr_accessible :auto_preview_enabled, :tag_disabled
+  before_save :sync_data_hash_to_json
 
   def self.find_or_create(pj_id)
     setting = WikiExtensionsSetting.find_by(project_id: pj_id)
@@ -37,5 +37,66 @@ class WikiExtensionsSetting < ApplicationRecord
 
   def menus
     WikiExtensionsMenu.where(:project_id => project_id).order("menu_no")
+  end
+
+  def data_hash
+    @data_hash ||= begin
+      parsed = JSON.parse(json_data.presence || '{}', symbolize_names: true)
+      parsed.is_a?(Hash) ? parsed.deep_dup : {}
+    rescue JSON::ParserError
+      {}
+    end
+  end
+
+  def data_hash=(hash)
+    self.json_data = hash.to_json
+    @data_hash = hash
+  end
+
+  # Getter with default value, or setting from projecct
+  def comment_required
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] == SettingsHelper::PROJECT
+      data_hash[:comment_required].nil? ? false : data_hash[:comment_required]
+    else
+      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'])
+    end
+  end
+
+  def comment_required=(value)
+    data_hash[:comment_required] = ActiveModel::Type::Boolean.new.cast(value)
+  end
+
+  def approval_required
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] == SettingsHelper::PROJECT
+      data_hash[:approval_required].nil? ? false : data_hash[:approval_required]
+    else
+      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'])
+    end
+  end
+
+  def approval_required=(value)
+    data_hash[:approval_required] = ActiveModel::Type::Boolean.new.cast(value)
+  end
+
+  def approval_version_required
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'] == SettingsHelper::PROJECT
+      data_hash[:approval_version_required].nil? ? false : data_hash[:approval_version_required]
+    else
+      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'])
+    end
+  end
+
+  def approval_version_required=(value)
+    data_hash[:approval_version_required] = ActiveModel::Type::Boolean.new.cast(value)
+  end
+
+  private
+
+  def sync_data_hash_to_json
+    self.json_data = @data_hash.to_json if @data_hash
+  end
+
+  def wiki_extensions_setting_params
+    params.require(:wiki_extensions_setting).permit(:tag_disabled, :comment_required, :approval_required, :approval_version_required)
   end
 end

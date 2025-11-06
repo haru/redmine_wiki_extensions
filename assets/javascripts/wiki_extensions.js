@@ -18,9 +18,33 @@
 */
 
 
-function add_wiki_extensions_tags_form() {
-    var tags_form = $('#wiki_extensions_tag_form');
-    $('#wiki_form div.box').append(tags_form);
+function add_wiki_extensions_edit_form(tagname) {
+    var formtag = $(tagname);
+    $('#wiki_form div.box').append(formtag);
+}
+
+function hide_wiki_history_tags() {
+
+    // find startTag content, begins inside first
+    // only set this tags, without classnames to "none"
+    // end searching when wiki content starts
+
+    const start = document.getElementById('content').firstElementChild;
+    const end = document.querySelector('div.wiki.wiki-page');
+
+    let current = start.nextElementSibling;
+
+    while (current && current !== end) {
+        const next = current.nextElementSibling;
+
+        if ((current.tagName === 'P' && current.classList == '') ||
+            (current.tagName === 'H2' && current.classList == '') ||
+            (current.tagName === 'HR' && current.classList == ''))
+            current.style.display = 'none';
+
+        current = next;
+    }
+
 }
 
 function set_tag_atuto_complete(taglist) {

@@ -1,5 +1,7 @@
+# frozen_string_literal: true
+
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2019  Haruyuki Iida
+# Copyright (C) 2009-2025  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,13 +16,17 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require "redmine"
-require "application_helper"
 
-class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
-  include ApplicationHelper
+module SettingsHelper
+  PROJECT = 'project'
 
-  render_on :view_layouts_base_html_head, :partial => "wiki_extensions/html_header"
-  render_on :view_layouts_base_body_bottom, :partial => "wiki_extensions/body_bottom"
-  render_on :view_wiki_show_sidebar_bottom, :partial => "wiki_extensions/sidebar_bottom"
+  def wiki_extensions_select_options
+    options = [
+      [:general_text_Yes, 'true'],
+      [:general_text_No, 'false'],
+      [:label_wiki_extensions_settings_projects, PROJECT]
+    ]
+
+    options.map {|label, value| [l(label), value.to_s]}
+  end
 end

@@ -1,5 +1,5 @@
 # Wiki Extensions plugin for Redmine
-# Copyright (C) 2009-2019  Haruyuki Iida
+# Copyright (C) 2009-2025  Haruyuki Iida
 #
 # This program is free software; you can redistribute it and/or
 # modify it under the terms of the GNU General Public License
@@ -14,13 +14,36 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require "redmine"
-require "application_helper"
+#
 
-class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
-  include ApplicationHelper
+class WikiExtensionsApprovalController < ApplicationController
+  menu_item :wiki
+  before_action :find_project, :find_user
+  before_action :authorize
 
-  render_on :view_layouts_base_html_head, :partial => "wiki_extensions/html_header"
-  render_on :view_layouts_base_body_bottom, :partial => "wiki_extensions/body_bottom"
-  render_on :view_wiki_show_sidebar_bottom, :partial => "wiki_extensions/sidebar_bottom"
+  def start_approval
+  end
+
+  def grent_approval
+  end
+
+  def forward_approval
+  end
+
+  def view_draft
+  end
+
+  def set_draft
+  end
+
+  private
+
+  def find_project
+    # @project variable must be set before calling the authorize filter
+    @project = Project.find(params[:id]) unless params[:id].blank?
+  end
+
+  def find_user
+    @user = User.current
+  end
 end

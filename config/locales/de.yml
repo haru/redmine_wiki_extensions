@@ -9,7 +9,12 @@ de:
   permission_delete_wiki_comments: Wiki-Kommentare löschen
   permission_edit_wiki_comments: Wiki-Kommentare bearbeiten
   permission_wiki_extensions_settings: Wiki-Extensions verwalten
-  
+  permission_approval_start: Freigabe starten
+  permission_approval_grent: Freigabe genehmigen
+  permission_approval_forward: Freigabe weiterleiten
+  permission_draft_view: Entwurf ansehen
+  permission_draft_create: Entwurf erstellen
+
   field_auto_preview_enabled: Automatische Vorschau aktivieren
   field_sidebar_disabled: Sidebar deaktivieren
   wiki_extensions_vote: vote
@@ -22,3 +27,27 @@ de:
   label_wiki_comment_plural: 'Wiki-Kommentare'
   
   wiki_extensions_new_wiki_page: 'Neue Seite'
+
+  label_wiki_extensions_settings_projects: 'Projektbezogen konfigurierbar'
+  label_wiki_extensions_settings_tags: Tags deaktiviert
+  label_wiki_extensions_settings_comment: Wiki Kommentar erforderlich
+  label_wiki_extensions_settings_approval: Freigabe erforderlich
+  label_wiki_extensions_settings_approval_version: Freigabeworkflow für nächste Version
+  text_wiki_extensions_settings_approval_version: 'Nach Start eines Freigabeworkflows ist dieser für künftige Versionen erforderlich'
+
+  wiki_extensions_approval_link_draft: Neuer Entwurf verfügbar
+  wiki_extensions_approval_link_release: Aktuell veröffentlichte Version
+
+  wiki_extensions_approval:
+    status:
+      draft: "Entwurf"
+      pending: "Ausstehend"
+      rejected: "Abgelehnt"
+      published: "Veröffentlicht"
+      released: "Freigegeben"
+      canceled: "Storniert"
+
+  label_wiki_extensions_approval_workflow: Freigabe Workflow
+  wiki_extensions_and: UND
+  wiki_extensions_or: ODER
+
