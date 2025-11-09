@@ -16,48 +16,25 @@
    # along with this program; if not, write to the Free Software
    # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
   
-  return if @page.nil?
+  return if @wiki_extension_data.nil?
 
-  latest_version_id = @page.version
-  view_version_id = params[:version].nil? ? latest_version_id : params[:version].to_i
-  approval = WikiExtensionsApproval.for_wiki(@page.id, view_version_id).first
-  latest_public_approval = WikiExtensionsApproval.latest_public_version(@page.id).first
-
-
-  if approval && 
-     ((latest_public_approval && latest_public_approval.wiki_version_id == view_version_id) ||
-      (latest_version_id == view_version_id))
+  if @wiki_extension_data[:approval] && 
+     ((@wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id]) ||
+      (@page.version == @wiki_extension_data[:view_version_id]))
 -%>
+    <h3><%= l(:label_wiki_extensions_approval_workflow) %></h3>
     <div>
-      <div class="contextual">
-        <span class="badge <%= WikiExtensionsUtil.wiki_extensions_approval_badge(approval.status) %>" style="bottom: 0px"><%= l("wiki_extensions_approval.status.#{approval.status}") %></span>
-      </div>
-      <h3><%= l(:label_wiki_extensions_approval_workflow) %></h3>
       <ul>
-        <li style="font-size: 0.9em; margin-bottom: 5px;"><%= l("wiki_extensions_approval.status.#{approval.status}") %>: vor <%= time_ago_in_words(approval.created_at) %></li>
+        <li style="font-size: 0.9em; margin-bottom: 5px;"><%= l("wiki_extensions_approval.status.#{@wiki_extension_data[:approval].status}") %>: vor <%= time_ago_in_words(@wiki_extension_data[:approval].created_at) %></li>
         <li style="display: flex; align-items: center; gap: 10px; margin: 5px 5px;">
-          <%= avatar(approval.author, :size => 16, :title => approval.author.name) %> 
-          <div>
-            <div><%= approval.author.name %></div>
-            <div style="font-size: 0.85em; color: #888;">Autor</div>
-          </div>
-        <% if latest_version_id == view_version_id && latest_public_approval && latest_public_approval.wiki_version_id < latest_version_id %>
-          <li><%= link_to l(:wiki_extensions_approval_link_release), 
-                          { controller: 'wiki', action: 'show', project_id: @project.identifier, id: @page.title, version: latest_public_approval.wiki_version_id }, 
-                          { title: "Autor #{approval.author.name} · vor etwa #{time_ago_in_words(approval.created_at)}"} %> 
-          </li>
-        <% end %>
-        <% if view_version_id < latest_version_id %>
-          <li><%= link_to l(:wiki_extensions_approval_link_draft), 
-                          { controller: 'wiki', action: 'show', id: @page.title, version: latest_version_id }, 
-                          { title: "Autor #{approval.author.name} · vor etwa #{time_ago_in_words(approval.created_at)}"} %>
-          </li>
-        <% end %>
+          <%= avatar(@wiki_extension_data[:approval].author, :size => 16, :title => @wiki_extension_data[:approval].author.name) %> 
+          <div><%= @wiki_extension_data[:approval].author.name %></div>
+          <div style="font-size: 0.85em; color: #888;">Autor</div>
       </ul>
     </div>
   <% end %>
 
-  <% if latest_public_approval && latest_public_approval.wiki_version_id == view_version_id %>
+  <% if @wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id] %>
     
     <% content_for :header_tags do %>
       <script>

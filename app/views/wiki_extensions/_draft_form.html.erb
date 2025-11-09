@@ -15,15 +15,12 @@
    # along with this program; if not, write to the Free Software
    # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
    
-if WikiExtensionsUtil.draft_create? @project
-    page = controller.wiki_extensions_get_current_page
-    approval = WikiExtensionsApproval.for_wiki(page.id, page.version).first if page
-    setting = WikiExtensionsSetting.find_or_create(@project)
+if @wiki_extension_data && WikiExtensionsUtil.draft_create?(@project, @wiki_extension_data[:setting])
 
     # status if its minimum approval start or approval required
-    disabled = setting.approval_required || (approval && approval.status_before_type_cast.to_i == WikiExtensionsApproval.statuses[:pending]) 
+    disabled = @wiki_extension_data[:setting].approval_required || (@wiki_extension_data[:approval] && @wiki_extension_data[:approval].status_before_type_cast.to_i == WikiExtensionsApproval.statuses[:pending]) 
 
-    default = !setting.approval_required && (approval && approval.status_before_type_cast.to_i <= WikiExtensionsApproval.statuses[:pending]) 
+    default = !@wiki_extension_data[:setting].approval_required && (@wiki_extension_data[:approval] && @wiki_extension_data[:approval].status_before_type_cast.to_i <= WikiExtensionsApproval.statuses[:pending]) 
 
     status_hidden = disabled ? "draft" : "published"
 

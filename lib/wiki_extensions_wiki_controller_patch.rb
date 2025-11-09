@@ -18,8 +18,9 @@
 require_dependency 'wiki_controller'
 
 class WikiController
-  after_action :wiki_extensions_save, :only => [:edit, :update]
+  after_action :wiki_extensions_save, :only => [:update]
   after_action :wiki_extensions_delete, only: [:destroy_version]
+  before_action :set_wiki_extensions_data, only: [:show, :edit]
 end
 
 module WikiExtensionsWikiControllerPatch
@@ -49,16 +50,25 @@ module WikiExtensionsWikiControllerPatch
 
   private
 
-  def wiki_extensions_save
-    return true if request.get?
+  def set_wiki_extensions_data
+    if @project && WikiExtensionsUtil.is_enabled?(@project)
 
+      @wiki_extension_data = {
+        view_version_id: params[:version].nil? ? @page.version : params[:version].to_i,
+        approval: WikiExtensionsApproval.for_wiki(@page.id, params[:version].nil? ? @page.version : params[:version].to_i).first,
+        latest_public_approval: WikiExtensionsApproval.latest_public_version(@page.id).first,
+        setting: WikiExtensionsSetting.find_or_create(@project)
+      }
+
+    end
+  end
+
+  def wiki_extensions_save
     wiki_extensions_save_tags
     wiki_extensions_save_draft
   end
 
   def wiki_extensions_save_draft
-    return true if request.get?
-
     status = params[:status]
     return true unless status
 
@@ -69,8 +79,6 @@ module WikiExtensionsWikiControllerPatch
   end
 
   def wiki_extensions_save_tags
-    return true if request.get?
-
     extension = params[:extension]
     return true unless extension
 

@@ -21,7 +21,7 @@
    tags = page.wiki_ext_tags.sort { |a, b| a.name <=> b.name }
    baseurl = Redmine::Utils.relative_url_root
    img = baseurl + "/images/add.png"
-   if WikiExtensionsUtil.tag_enabled? @project
+   if WikiExtensionsUtil.tag_enabled?(@project, @wiki_extension_data[:setting])
 -%>
 
 

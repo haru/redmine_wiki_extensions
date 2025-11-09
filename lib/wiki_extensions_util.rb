@@ -22,17 +22,18 @@ class WikiExtensionsUtil
     project.module_enabled? 'wiki_extensions'
   end
 
-  def self.tag_enabled?(project)
+  def self.tag_enabled?(project, setting = nil)
     return false unless project
 
-    setting = WikiExtensionsSetting.find_or_create(project.id)
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
     !setting.tag_disabled
   end
 
-  def self.draft_create?(project)
+  def self.draft_create?(project, setting = nil)
     return false unless project
 
-    return true if WikiExtensionsSetting.find_or_create(project).approval_required
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return true if setting.approval_required
 
     user = User.current.logged? ? User.current : User.anonymous
     user.allowed_to?(:draft_create, project)

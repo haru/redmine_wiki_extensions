@@ -21,8 +21,8 @@ module WikiExtensionsTagsMacro
     desc "Displays tags.\n\n"+
       "  !{{tags}}\n"
     macro :tags do |obj, args|
-      return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project, @wiki_extension_data&.dig(:setting))
+
       page = obj.page
       return unless page
       project = page.project
@@ -43,8 +43,8 @@ module WikiExtensionsTagsMacro
     desc "Displays tagcloud.\n\n"+
       "  !{{tagcloud}}\n"
     macro :tagcloud do |obj, args|
-      return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project, @wiki_extension_data&.dig(:setting))
+
       classes = %w(tag_level1 tag_level2 tag_level3 tag_level4 tag_level5)
       page = obj.page
       return unless page

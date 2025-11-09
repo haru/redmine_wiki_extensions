@@ -37,6 +37,12 @@ ActionView::Base.class_eval do
   include ActionView::Helpers::WikiExtensionsHelper
 end
 
+Rails.configuration.to_prepare do
+  Dir.glob(File.join(File.dirname(__FILE__), 'app/overrides/**/*_override.rb')).each do |file|
+    require_dependency file
+  end
+end
+
 require_dependency 'settings_helper'
 ActiveSupport.on_load(:action_view) { include SettingsHelper }
 

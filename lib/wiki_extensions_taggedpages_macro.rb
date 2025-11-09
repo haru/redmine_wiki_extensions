@@ -24,8 +24,7 @@ module WikiExtensionsTaggedpagesMacro
       "  !{{taggedpages(tagname, tagname, project=all, operator=AND)}}\n" +
       "  !{{taggedpages(tagname, tagname, project=proj1 proj2)}}"
     macro :taggedpages do |obj, args|
-      return nil unless WikiExtensionsUtil.is_enabled?(@project)
-      return nil unless WikiExtensionsUtil.tag_enabled?(@project)
+      return nil unless WikiExtensionsUtil.tag_enabled?(@project, @wiki_extension_data&.dig(:setting))
 
       return nil if args.empty?
 

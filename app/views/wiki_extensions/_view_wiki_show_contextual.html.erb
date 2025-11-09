@@ -1,0 +1,59 @@
+
+<% 
+# Wiki Extensions plugin for Redmine
+# Copyright (C) 2013-2025  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+
+if @wiki_extension_data
+
+    if @wiki_extension_data[:approval] && 
+        ((@wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id]) ||
+        (@page.version == @wiki_extension_data[:view_version_id]))
+    -%>
+
+        <% if @page.version == @wiki_extension_data[:view_version_id] && @wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id < @page.version %>
+            <%= link_to sprite_icon('wiki-page', l(:wiki_extensions_approval_link_release)), 
+                        { controller: 'wiki', action: 'show', project_id: @project.identifier, id: @page.title, version: @wiki_extension_data[:latest_public_approval].wiki_version_id }, 
+                        { title: "Autor #{@wiki_extension_data[:approval].author.name} · vor etwa #{time_ago_in_words(@wiki_extension_data[:approval].created_at)}", 
+                        class: 'icon icon-workflows' } %> 
+            
+        <% end %>
+        <% if @wiki_extension_data[:view_version_id] < @page.version %>
+            <%= watcher_link(@page, User.current) %>
+            <%= link_to sprite_icon('wiki-page', l(:wiki_extensions_approval_link_draft)), 
+                        { controller: 'wiki', action: 'show', id: @page.title, version: @page.version }, 
+                        { title: "Autor #{@wiki_extension_data[:approval].author.name} · vor etwa #{time_ago_in_words(@wiki_extension_data[:approval].created_at)}", 
+                        class: 'icon icon-workflows' } %>
+            
+        <% end %>
+
+        <span class="badge <%= WikiExtensionsUtil.wiki_extensions_approval_badge(@wiki_extension_data[:approval].status) %>" style="bottom: 0px"><%= l("wiki_extensions_approval.status.#{@wiki_extension_data[:approval].status}") %></span>
+
+    <% end %>
+
+    <% if @wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id] %>
+
+        <% content_for :header_tags do %>
+            <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                hide_wiki_history_tags();
+            });
+            </script>
+        <% end %>
+
+    <% end %>
+<% end %>
