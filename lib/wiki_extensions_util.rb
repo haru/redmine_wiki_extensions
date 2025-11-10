@@ -24,6 +24,7 @@ class WikiExtensionsUtil
 
   def self.tag_enabled?(project, setting = nil)
     return false unless project
+    return false if setting.nil? && !is_enabled?(project)
 
     setting ||= WikiExtensionsSetting.find_or_create(project.id)
     !setting.tag_disabled
@@ -31,6 +32,7 @@ class WikiExtensionsUtil
 
   def self.draft_create?(project, setting = nil)
     return false unless project
+    return false if setting.nil? && !is_enabled?(project)
 
     setting ||= WikiExtensionsSetting.find_or_create(project.id)
     return true if setting.approval_required
