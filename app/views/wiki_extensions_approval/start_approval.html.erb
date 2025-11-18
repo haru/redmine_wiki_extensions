@@ -1,0 +1,128 @@
+<% 
+   # Wiki Extensions plugin for Redmine
+   # Copyright (C) 2013-2025  Haruyuki Iida
+   #
+   # This program is free software; you can redistribute it and/or
+   # modify it under the terms of the GNU General Public License
+   # as published by the Free Software Foundation; either version 2
+   # of the License, or (at your option) any later version.
+   #
+   # This program is distributed in the hope that it will be useful,
+   # but WITHOUT ANY WARRANTY; without even the implied warranty of
+   # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+   # GNU General Public License for more details.
+   #
+   # You should have received a copy of the GNU General Public License
+   # along with this program; if not, write to the Free Software
+   # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+   
+-%>
+   
+<h2><%= "#{@page.pretty_title} - #{l(:label_revision)} #{@page.content.version}" %></h2>
+<%= form_with url: wiki_extensions_approval_path(@project.id, @page.title, @page.content.version), method: :post do |f| %>
+  <div class="box tabular">
+    <h3><%= l(:permission_approval_start) %></h3>
+    <div id="steps-container">
+      <% @steps_grouped.keys.sort.each do |step_nr| %>
+        <div class="step" data-step="<%= step_nr %>">
+          <p>
+          <label><%= l(:label_wiki_extensions_approval_step) + " #{step_nr}" %></label>
+            <% @steps_grouped[step_nr].each_with_index do |step, index| %>
+                <%= select_tag "steps[#{step_nr}][][principal_id]",
+                      principals_options_for_select(@approval_user_options, step.principal_id&.to_s),
+                      include_blank: true,
+                      class: 'user-select' %>
+                <% if index == 0 %> 
+                  <%= select_tag "steps_typ[#{step_nr}]",
+                    options_for_select([[l(:wiki_extensions_or), 'or'], [l(:wiki_extensions_and), 'and']], selected: step.typ),
+                    class: "step-typ" %>
+                  <span class="add-user" data-step="<%= step_nr %>">
+                    <%= sprite_icon('add', l(:wiki_extensions_approval_add_user)) %>
+                  </span><br>
+                <% end %>
+            <% end %>
+          </p>
+        </div>
+        
+      <% end %>
+    </div>
+    <div>
+      <p>
+      <span id="add-step">
+        <%= sprite_icon('add', l(:wiki_extensions_approval_add_step)) %>
+      </span>
+      </p>
+    </div>
+    <p>
+      <%= submit_tag l(:button_save) %>
+      <%= link_to l(:button_cancel), project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version) %>
+    </p>
+  </div>
+<% end %>
+
+<script>
+
+  document.addEventListener('DOMContentLoaded', function() {
+    const stepsContainer = document.getElementById('steps-container');
+    const wiki_extensions_or = "<%= l(:wiki_extensions_or) %>";
+    const wiki_extensions_and = "<%= l(:wiki_extensions_and) %>";
+    const label_step = "<%= l(:label_wiki_extensions_approval_step) %>";
+    const add_user = "<%= l(:wiki_extensions_approval_add_user) %>";
+
+    // Add Step
+    document.getElementById('add-step').addEventListener('click', function() {
+      const stepCount = stepsContainer.querySelectorAll('.step').length + 1;
+      // max 3 steps
+      if (stepCount >= 4) {
+        return;
+      }
+      const originalSelect = document.querySelector('.user-select')
+      const newStep = document.createElement('div');
+      newStep.classList.add('step');
+      newStep.dataset.step = stepCount;
+      newStep.innerHTML = `
+        <p>
+          <label>${label_step} ${stepCount}</label>
+          <select name="steps[${stepCount}][][principal_id]" class="user-select">
+            ${originalSelect.innerHTML}
+          </select>
+
+          <select name="steps_typ[${stepCount}]" id="step-typ-${stepCount}" class="step-typ">
+            <option value="or">${wiki_extensions_or}</option>
+            <option value="and">${wiki_extensions_and}</option>
+          </select>
+
+          <span class="add-user" data-step="${stepCount}">
+            ${document.querySelector('#add-step svg').outerHTML}<span class="icon-label">${add_user}</span>
+          </span>
+        </p>
+      `;
+      stepsContainer.appendChild(newStep);
+    });
+
+    // Event Delegation für Add User
+    stepsContainer.addEventListener('click', function(e) {
+      if (e.target.closest('.add-user')) {
+        const button = e.target.closest('.add-user');
+        const stepNr = button.dataset.step;
+        const stepDiv = button.closest('.step');
+        const originalSelect = document.querySelector('.user-select')
+        
+        const currentUsers = stepDiv.querySelectorAll('select.user-select').length;
+        if (currentUsers >= 4) {
+          return;
+        }
+
+        const newUserSelect = document.createElement('div');
+        newUserSelect.innerHTML = `
+          <select name="steps[${stepNr}][][principal_id]" class="user-select">
+            ${originalSelect.innerHTML}
+          </select>
+        `;
+        stepDiv.querySelector('p').appendChild(newUserSelect);
+
+      }
+    });
+  });
+
+</script>

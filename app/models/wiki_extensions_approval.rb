@@ -26,15 +26,12 @@ class WikiExtensionsApproval < ApplicationRecord
 
   validates :status, presence: true
 
-  # before_create :cancel_old_approvals
-
   enum :status, {
     draft: 10,
     pending: 20,
     rejected: 40,
     published: 60,
     released: 70,
-    canceled: 99
   }
 
   scope :by_author, ->(user_id) { where(author_id: user_id) }
@@ -47,12 +44,23 @@ class WikiExtensionsApproval < ApplicationRecord
       .limit(1)
   }
 
-  def cancel_old_approvals
-    WikiExtensionsApproval.where(
-      wiki_page_id: wiki_page_id
+  def steps_grouped_with_default
+    grouped = approval_steps.group_by(&:step)
+
+    # when step 1 is not there, default value
+    grouped[1] ||= [approval_steps.build(step: 1, typ: :or)]
+
+    grouped
+  end
+
+  def self.latest_public_from_version(page_id, from_version)
+    where(
+      wiki_page_id: page_id,
+      status: [statuses[:published], statuses[:released]],
+      wiki_version_id: ...from_version
     )
-    .where(wiki_version_id: ...wiki_version_id)
-    .where(status: ...(WikiExtensionsApproval.statuses[:published]))
-    .update_all(status: WikiExtensionsApproval.statuses[:canceled], updated_at: Time.current)
+    .order(id: :desc)
+    .limit(1)
+    .pick(:wiki_version_id) || 1
   end
 end

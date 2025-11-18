@@ -10,7 +10,7 @@ de:
   permission_edit_wiki_comments: Wiki-Kommentare bearbeiten
   permission_wiki_extensions_settings: Wiki-Extensions verwalten
   permission_approval_start: Freigabe starten
-  permission_approval_grent: Freigabe genehmigen
+  permission_approval_grant: Freigabe genehmigen
   permission_approval_forward: Freigabe weiterleiten
   permission_draft_view: Entwurf ansehen
   permission_draft_create: Entwurf erstellen
@@ -41,13 +41,27 @@ de:
   wiki_extensions_approval:
     status:
       draft: "Entwurf"
-      pending: "Ausstehend"
+      pending: "in Freigabe"
       rejected: "Abgelehnt"
       published: "Veröffentlicht"
       released: "Freigegeben"
       canceled: "Storniert"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Abgebrochen"   
+      unstarted: "Geplant" 
+      pending: "In Freigabe"
+      deligate: "Delegiert" 
+      rejected: "Abgelehnt" 
+      completed: Freigabe erfüllt
+      approved: "Freigegeben"
 
   label_wiki_extensions_approval_workflow: Freigabe Workflow
+  label_wiki_extensions_approval_step: Schritt
+  wiki_extensions_approval_unable_start_status: Änderungen nicht erlaubt, Status ist "%{status}".
+  wiki_extensions_approval_unable_start_user: "Ein Benutzer darf nicht mehrfach in den Schritten vorkommen."
+  wiki_extensions_approval_add_user: Benutzer hinzufügen
+  wiki_extensions_approval_add_step: Schritt hinzufügen
   wiki_extensions_and: UND
   wiki_extensions_or: ODER
 

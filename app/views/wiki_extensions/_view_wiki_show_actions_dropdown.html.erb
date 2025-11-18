@@ -18,5 +18,8 @@
 #
 if @wiki_extension_data
 -%>
-    <%= link_to_if_authorized(sprite_icon('workflows', l(:label_wiki_extensions_approval_workflow)), { :action => 'history', :id => @page.title}, :class => 'icon icon-workflows') %>
+    <%= link_to(
+        sprite_icon('workflows', l(:label_wiki_extensions_approval_workflow)),
+        wiki_extensions_approval_path(@project.id, @page.title, @page.content.version),
+        :class => 'icon icon-workflows') %>
 <% end %>

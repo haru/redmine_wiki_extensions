@@ -18,19 +18,41 @@
   
   return if @wiki_extension_data.nil?
 
-  if @wiki_extension_data[:approval] && 
-     ((@wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id]) ||
-      (@page.version == @wiki_extension_data[:view_version_id]))
+  if @wiki_extension_data[:approval] 
 -%>
     <h3><%= l(:label_wiki_extensions_approval_workflow) %></h3>
-    <div>
+    <div id="approval">
       <ul>
-        <li style="font-size: 0.9em; margin-bottom: 5px;"><%= l("wiki_extensions_approval.status.#{@wiki_extension_data[:approval].status}") %>: vor <%= time_ago_in_words(@wiki_extension_data[:approval].created_at) %></li>
-        <li style="display: flex; align-items: center; gap: 10px; margin: 5px 5px;">
+        <li class="approval-sidebar-header">
+          <%= l("wiki_extensions_approval.status.#{@wiki_extension_data[:approval].status}") %> ·
+          <%= l(:label_ago) + " " + time_ago_in_words(@wiki_extension_data[:approval].updated_at) %> ·
+          (<%= link_to l(:label_diff), diff_project_wiki_page_path(project_id: @project.identifier, id: @page.title, version: @wiki_extension_data[:view_version_id], version_from: WikiExtensionsApproval.latest_public_from_version(@page.id, @wiki_extension_data[:view_version_id])) %>)
+        </li>
+        <li class="approval-sidebar-user">
           <%= avatar(@wiki_extension_data[:approval].author, :size => 16, :title => @wiki_extension_data[:approval].author.name) %> 
           <div><%= @wiki_extension_data[:approval].author.name %></div>
-          <div style="font-size: 0.85em; color: #888;">Autor</div>
+          <div class="aproval-sidebar-status">
+              <%= content_tag :span, "Autor",
+                  title: l(:label_ago) + " " + time_ago_in_words(@page.content.updated_on)
+              %>
+          </div>
+        </li>
       </ul>
+      <ul>
+        <% @wiki_extension_data[:approval].approval_steps.order(:step).each do |step| %>
+          <li class="approval-sidebar-user">
+            <%= avatar(step.principal, size: 16, title: step.principal.name) if step.principal %>
+            <div><%= step.principal&.name || "Kein Benutzer" %></div>
+            <div class="aproval-sidebar-status">
+              <%= content_tag :span,
+                  l("wiki_extensions_approval_steps.status.#{step.status}"),
+                  title: l(:label_wiki_extensions_approval_step) + " #{step.step} | " + l(:label_ago) + " " + time_ago_in_words(step.updated_at)
+              %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+
     </div>
   <% end %>
 

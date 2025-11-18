@@ -18,11 +18,13 @@
 class WikiExtensionsApprovalSteps < ApplicationRecord
   self.table_name = 'wiki_extensions_approval_steps'
 
-  belongs_to :wiki_extensions_approval
-  belongs_to :user
+  belongs_to :approval, class_name: 'WikiExtensionsApproval', foreign_key: :wiki_extensions_approval_id
+  belongs_to :principal, polymorphic: true
 
   validates :step, :typ, :status, presence: true
   validates :note, length: { maximum: 1000 }
+
+  after_save :check_next_step
 
   enum :typ, {
     or: 0,
@@ -30,7 +32,8 @@ class WikiExtensionsApprovalSteps < ApplicationRecord
   }, prefix: true
 
   enum :status, {
-    unstarted: 10,  # planed for
+    canceled: 5,    # one is rejected, all other canceled
+    unstarted: 15,  # planed for
     pending: 20,    # in approval mode
     deligate: 30,   # delegate to another
     rejected: 40,   # no approved
@@ -38,13 +41,38 @@ class WikiExtensionsApprovalSteps < ApplicationRecord
     approved: 70,   # released
   }
 
-  scope :by_user, ->(user_id) { where(user_id: user_id) }
+  private
 
-  def soperator
-    WikiExtensionsApprovalStep.soperator(operator)
-  end
+  def check_next_step
+    case status.to_sym
+    when :unstarted
+      # current stepNr 1 - to pending
+      update!(status: :pending) if step == 1
+      approval.update!(status: :pending) unless approval.pending?
+    when :pending
+      approval.update!(status: :pending) unless approval.pending?
+    when :rejected
+      # all current to canceled
+      approval.approval_steps.where(status: :pending).find_each do |step|
+        step.update!(status: :canceled)
+      end
+      approval.update!(status: :rejected) unless approval.rejected?
+    when :approved
 
-  def self.soperator(operator)
-    operator == 1 ? l(:wiki_extensions_and) : l(:wiki_extensions_or)
+      # OR-Logic: all pending from same stepNr to complete
+      approval.approval_steps.where(step: step, status: :pending).update_all(status: :completed) if typ_or?
+
+      # start next step if all approved
+      current_step = approval.approval_steps.where(step: step)
+      if current_step.all? { |s| s.completed? || s.approved? }
+        approval.approval_steps.where(step: step + 1).update_all(status: :pending)
+      end
+
+      # when all steps ar approved or complete = done
+      if approval.approval_steps.all? { |s| s.completed? || s.approved? }
+        approval.update!(status: :released)
+      end
+
+    end
   end
 end

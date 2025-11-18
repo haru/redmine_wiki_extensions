@@ -147,3 +147,21 @@ ul.IsRoot { margin-left:0px; list-style-type:none;}
   border-top: 1px dashed #ccc;
   margin: 3em auto;
 }
+
+/**
+ * Styles for sidebar approval
+ */
+#sidebar .approval-sidebar-header {
+    font-size: 0.9em; 
+    margin: 0px 0px 5px 0px;
+}
+#sidebar .approval-sidebar-user {
+    display: flex; 
+    align-items: center; 
+    gap: 10px; 
+    margin: 4px 0px;
+}
+#sidebar .aproval-sidebar-status {
+    font-size: 0.85em; 
+    color: color-mix(in srgb, currentColor 70%, white 30%)
+}
