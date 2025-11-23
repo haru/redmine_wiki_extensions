@@ -22,6 +22,10 @@
 <%= form_with url: wiki_extensions_approval_path(@project.id, @page.title, @page.content.version), method: :post do |f| %>
   <div class="box tabular">
     <h3><%= l(:permission_approval_start) %></h3>
+    <p>
+    <label><%= l(:field_comments) %></label>
+    <%= f.text_field :note, placeholder: l(:field_comments), value: @note, class: 'input-large', style: 'width: 400px;' %>
+    </p>
     <div id="steps-container">
       <% @steps_grouped.keys.sort.each do |step_nr| %>
         <div class="step" data-step="<%= step_nr %>">
@@ -34,7 +38,7 @@
                       class: 'user-select' %>
                 <% if index == 0 %> 
                   <%= select_tag "steps_typ[#{step_nr}]",
-                    options_for_select([[l(:wiki_extensions_or), 'or'], [l(:wiki_extensions_and), 'and']], selected: step.typ),
+                    options_for_select([[l(:wiki_extensions_or), 'or'], [l(:wiki_extensions_and), 'and']], selected: step.step_type),
                     class: "step-typ" %>
                   <span class="add-user" data-step="<%= step_nr %>">
                     <%= sprite_icon('add', l(:wiki_extensions_approval_add_user)) %>
@@ -98,6 +102,9 @@
         </p>
       `;
       stepsContainer.appendChild(newStep);
+      // blank value
+      const newSelect = newStep.querySelector('select');
+      newSelect.selectedIndex = 0;
     });
 
     // Event Delegation für Add User
@@ -120,6 +127,10 @@
           </select>
         `;
         stepDiv.querySelector('p').appendChild(newUserSelect);
+
+        // blank value
+        const newSelect = newUserSelect.querySelector('select');
+        newSelect.selectedIndex = 0;
 
       }
     });

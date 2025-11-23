@@ -73,8 +73,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
     permission :show_wiki_tags, { :wiki_extensions => [:tag] }, :public => true
     permission :wiki_extensions_settings, { :wiki_extensions_settings => [:show, :update] }
     permission :approval_start, { :wiki_extensions_approval => [:start_approval] }, require: :member
-    permission :approval_grant, { :wiki_extensions_approval => [:grant_approval] }
-    permission :approval_forward, { :wiki_extensions_approval => [:forward_approval] }
+    permission :approval_grant, { :wiki_extensions_approval => [:grant_approval] }, require: :member
+    permission :approval_forward, { :wiki_extensions_approval => [:forward_approval] }, require: :member
     permission :draft_view, { :wiki_extensions_approval => [:view_draft] }
     permission :draft_create, { :wiki_extensions_approval => [:set_draft] }
   end

@@ -21,4 +21,6 @@ RedmineApp::Application.routes.draw do
   match "projects/:id/wiki_extensions_settings/:action", :controller => "wiki_extensions_settings", :via => [:get, :post, :put, :patch]
   get "/wiki_extentions/emoticon/:icon_name", :controller => "wiki_extensions", :action => "emoticon", :as => "wiki_extensions_emoticon"
   match "projects/:id/wiki_extensions_approval/:title/:version", to: "wiki_extensions_approval#start_approval", via: [:get, :post], as: "wiki_extensions_approval"
+  match 'projects/:id/wiki_extensions_approval/:title/:version/grant/:step_id', to: 'wiki_extensions_approval#grant_approval', via: [:get, :post],  as: 'wiki_extensions_grant_approval'
+  match 'projects/:id/wiki_extensions_approval/:title/:version/forward/:step_id', to: 'wiki_extensions_approval#forward_approval', via: [:get, :post],  as: 'wiki_extensions_forward_approval'
 end

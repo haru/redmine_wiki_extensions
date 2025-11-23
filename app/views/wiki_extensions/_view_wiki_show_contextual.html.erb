@@ -25,7 +25,7 @@ if @wiki_extension_data
         (@page.version == @wiki_extension_data[:view_version_id]))
     -%>
 
-        <% if @page.version == @wiki_extension_data[:view_version_id] && @wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id < @page.version %>
+        <% if @page.version == @wiki_extension_data[:view_version_id] && @wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id < @page.version && User.current.allowed_to?(:view_wiki_edits, @project) %>
             <%= link_to sprite_icon('wiki-page', l(:wiki_extensions_approval_link_release)), 
                         { controller: 'wiki', action: 'show', project_id: @project.identifier, id: @page.title, version: @wiki_extension_data[:latest_public_approval].wiki_version_id }, 
                         { title: "Autor #{@wiki_extension_data[:approval].author.name} · vor etwa #{time_ago_in_words(@wiki_extension_data[:approval].created_at)}", 

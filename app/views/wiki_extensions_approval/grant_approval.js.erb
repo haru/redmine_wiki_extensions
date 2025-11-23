@@ -1,0 +1,11 @@
+
+$('#ajax-modal').html
+(
+  '<div class="modal-header">' +
+    '<h3 class="title"><%= j l(:label_wiki_extensions_settings_approval) %></h3>' +
+  '</div>' +
+  '<div class="modal-body">' +
+    '<%= j render partial: "wiki_extensions_approval/grant_dialog", locals: { step: @step } %>' +
+  '</div>'
+);
+showModal('ajax-modal');

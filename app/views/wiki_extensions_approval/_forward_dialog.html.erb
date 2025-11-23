@@ -1,0 +1,41 @@
+<%
+# Wiki Extensions plugin for Redmine
+# Copyright (C) 2012-2025  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+%>
+
+<%= form_with url: { controller: 'wiki_extensions_approval', action: 'forward_approval', project_id: @project, page_id: @page.title, version: @page.content.version, step_id: @step.id },
+              method: :post,
+              remote: true do |f| %>
+
+  <!-- Status Auswahl -->
+  <div class="field">
+    <%= select_tag "principal_id",
+        principals_options_for_select(@approval_user_options, @step.principal_id&.to_s),
+        class: 'user-select' %>
+  </div>
+
+  <!-- Kommentar -->
+  <div class="field">
+    <%= f.text_area :note, rows: 5, cols: 35, placeholder: l(:field_comments), value: @step.note %>
+  </div>
+
+
+  <div class="buttons">
+    <%= f.submit l(:button_save), class: 'button-positive' %>
+    <%= link_to l(:button_cancel), '#', class: 'button-cancel', onclick: 'hideModal(); return false;' %>
+  </div>
+<% end %>

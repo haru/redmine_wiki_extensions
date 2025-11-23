@@ -25,34 +25,64 @@
       <ul>
         <li class="approval-sidebar-header">
           <%= l("wiki_extensions_approval.status.#{@wiki_extension_data[:approval].status}") %> ·
-          <%= l(:label_ago) + " " + time_ago_in_words(@wiki_extension_data[:approval].updated_at) %> ·
-          (<%= link_to l(:label_diff), diff_project_wiki_page_path(project_id: @project.identifier, id: @page.title, version: @wiki_extension_data[:view_version_id], version_from: WikiExtensionsApproval.latest_public_from_version(@page.id, @wiki_extension_data[:view_version_id])) %>)
-        </li>
-        <li class="approval-sidebar-user">
-          <%= avatar(@wiki_extension_data[:approval].author, :size => 16, :title => @wiki_extension_data[:approval].author.name) %> 
-          <div><%= @wiki_extension_data[:approval].author.name %></div>
-          <div class="aproval-sidebar-status">
-              <%= content_tag :span, "Autor",
-                  title: l(:label_ago) + " " + time_ago_in_words(@page.content.updated_on)
-              %>
-          </div>
+          <%= l(:label_ago) + " " + time_ago_in_words(@wiki_extension_data[:approval].updated_at) %>
+          <% if User.current.allowed_to?(:view_wiki_edits, @project) %>
+            · (<%= link_to l(:label_diff), diff_project_wiki_page_path(project_id: @project.identifier, id: @page.title, version: @wiki_extension_data[:view_version_id], version_from: WikiExtensionsApproval.latest_public_from_version(@page.id, @wiki_extension_data[:view_version_id])) %>)
+          <% end %>  
         </li>
       </ul>
-      <ul>
-        <% @wiki_extension_data[:approval].approval_steps.order(:step).each do |step| %>
-          <li class="approval-sidebar-user">
-            <%= avatar(step.principal, size: 16, title: step.principal.name) if step.principal %>
-            <div><%= step.principal&.name || "Kein Benutzer" %></div>
-            <div class="aproval-sidebar-status">
-              <%= content_tag :span,
-                  l("wiki_extensions_approval_steps.status.#{step.status}"),
-                  title: l(:label_wiki_extensions_approval_step) + " #{step.step} | " + l(:label_ago) + " " + time_ago_in_words(step.updated_at)
-              %>
+      <% if @wiki_extension_data[:approval].status.in?(%w[pending rejected released canceled]) %>
+        <ul>
+          <li>
+            <div class="approval-sidebar-user">
+              <%= avatar(@wiki_extension_data[:approval].author, :size => 16, :title => @wiki_extension_data[:approval].author.name) %> 
+              <div><%= @wiki_extension_data[:approval].author.name %></div>
+              <div class="aproval-sidebar-status">
+                  <%= content_tag :span, l(:label_wiki_extensions_approval_starter),
+                      title: l(:label_ago) + " " + time_ago_in_words(@page.content.updated_on)
+                  %>
+              </div>
             </div>
+            <% if @wiki_extension_data[:approval].note.present? %>
+              <%= content_tag :div,
+                      @wiki_extension_data[:approval].note,
+                      title: l(:field_comments),
+                      class: "aproval-sidebar-note" %>
+            <% end %>
           </li>
-        <% end %>
-      </ul>
-
+    
+        </ul>
+        <ul>
+          <% @wiki_extension_data[:approval].approval_steps.order(:step).each do |step| %>
+            <li>
+              <div class="approval-sidebar-user">
+                <%= avatar(step.principal, size: 16, title: step.principal.name) if step.principal %>
+                <div><%= step.principal&.name %></div>
+                <div class="aproval-sidebar-status">
+                  <% if @wiki_extension_data[:step_approval] &&
+                        @wiki_extension_data[:step_approval] == step &&
+                        @wiki_extension_data[:step_approval].id == step.id &&
+                        User.current.allowed_to?(:approval_grant, @project) %>
+                    <%= link_to l("wiki_extensions_approval_steps.status.#{step.status}"),
+                                wiki_extensions_grant_approval_path(@project, @page.title, @page.content.version, @wiki_extension_data[:step_approval].id),
+                                remote: true %>
+                  <% else %>
+                    <%= content_tag :span,
+                        l("wiki_extensions_approval_steps.status.#{step.status}"),
+                        title: "#{l(:label_wiki_extensions_approval_step)} #{step.step} | #{l(:label_ago)} #{time_ago_in_words(step.updated_at)}" %>
+                  <% end %>
+                </div>
+              </div>
+              <% if step.note.present? %>
+                <%= content_tag :div,
+                    step.note,
+                    title: l(:field_comments),
+                    class: "aproval-sidebar-note" %>
+              <% end %>
+            </li>
+          <% end %>
+        </ul>
+      <% end %>
     </div>
   <% end %>
 

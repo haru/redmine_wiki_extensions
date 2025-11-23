@@ -23,7 +23,7 @@ class WikiExtensionsApprovalController < ApplicationController
   before_action :find_project, :find_user
   before_action :check_module_enabled, :authorize
   before_action :find_page
-  before_action :set_wiki_extensions_data, only: [:start_approval]
+  before_action :set_wiki_extensions_data
 
   def start_approval
     # just if no approval is in the db
@@ -37,7 +37,8 @@ class WikiExtensionsApprovalController < ApplicationController
     # get
     if request.get?
       @steps_grouped = @wiki_extension_data[:approval].steps_grouped_with_default if @wiki_extension_data[:approval]
-      @approval_user_options = approval_user_options(@project)
+      @approval_user_options = approval_user_options(@project, @page.content.author_id)
+      @note = @wiki_extension_data[:approval]&.note.presence || @page.content.comments
       return
     end
 
@@ -62,37 +63,91 @@ class WikiExtensionsApprovalController < ApplicationController
       return
     end
 
-    # if approval is not saved
-    @wiki_extension_data[:approval].save! if @wiki_extension_data[:approval].new_record?
+    ActiveRecord::Base.transaction do
+      # if approval is not saved
+      @wiki_extension_data[:approval].save! if @wiki_extension_data[:approval].new_record?
 
-    # save Steps
-    steps_params.each do |step_nr, users|
-      # Collect all user_ids for this step group
-      user_ids = users.map { |u| u[:principal_id].to_i }
-      # Delete all steps for this step_nr that are not in the submitted user_ids
-      approval.approval_steps.where(step: step_nr).where.not(principal: user_ids).destroy_all
-      # create new users for this step
-      users.each do |user_data|
-        principal_object = User.find_by(id: user_data[:principal_id]) || Group.find_by(id: user_data[:principal_id])
-        step_record = approval.approval_steps.find_or_initialize_by(
-          step: step_nr,
-          principal: principal_object
-        )
-        # Only set status to :unstarted if current status is less than completed (50)
-        step_record.status = :unstarted if step_record.status.nil? || (!step_record.completed? && !step_record.approved?)
-        step_record.typ = params[:steps_typ][step_nr] || 'or'
-        step_record.save!
-        # end
+      # save Steps
+      steps_params.each do |step_nr, users|
+        # Collect all user_ids for this step group
+        user_ids = users.map { |u| u[:principal_id].to_i }
+        # Delete all steps for this step_nr that are not in the submitted user_ids
+        approval.approval_steps.where(step: step_nr).where.not(principal: user_ids).destroy_all
+
+        approval.update(note: params[:note])
+
+        # create new users for this step
+        users.each do |user_data|
+          principal_object = User.find_by(id: user_data[:principal_id]) || Group.find_by(id: user_data[:principal_id])
+          step_record = approval.approval_steps.for_principal(principal_object).find_or_initialize_by(step: step_nr)
+
+          # Only set status to :unstarted if current status !approved
+          step_record.status = :unstarted if step_record.status.nil? || !step_record.approved?
+          step_record.step_type = params[:steps_typ][step_nr] || 'or'
+          step_record.save! if step_record.changed?
+        end
       end
+
+      @wiki_extension_data[:approval].approval_steps.check_all_steps_approved(approval)
     end
 
     redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
   end
 
   def grant_approval
+    @step = @wiki_extension_data[:step_approval]
+
+    # Check if all is available
+    return render_404 unless @step
+
+    if request.post?
+
+      if params[:status] == 'rejected' && params[:note].blank?
+        flash[:error] = l(:wiki_extensions_approval_unable_note)
+        redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
+        return
+      end
+
+      @step.update({status: params[:status], note: params[:note], principal: User.current}.compact)
+      redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
+    else
+      respond_to do |format|
+        format.js   # grant_approval.js.erb
+      end
+    end
   end
 
   def forward_approval
+    @step = @wiki_extension_data[:step_approval]
+
+    # Check if all is available
+    return render_404 unless @step
+
+    if request.post?
+
+      if params[:note].blank?
+        flash[:error] = l(:wiki_extensions_approval_unable_note)
+        redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
+        return
+      end
+
+      principal_object = User.find_by(id: params[:principal_id]) || Group.find_by(id: params[:principal_id])
+
+      # doublicat users
+      if WikiExtensionsApprovalSteps.for_principal(principal_object).where(wiki_extensions_approval_id: @step.approval.id).exists?
+        flash[:error] = l(:wiki_extensions_approval_unable_start_user)
+        redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
+        return
+      end
+
+      @step.update({note: params[:note], principal: principal_object}.compact)
+      redirect_to project_wiki_page_path(@project.identifier, @page.title, :version => @page.content.version)
+    else
+      @approval_user_options = approval_user_options(@project, @page.content.author_id)
+      respond_to do |format|
+        format.js   # forward_approval.js.erb
+      end
+    end
   end
 
   def view_draft
@@ -133,10 +188,10 @@ class WikiExtensionsApprovalController < ApplicationController
     render_403 unless WikiExtensionsUtil.is_enabled? @project
   end
 
-  def approval_user_options(project)
+  def approval_user_options(project, autor_id)
     # (Users + groups)
     users = @project.memberships.map(&:user).compact.select do |u|
-      !u.admin? && u.id != User.current.id && u.roles_for_project(@project).any? { |r| r.permissions.include?(:approval_grant) }
+      !u.admin? && u.id != autor_id && u.roles_for_project(@project).any? { |r| r.permissions.include?(:approval_grant) }
     end
 
     groups = @project.memberships.map(&:principal).select do |g|
@@ -163,7 +218,7 @@ class WikiExtensionsApprovalController < ApplicationController
 
   def restore_form_data
     @steps_grouped = build_steps_from_params
-    @approval_user_options = approval_user_options(@project)
+    @approval_user_options = approval_user_options(@project, @page.content.author_id)
   end
 
   def build_steps_from_params
@@ -176,7 +231,7 @@ class WikiExtensionsApprovalController < ApplicationController
         WikiExtensionsApprovalSteps.new(
           step: step_nr,
           principal: principal_object,
-          typ: params[:steps_typ][step_nr]
+          step_type: params[:steps_typ][step_nr]
         )
       end
     end

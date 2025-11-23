@@ -17,10 +17,13 @@
    
 if @wiki_extension_data && WikiExtensionsUtil.draft_create?(@project, @wiki_extension_data[:setting])
 
-    # status if its minimum approval start or approval required
-    disabled = @wiki_extension_data[:setting].approval_required || (@wiki_extension_data[:approval] && @wiki_extension_data[:approval].status_before_type_cast.to_i == WikiExtensionsApproval.statuses[:pending]) 
+    # disabled, approval_required or approval_version_required
+    disabled = @wiki_extension_data[:setting].approval_required || 
+               (@wiki_extension_data[:setting].approval_version_required && @wiki_extension_data[:latest_public_approval].released?)
 
-    default = !@wiki_extension_data[:setting].approval_required && (@wiki_extension_data[:approval] && @wiki_extension_data[:approval].status_before_type_cast.to_i <= WikiExtensionsApproval.statuses[:pending]) 
+    # default, same as disabled OR current in pending/rejected approval
+    default = disabled ||
+              (@wiki_extension_data[:approval] && @wiki_extension_data[:approval].status.in?(%w[pending rejected draft]))
 
     status_hidden = disabled ? "draft" : "published"
 

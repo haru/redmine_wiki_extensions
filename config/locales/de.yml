@@ -45,21 +45,21 @@ de:
       rejected: "Abgelehnt"
       published: "Veröffentlicht"
       released: "Freigegeben"
-      canceled: "Storniert"
+      canceled: "Abgebrochen"
   wiki_extensions_approval_steps:
     status:
       canceled: "Abgebrochen"   
       unstarted: "Geplant" 
       pending: "In Freigabe"
-      deligate: "Delegiert" 
-      rejected: "Abgelehnt" 
-      completed: Freigabe erfüllt
+      rejected: "Abgelehnt"
       approved: "Freigegeben"
 
   label_wiki_extensions_approval_workflow: Freigabe Workflow
   label_wiki_extensions_approval_step: Schritt
+  label_wiki_extensions_approval_starter: Workflow gestartet
   wiki_extensions_approval_unable_start_status: Änderungen nicht erlaubt, Status ist "%{status}".
-  wiki_extensions_approval_unable_start_user: "Ein Benutzer darf nicht mehrfach in den Schritten vorkommen."
+  wiki_extensions_approval_unable_start_user: "Ein Benutzer darf nicht mehrfach vorkommen."
+  wiki_extensions_approval_unable_note: Kommentar ist erforderlich
   wiki_extensions_approval_add_user: Benutzer hinzufügen
   wiki_extensions_approval_add_step: Schritt hinzufügen
   wiki_extensions_and: UND

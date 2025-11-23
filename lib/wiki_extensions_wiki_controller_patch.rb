@@ -53,11 +53,14 @@ module WikiExtensionsWikiControllerPatch
   def set_wiki_extensions_data
     if @project && WikiExtensionsUtil.is_enabled?(@project)
 
+      approval = WikiExtensionsApproval.for_wiki(@page.id, params[:version].nil? ? @page.version : params[:version].to_i).first
+
       @wiki_extension_data = {
         view_version_id: params[:version].nil? ? @page.version : params[:version].to_i,
-        approval: WikiExtensionsApproval.for_wiki(@page.id, params[:version].nil? ? @page.version : params[:version].to_i).first,
+        approval: approval,
         latest_public_approval: WikiExtensionsApproval.latest_public_version(@page.id).first,
-        setting: WikiExtensionsSetting.find_or_create(@project)
+        setting: WikiExtensionsSetting.find_or_create(@project),
+        step_approval: WikiExtensionsApprovalSteps.first_pending_step_for(approval, User.current, @project, params[:step_id]) # optional filter by step
       }
 
     end

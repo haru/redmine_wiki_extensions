@@ -18,8 +18,23 @@
 #
 if @wiki_extension_data
 -%>
-    <%= link_to(
-        sprite_icon('workflows', l(:label_wiki_extensions_approval_workflow)),
-        wiki_extensions_approval_path(@project.id, @page.title, @page.content.version),
-        :class => 'icon icon-workflows') %>
+
+    <% if !@wiki_extension_data[:approval]&.released? && User.current.allowed_to?(:start_approval, @project) %>
+        <%= link_to(
+            sprite_icon('workflows', l(:label_wiki_extensions_approval_workflow)),
+            wiki_extensions_approval_path(@project.id, @page.title, @page.content.version),
+            :class => 'icon icon-workflows') %>
+    <% end %>        
+    <% if @wiki_extension_data[:step_approval] && User.current.allowed_to?(:approval_grant, @project) %>
+        <%= link_to sprite_icon('checked', l(:label_wiki_extensions_settings_approval)),
+                    wiki_extensions_grant_approval_path(@project, @page.title, @page.content.version, @wiki_extension_data[:step_approval].id),
+                    remote: true,
+                    class: 'icon icon-approval' %>
+    <% end %>
+    <% if @wiki_extension_data[:step_approval] && User.current.allowed_to?(:approval_forward, @project) %>
+        <%= link_to sprite_icon('move', l(:permission_approval_forward)),
+                    wiki_extensions_forward_approval_path(@project, @page.title, @page.content.version, @wiki_extension_data[:step_approval].id),
+                    remote: true,
+                    class: 'icon icon-forward' %>
+    <% end %>
 <% end %>

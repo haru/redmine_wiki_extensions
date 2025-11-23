@@ -19,7 +19,8 @@ class WikiExtensionsRevisionHook < Redmine::Hook::ViewListener
   def view_layouts_base_html_head(context)
     if context[:controller].is_a?(WikiController) &&
        context[:controller].action_name == 'show' &&
-       WikiExtensionsUtil.is_allowed_to_show_last_version?(context[:project])
+       WikiExtensionsUtil.is_allowed_to_show_last_version?(context[:project]) &&
+       !from_update?(context[:controller])
 
       controller = context[:controller]
       page = controller.instance_variable_get(:@page)
@@ -44,5 +45,12 @@ class WikiExtensionsRevisionHook < Redmine::Hook::ViewListener
       end
 
     end
+  end
+
+  private
+
+  def from_update?(controller)
+    referer = controller.request.referer
+    referer.present? && referer.include?('/wiki/') && referer.include?('edit')
   end
 end

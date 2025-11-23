@@ -21,18 +21,18 @@ class AddWikiExtensionsApproval < ActiveRecord::Migration[4.2]
       t.references :wiki_version, null: false
       t.references :author, null: false
       t.integer :status, null: false, default: 0
+      t.text :note
       t.timestamps null: false
     end
     add_index :wiki_extensions_approval, :status, name: 'index_approval_on_status'
     add_index :wiki_extensions_approval, :author_id, name: 'index_approval_on_author'
-    add_index :wiki_extensions_approval, [:wiki_page_id, :wiki_version_id], unique: true, name: 'index_approval_on_page_version'
+    add_index :wiki_extensions_approval, [:wiki_page_id, :wiki_version_id], unique: true, name: 'index_approval_on_page_version', order: { wiki_version_id: :desc }
 
     create_table :wiki_extensions_approval_steps do |t|
       t.references :wiki_extensions_approval, null: false
       t.integer :step, null: false
-      t.references :principal, null: false
-      t.string :principal_type, null: false
-      t.integer :typ, null: false, default: 0
+      t.references :principal, polymorphic: true, null: false
+      t.integer :step_type, null: false, default: 0
       t.text :note
       t.integer :status, null: false, default: 0
       t.timestamps null: false
