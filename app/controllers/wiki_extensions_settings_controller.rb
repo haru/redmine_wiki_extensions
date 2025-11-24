@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# frozen_string_literal: true
 
 class WikiExtensionsSettingsController < ApplicationController
   layout 'base'
@@ -35,6 +36,8 @@ class WikiExtensionsSettingsController < ApplicationController
 
         setting.update!(
           comment_required: params[:comment_required],
+          draft_enabled: params[:draft_enabled],
+          approval_enabled: params[:approval_enabled],
           approval_required: params[:approval_required],
           approval_version_required: params[:approval_version_required],
           tag_disabled: params[:tag_disabled]

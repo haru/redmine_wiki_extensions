@@ -15,11 +15,11 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-#
+# frozen_string_literal: true
 if @wiki_extension_data
 -%>
 
-    <% if !@wiki_extension_data[:approval]&.released? && User.current.allowed_to?(:start_approval, @project) %>
+    <% if !@wiki_extension_data[:approval]&.released? && WikiExtensionsUtil.approval_start?(@project, @wiki_extension_data[:setting]) %>
         <%= link_to(
             sprite_icon('workflows', l(:label_wiki_extensions_approval_workflow)),
             wiki_extensions_approval_path(@project.id, @page.title, @page.content.version),

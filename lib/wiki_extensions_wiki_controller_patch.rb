@@ -53,13 +53,17 @@ module WikiExtensionsWikiControllerPatch
   def set_wiki_extensions_data
     if @project && WikiExtensionsUtil.is_enabled?(@project)
 
+      # draft or approval must be enabled in project or plugin
+      setting = WikiExtensionsSetting.find_or_create(@project)
+      return unless WikiExtensionsUtil.approval_or_draft_enabled?(@project, setting)
+
       approval = WikiExtensionsApproval.for_wiki(@page.id, params[:version].nil? ? @page.version : params[:version].to_i).first
 
       @wiki_extension_data = {
         view_version_id: params[:version].nil? ? @page.version : params[:version].to_i,
         approval: approval,
         latest_public_approval: WikiExtensionsApproval.latest_public_version(@page.id).first,
-        setting: WikiExtensionsSetting.find_or_create(@project),
+        setting: setting,
         step_approval: WikiExtensionsApprovalSteps.first_pending_step_for(approval, User.current, @project, params[:step_id]) # optional filter by step
       }
 

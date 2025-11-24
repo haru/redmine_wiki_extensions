@@ -57,6 +57,8 @@ Redmine::Plugin.register :redmine_wiki_extensions do
 
   settings default: {
              'wiki_extensions_settings_comment' => 'false',
+             'wiki_extensions_settings_draft_enabled' => 'true',
+             'wiki_extensions_settings_approval_enabled' => 'project',
              'wiki_extensions_settings_approval' => 'project',
              'wiki_extensions_settings_approval_version' => 'true',
              'wiki_extensions_settings_tags' => 'false'

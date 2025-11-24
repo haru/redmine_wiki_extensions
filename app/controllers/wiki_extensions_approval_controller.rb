@@ -36,6 +36,8 @@ class WikiExtensionsApprovalController < ApplicationController
 
     # get
     if request.get?
+      return render_403 unless WikiExtensionsUtil.approval_start?(@project, @wiki_extension_data[:setting])
+
       @steps_grouped = @wiki_extension_data[:approval].steps_grouped_with_default if @wiki_extension_data[:approval]
       @approval_user_options = approval_user_options(@project, @page.content.author_id)
       @note = @wiki_extension_data[:approval]&.note.presence || @page.content.comments

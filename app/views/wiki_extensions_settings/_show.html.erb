@@ -52,20 +52,37 @@ function click_wiki_menu_tab(num) {
         <%= check_box_tag 'comment_required', '1', @wiki_extensions_setting.comment_required %>
       </p>
       <% end %>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'] == SettingsHelper::PROJECT %>
+      <p>
+        <label><%= l(:label_wiki_extensions_settings_draft_enabled) %></label>
+        <%= hidden_field_tag 'draft_enabled', '0' %>
+        <%= check_box_tag 'draft_enabled', '1', @wiki_extensions_setting.draft_enabled %>
+      </p>
+      <% end %>
+      <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_enabled'] == SettingsHelper::PROJECT %>
+      <p>
+        <label><%= l(:label_wiki_extensions_settings_approval_enabled) %></label>
+        <%= hidden_field_tag 'approval_enabled', '0' %>
+        <%= check_box_tag 'approval_enabled', '1', @wiki_extensions_setting.approval_enabled, id: 'approval_enabled_box' %>
+      </p>
+      <% end %>
+      <div style="margin-left: 20px;">
       <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] == SettingsHelper::PROJECT %>
       <p>
         <label><%= l(:label_wiki_extensions_settings_approval) %></label>
         <%= hidden_field_tag 'approval_required', '0' %>
-        <%= check_box_tag 'approval_required', '1', @wiki_extensions_setting.approval_required %>
+        <%= check_box_tag 'approval_required', '1', @wiki_extensions_setting.approval_required, id: 'approval_required_box' %>
       </p>
       <% end %>
       <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'] == SettingsHelper::PROJECT %>
       <p>
         <label><%= l(:label_wiki_extensions_settings_approval_version) %></label>
         <%= hidden_field_tag 'approval_version_required', '0' %>
-        <%= check_box_tag 'approval_version_required', '1', @wiki_extensions_setting.approval_version_required %>
+        <%= check_box_tag 'approval_version_required', '1', @wiki_extensions_setting.approval_version_required, id: 'approval_version_required_box' %>
+        <em class="info"><%= t(:text_wiki_extensions_settings_approval_version) %></em>
       </p>
       <% end %>
+      </div>
       <% if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] == SettingsHelper::PROJECT %>
       <p>
         <label><%= l(:label_wiki_extensions_settings_tags) %></label>
@@ -82,3 +99,25 @@ function click_wiki_menu_tab(num) {
     <%= submit_tag l(:button_update) %>
 <% end %>
 </div>
+
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const mainCheckbox = document.getElementById('approval_enabled_box');
+    const dependentCheckboxes = [
+      document.getElementById('approval_required_box'),
+      document.getElementById('approval_version_required_box')
+    ];
+
+    function toggleDependentCheckboxes() {
+      const isDisabled = !mainCheckbox.checked;
+      dependentCheckboxes.forEach(cb => {
+        cb.disabled = isDisabled;
+        if (isDisabled) cb.checked = false;
+      });
+    }
+
+    mainCheckbox.addEventListener('change', toggleDependentCheckboxes);
+    toggleDependentCheckboxes();
+  });
+</script>

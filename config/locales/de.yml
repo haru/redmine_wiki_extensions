@@ -33,7 +33,9 @@ de:
   label_wiki_extensions_settings_comment: Wiki Kommentar erforderlich
   label_wiki_extensions_settings_approval: Freigabe erforderlich
   label_wiki_extensions_settings_approval_version: Freigabeworkflow für nächste Version
-  text_wiki_extensions_settings_approval_version: 'Nach Start eines Freigabeworkflows ist dieser für künftige Versionen erforderlich'
+  label_wiki_extensions_settings_draft_enabled: Wiki Entwurf aktiv
+  label_wiki_extensions_settings_approval_enabled: Wiki Freigabe aktiv
+  text_wiki_extensions_settings_approval_version: 'Nach Start eines Freigabeworkflows, ist dieser für künftige Versionen, auf dieser Seite, erforderlich'
 
   wiki_extensions_approval_link_draft: Entwurf anzeigen
   wiki_extensions_approval_link_release: Veröffentlichte Version

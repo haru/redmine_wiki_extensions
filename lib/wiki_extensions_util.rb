@@ -14,6 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# frozen_string_literal: true
 
 class WikiExtensionsUtil
   def self.is_enabled?(project)
@@ -37,33 +38,66 @@ class WikiExtensionsUtil
     setting ||= WikiExtensionsSetting.find_or_create(project.id)
     return true if setting.approval_required
 
+    return false unless setting.draft_enabled
+
     user = User.current.logged? ? User.current : User.anonymous
     user.allowed_to?(:draft_create, project)
   end
 
+  def self.approval_start?(project, setting = nil)
+    return false unless project
+    return false if setting.nil? && !is_enabled?(project)
+
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return false unless setting.approval_enabled
+
+    user = User.current.logged? ? User.current : User.anonymous
+    user.allowed_to?(:approval_start, project)
+  end
+
   def self.is_allowed_to_show_last_version?(project)
-    return false unless is_enabled?(project)
+    return false unless approval_or_draft_enabled?(project)
 
     user = User.current.logged? ? User.current : User.anonymous
     user.allowed_to?(:view_wiki_edits, project)
   end
 
+  def self.draft_enabled?(project, setting = nil)
+    return false unless project
+    return false if setting.nil? && !is_enabled?(project)
+
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return setting.draft_enabled
+  end
+
+  def self.approval_enabled?(project, setting = nil)
+    return false unless project
+    return false if setting.nil? && !is_enabled?(project)
+
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return setting.approval_enabled
+  end
+
+  def self.approval_or_draft_enabled?(project, setting = nil)
+    return false unless project
+    return false if setting.nil? && !is_enabled?(project)
+
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return setting.approval_enabled || setting.draft_enabled
+  end
+
   def self.wiki_extensions_approval_badge(status)
     case status
-    when 'draft'
-      return 'badge-status-locked'
+    when 'draft', 'canceled'
+      'badge-status-locked'
     when 'pending'
-      return 'badge-status-open'
+      'badge-status-open'
     when 'rejected'
-      return 'badge-private'
-    when 'released'
-      return 'badge-status-closed'
-    when 'published'
-      return 'badge-status-closed'
-    when 'canceled'
-      return 'badge-status-locked'
+      'badge-private'
+    when 'released', 'published'
+      'badge-status-closed'
     else
-      return 'badge-count'
+      'badge-count'
     end
   end
 end

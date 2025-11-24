@@ -15,8 +15,9 @@
    # You should have received a copy of the GNU General Public License
    # along with this program; if not, write to the Free Software
    # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-  
+   # frozen_string_literal: true
   return if @wiki_extension_data.nil?
+  return unless WikiExtensionsUtil.approval_enabled?(@project, @wiki_extension_data[:setting])
 
   if @wiki_extension_data[:approval] 
 -%>

@@ -14,6 +14,8 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+# frozen_string_literal: true
+
 class WikiExtensionsSetting < ApplicationRecord
   belongs_to :project
   before_save :sync_data_hash_to_json
@@ -56,9 +58,9 @@ class WikiExtensionsSetting < ApplicationRecord
   # Getter with default value, or setting from projecct
   def comment_required
     if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] == SettingsHelper::PROJECT
-      data_hash[:comment_required].nil? ? false : data_hash[:comment_required]
+      ActiveModel::Type::Boolean.new.cast(data_hash[:comment_required])
     else
-      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'])
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'])
     end
   end
 
@@ -66,11 +68,35 @@ class WikiExtensionsSetting < ApplicationRecord
     data_hash[:comment_required] = ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def draft_enabled
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'] == SettingsHelper::PROJECT
+      ActiveModel::Type::Boolean.new.cast(data_hash[:draft_enabled])
+    else
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'])
+    end
+  end
+
+  def draft_enabled=(value)
+    data_hash[:draft_enabled] = ActiveModel::Type::Boolean.new.cast(value)
+  end
+
+  def approval_enabled
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_enabled'] == SettingsHelper::PROJECT
+      ActiveModel::Type::Boolean.new.cast(data_hash[:approval_enabled])
+    else
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_enabled'])
+    end
+  end
+
+  def approval_enabled=(value)
+    data_hash[:approval_enabled] = ActiveModel::Type::Boolean.new.cast(value)
+  end
+
   def approval_required
     if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] == SettingsHelper::PROJECT
-      data_hash[:approval_required].nil? ? false : data_hash[:approval_required]
+      ActiveModel::Type::Boolean.new.cast(data_hash[:approval_required])
     else
-      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'])
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'])
     end
   end
 
@@ -80,9 +106,9 @@ class WikiExtensionsSetting < ApplicationRecord
 
   def approval_version_required
     if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'] == SettingsHelper::PROJECT
-      data_hash[:approval_version_required].nil? ? false : data_hash[:approval_version_required]
+      ActiveModel::Type::Boolean.new.cast(data_hash[:approval_version_required])
     else
-      to_boolean(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'])
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'])
     end
   end
 
@@ -97,6 +123,6 @@ class WikiExtensionsSetting < ApplicationRecord
   end
 
   def wiki_extensions_setting_params
-    params.require(:wiki_extensions_setting).permit(:tag_disabled, :comment_required, :approval_required, :approval_version_required)
+    params.require(:wiki_extensions_setting).permit(:tag_disabled, :comment_required, :draft_enabled, :approval_enabled, :approval_required, :approval_version_required)
   end
 end

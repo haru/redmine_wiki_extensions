@@ -18,7 +18,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 #
 
-if @wiki_extension_data
+if @wiki_extension_data && WikiExtensionsUtil.approval_or_draft_enabled?(@project, @wiki_extension_data&.dig(:setting))
 
     if @wiki_extension_data[:approval] && 
         ((@wiki_extension_data[:latest_public_approval] && @wiki_extension_data[:latest_public_approval].wiki_version_id == @wiki_extension_data[:view_version_id]) ||
