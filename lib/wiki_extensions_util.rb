@@ -86,6 +86,14 @@ class WikiExtensionsUtil
     return setting.approval_enabled || setting.draft_enabled
   end
 
+  def self.wiki_comment_required?(project, setting = nil)
+    return false unless project
+    return false if setting.nil? && !is_enabled?(project)
+
+    setting ||= WikiExtensionsSetting.find_or_create(project.id)
+    return setting.comment_required
+  end
+
   def self.wiki_extensions_approval_badge(status)
     case status
     when 'draft', 'canceled'

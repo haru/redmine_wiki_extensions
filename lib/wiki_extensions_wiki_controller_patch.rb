@@ -21,6 +21,7 @@ class WikiController
   after_action :wiki_extensions_save, :only => [:update]
   after_action :wiki_extensions_delete, only: [:destroy_version]
   before_action :set_wiki_extensions_data, only: [:show, :edit]
+  before_action :is_wiki_comment_required, :only => [:update]
 end
 
 module WikiExtensionsWikiControllerPatch
@@ -49,6 +50,14 @@ module WikiExtensionsWikiControllerPatch
   end
 
   private
+
+  def is_wiki_comment_required
+    # Parameter is set client-side via JavaScript to trigger standard Rails flash error
+    if params[:comment_required_error].present?
+      flash[:error] = l(:field_comments) + ' ' + l(:label_required_lower)
+      redirect_back(fallback_location: root_path) and return
+    end
+  end
 
   def set_wiki_extensions_data
     if @project && WikiExtensionsUtil.is_enabled?(@project)

@@ -32,12 +32,14 @@
    page = wiki.find_page(page_name) if page_name
 
    context = {:project => project, :controller => controller, :request => request}
+   new_page = (action_name == 'show' and page_name and page == nil)
 %>
 
 
-<% if action_name == 'edit' or (action_name == 'show' and page_name and page == nil) %>
+<% if action_name == 'edit' or new_page %>
     <%= render :partial => 'wiki_extensions/draft_form', :locals => context %>
     <%= render :partial => 'wiki_extensions/tags_form', :locals => context %>
+    <%= render :partial => 'wiki_extensions/wiki_comment_required_form', locals: { new_page: new_page } %>
 
 <% else %>
 

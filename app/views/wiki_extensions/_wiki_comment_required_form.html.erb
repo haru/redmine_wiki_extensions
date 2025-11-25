@@ -1,0 +1,78 @@
+
+<% 
+# Wiki Extensions plugin for Redmine
+# Copyright (C) 2013-2025  Haruyuki Iida
+#
+# This program is free software; you can redistribute it and/or
+# modify it under the terms of the GNU General Public License
+# as published by the Free Software Foundation; either version 2
+# of the License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+# GNU General Public License for more details.
+#
+# You should have received a copy of the GNU General Public License
+# along with this program; if not, write to the Free Software
+# Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
+#
+
+if WikiExtensionsUtil.wiki_comment_required?(@project, @wiki_extension_data&.dig(:setting)) %>
+    <script>
+        // for the required *
+        document.addEventListener('DOMContentLoaded', function() {
+            // input field from comments wiki edit page
+            const input = document.getElementById("content_comments");
+            if (input) {
+                const label = input.previousElementSibling; // labe is previous
+                if (label && label.tagName.toLowerCase() === "label") {
+                    // create span, appendChild inside
+                    const span = document.createElement("span");
+                    span.className = "required";
+                    span.textContent = " *";
+                    label.appendChild(span);
+                }
+            }
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            // set hidden parameter field, when no comment
+            const updateButton = document.querySelector('input[type="submit"][name="commit"]');
+            const contentText = document.getElementById("content_text");
+            const contentComments = document.getElementById("content_comments");
+
+            if (updateButton && contentText && contentComments) {
+
+                // hidden create
+                const hiddenField = document.createElement("input");
+                hiddenField.type = "hidden";
+                hiddenField.name = "comment_required_error";
+                hiddenField.value = "";
+
+                // add field without value
+                contentComments.insertAdjacentElement("afterend", hiddenField)
+
+                // Store the original value
+                const originalText = contentText.value;
+
+                updateButton.addEventListener("click", function (event) {
+                    const currentText = contentText.value;
+                    const comment = contentComments.value.trim();
+
+                    // value in hiddenField for flash error on serverside
+                    <% if new_page %>
+                        if (comment === "") {
+                            hiddenField.value = "true"
+                        }
+                    <% else %>
+                        if (currentText !== originalText && comment === "") {
+                            hiddenField.value = "true"
+                        }
+                    <% end %>
+                });
+            }
+        });
+
+    </script>
+<% end %>
