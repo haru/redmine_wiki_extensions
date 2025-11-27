@@ -18,7 +18,7 @@
 #
 # frozen_string_literal: true
 
-module WikiShow
+module WikiShowOverride
   Deface::Override.new(
     virtual_path: 'wiki/show',
     name: 'overlay-wiki-show-contextual',

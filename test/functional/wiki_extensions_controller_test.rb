@@ -25,7 +25,7 @@ class WikiExtensionsControllerTest < ActionController::TestCase
   def setup
     @controller = WikiExtensionsController.new
     @request = ActionController::TestRequest.create(self.class.controller_class)
-    #@response   = ActionController::TestResponse.new
+    # @response   = ActionController::TestResponse.new
     @request.env['HTTP_REFERER'] = '/'
     @project = Project.find(1)
     @wiki = @project.wiki
@@ -56,8 +56,14 @@ class WikiExtensionsControllerTest < ActionController::TestCase
 
   def test_tag
     @request.session[:user_id] = 1
-    get :tag, :params => { :id => 1, :tag_id => 1 }
-    #assert assigns[:tag]
+
+    # Create a tag linked to the project
+    tag = WikiExtensionsTag.create!(name: 'sample', project_id: @project.id)
+
+    get :tag, params: { id: @project.id, tag_id: tag.id }
+
+    assert_response :success
+    assert_equal tag, @controller.instance_variable_get(:@tag)
   end
 
   def test_destroy_comment
@@ -97,14 +103,14 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     @project.is_public = false
     @project.save!
     get :stylesheet, :params => { :id => 1 }
-    assert_response 403
+    assert_response :forbidden
 
     @request.session[:user_id] = 1
     get :stylesheet, :params => { :id => 1 }
     assert_response :success
 
     get :stylesheet, :params => { :id => 2 }
-    assert_response 404
+    assert_response :not_found
   end
 
   context 'vote' do

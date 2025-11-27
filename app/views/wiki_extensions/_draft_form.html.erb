@@ -19,7 +19,7 @@ if @wiki_extension_data && WikiExtensionsUtil.draft_create?(@project, @wiki_exte
 
     # disabled, approval_required or approval_version_required
     disabled = @wiki_extension_data[:setting].approval_required || 
-               (@wiki_extension_data[:setting].approval_version_required && @wiki_extension_data[:latest_public_approval].released?)
+               (@wiki_extension_data[:setting].approval_version_required && @wiki_extension_data[:latest_public_approval]&.released?)
 
     # default, same as disabled OR current in pending/rejected approval
     default = disabled ||
