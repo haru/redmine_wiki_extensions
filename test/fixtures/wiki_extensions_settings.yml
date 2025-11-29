@@ -10,6 +10,10 @@ one:
 
   lock_version: 1
 
+  tag_disabled: false
+
+  json_data: '{"comment_required":true,"draft_enabled":true,"approval_enabled":true,"approval_required":true,"approval_version_required":true}'
+
 two:
   id: 2
 

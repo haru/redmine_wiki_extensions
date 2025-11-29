@@ -116,6 +116,14 @@ class WikiExtensionsSetting < ApplicationRecord
     data_hash[:approval_version_required] = ActiveModel::Type::Boolean.new.cast(value)
   end
 
+  def tag_disabled
+    if Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] == SettingsHelper::PROJECT
+      :tag_disabled
+    else
+      ActiveModel::Type::Boolean.new.cast(Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'])
+    end
+  end
+
   private
 
   def sync_data_hash_to_json

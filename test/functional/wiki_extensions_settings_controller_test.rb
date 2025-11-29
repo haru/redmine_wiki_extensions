@@ -17,7 +17,7 @@
 require File.dirname(__FILE__) + '/../test_helper'
 
 class WikiExtensionsSettingsControllerTest < ActionController::TestCase
-  fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis, 
+  fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis,
     :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments,
     :wiki_extensions_comments, :wiki_extensions_tags, :wiki_extensions_menus,
     :wiki_extensions_votes, :wiki_extensions_settings
@@ -25,11 +25,11 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
   def setup
     @controller = WikiExtensionsSettingsController.new
     @request    = ActionController::TestRequest.create(self.class.controller_class)
-    #@response   = ActionController::TestResponse.new
+    # @response   = ActionController::TestResponse.new
     @request.env["HTTP_REFERER"] = '/'
     @request.session[:user_id] = 1
     @project = Project.find(1)
-    
+
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
     enabled_module.name = 'wiki_extensions'
@@ -39,13 +39,13 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
   context "update" do
     should "save settings." do
       menus = {}
-      menus[0] = {:enabled => 'true',:menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
-      menus[1] = {:enabled => 'true',:menu_no => 2, :title => 'my_title2', :page_name => 'my_page_name2'}
+      menus[0] = {:enabled => 'true', :menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
+      menus[1] = {:enabled => 'true', :menu_no => 2, :title => 'my_title2', :page_name => 'my_page_name2'}
       post :update, :params => {
-        :menus => menus, :id => @project}
+        :menus => menus, :id => @project
+      }
       assert_response :redirect
       setting = WikiExtensionsSetting.find_or_create @project.id
-      assert_equal(false, setting.auto_preview_enabled)
       menus = setting.menus
       assert_equal(5, menus.length)
       assert(menus[0].enabled)
@@ -56,17 +56,48 @@ class WikiExtensionsSettingsControllerTest < ActionController::TestCase
       assert_equal('my_page_name2', menus[1].page_name)
 
       menus = {}
-      menus[0] = {:enabled => 'true',:menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
+      menus[0] = {:enabled => 'true', :menu_no => 1, :title => 'my_title', :page_name => 'my_page_name'}
       menus[1] = {:menu_no => 2}
       post :update, :params => {
-        :menus => menus, :id => @project}
+        :menus => menus, :id => @project
+      }
       assert_response :redirect
       setting = WikiExtensionsSetting.find_or_create @project.id
       menus = setting.menus
       assert(menus[0].enabled)
       assert(!menus[1].enabled)
+    end
 
+    should "save additional settings fields" do
+      # Plugin-Settings to 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] = 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'] = 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_enabled'] = 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] = 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval_version'] = 'project'
+      Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] = 'project'
+
+      post :update, params: {
+        id: @project.id,
+        menus: { "0" => { menu_no: 1 } }, # Dummy
+        comment_required: 'true',
+        draft_enabled: 'false',
+        approval_enabled: 'true',
+        approval_required: 'false',
+        approval_version_required: 'true',
+        tag_disabled: 'true'
+      }
+
+      assert_response :redirect
+      setting = WikiExtensionsSetting.find(@project.id)
+      setting.reload
+
+      assert setting.comment_required
+      assert_not setting.draft_enabled
+      assert setting.approval_enabled
+      assert_not setting.approval_required
+      assert setting.approval_version_required
+      assert setting.tag_disabled
     end
   end
-  
 end
