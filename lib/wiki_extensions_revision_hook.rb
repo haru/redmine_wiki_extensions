@@ -39,9 +39,18 @@ class WikiExtensionsRevisionHook < Redmine::Hook::ViewListener
             id: page.title,
             version: version.wiki_version_id
           )
+          return
 
         end
 
+      end
+
+      # If the current page is in draft or approval status and there are no rights to view the draft, then this is not authorized.
+      version = controller.params[:version]&.to_i || page&.version
+      if version &&
+         WikiExtensionsUtil.view_draft?(context[:project]) == false &&
+         (WikiExtensionsApproval.for_wiki(page.id, version).first&.status_before_type_cast&.< WikiExtensionsApproval.statuses[:published])
+        raise ::Unauthorized
       end
 
     end

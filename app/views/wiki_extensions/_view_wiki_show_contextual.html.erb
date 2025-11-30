@@ -34,6 +34,8 @@ if @wiki_extension_data && WikiExtensionsUtil.approval_or_draft_enabled?(@projec
         <% end %>
         <% if @wiki_extension_data[:view_version_id] < @page.version %>
             <%= watcher_link(@page, User.current) %>
+        <% end %>
+        <% if @wiki_extension_data[:view_version_id] < @page.version && WikiExtensionsUtil.view_draft?(@project, @wiki_extension_data&.dig(:setting)) %>
             <%= link_to sprite_icon('wiki-page', l(:wiki_extensions_approval_link_draft)), 
                         { controller: 'wiki', action: 'show', id: @page.title, version: @page.version }, 
                         { title: "Autor #{@wiki_extension_data[:approval].author.name} · vor etwa #{time_ago_in_words(@wiki_extension_data[:approval].created_at)}", 
