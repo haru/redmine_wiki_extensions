@@ -7,18 +7,60 @@
   permission_add_wiki_comment: Legge til wiki-kommentarer
   permission_delete_wiki_comments: Slette wiki-kommentarer
   permission_edit_wiki_comments: Redigere wiki-kommentarer
-  permission_wiki_extensions_settings: Behandle innstillinger for wiki-tillegg
+  permission_wiki_extensions_settings: Administrer Wiki-utvidelser
+  permission_approval_start: Start godkjenning
+  permission_approval_grant: Gi godkjenning
+  permission_approval_forward: Videresend godkjenning
+  permission_draft_view: Vis utkast
+  permission_draft_create: Opprett utkast
 
   field_auto_preview_enabled: Skru på automatisk forhåndsvisning
   field_sidebar_disabled: Disable side bar
   wiki_extensions_vote: vote
 
-  
-  
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  wiki_page_commented_header: Kommentar til wiki-siden "%{page_title}" i prosjektet "%{project_name}" lagt til av %{author}
+  wiki_page_commented_comment_head: 'Kommentar:'
+  wiki_page_commented_url: 'Du kan se siden med kommentaren via følgende lenke:'
+  label_wiki_comment_added: 'Wiki-kommentar lagt til'
+  label_wiki_comment_plural: 'Wiki-kommentarer'
+
+  wiki_extensions_new_wiki_page: 'Ny side'
+
+  label_wiki_extensions_settings_projects: 'Konfigurerbar per prosjekt'
+  label_wiki_extensions_settings_tags: Tagger deaktivert
+  label_wiki_extensions_settings_comment: Wiki-kommentar kreves
+  label_wiki_extensions_settings_approval: Godkjenning kreves
+  label_wiki_extensions_settings_approval_version: Godkjenningsflyt for neste versjon
+  label_wiki_extensions_settings_draft_enabled: Wiki-utkast aktivert
+  label_wiki_extensions_settings_approval_enabled: Wiki-godkjenning aktivert
+  text_wiki_extensions_settings_approval_version: 'Etter at en godkjenningsflyt er startet, vil den være nødvendig for fremtidige versjoner av denne siden.'
+
+  wiki_extensions_approval_link_draft: Vis utkast
+  wiki_extensions_approval_link_release: Publisert versjon
+
+  wiki_extensions_approval:
+    status:
+      draft: "Utkast"
+      pending: "Under godkjenning"
+      rejected: "Avvist"
+      published: "Publisert"
+      released: "Godkjent"
+      canceled: "Avbrutt"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Avbrutt"
+      unstarted: "Planlagt"
+      pending: "Under godkjenning"
+      rejected: "Avvist"
+      approved: "Godkjent"
+
+  label_wiki_extensions_approval_workflow: Godkjenningsflyt
+  label_wiki_extensions_approval_step: Steg
+  label_wiki_extensions_approval_starter: Flyt startet
+  wiki_extensions_approval_unable_start_status: Endringer ikke tillatt, status er "%{status}".
+  wiki_extensions_approval_unable_start_user: "En bruker kan ikke vises flere ganger."
+  wiki_extensions_approval_unable_note: Kommentar kreves
+  wiki_extensions_approval_add_user: Legg til bruker
+  wiki_extensions_approval_add_step: Legg til steg
+  wiki_extensions_and: OG
+  wiki_extensions_or: ELLER

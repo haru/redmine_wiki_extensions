@@ -9,16 +9,59 @@ sv:
   permission_delete_wiki_comments: Ta bort Wiki kommentarer
   permission_edit_wiki_comments: Ändra Wiki kommentarer
   permission_wiki_extensions_settings: Hantera Wiki Extensions
+  permission_approval_start: Starta godkännande
+  permission_approval_grant: Bevilja godkännande
+  permission_approval_forward: Vidarebefordra godkännande
+  permission_draft_view: Visa utkast
+  permission_draft_create: Skapa utkast
 
   field_auto_preview_enabled: Aktivera automatisk förhandsgranskning
-  field_sidebar_disabled: Disable side bar
-  wiki_extensions_vote: vote
-  
-    
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  field_sidebar_disabled: Inaktivera sidofält
+  wiki_extensions_vote: rösta
+
+  wiki_page_commented_header: Kommentar till wiki-sidan "%{page_title}" i projektet "%{project_name}" tillagd av användare %{author}
+  wiki_page_commented_comment_head: 'Kommentar:'
+  wiki_page_commented_url: 'Du kan se sidan med kommentaren via följande länk:'
+  label_wiki_comment_added: 'Wiki-kommentar tillagd'
+  label_wiki_comment_plural: 'Wiki-kommentarer'
+
+  wiki_extensions_new_wiki_page: 'Ny sida'
+
+  label_wiki_extensions_settings_projects: 'Konfigurerbar per projekt'
+  label_wiki_extensions_settings_tags: Taggar inaktiverade
+  label_wiki_extensions_settings_comment: Wiki-kommentar krävs
+  label_wiki_extensions_settings_approval: Godkännande krävs
+  label_wiki_extensions_settings_approval_version: Godkännandeflöde för nästa version
+  label_wiki_extensions_settings_draft_enabled: Wiki-utkast aktiverat
+  label_wiki_extensions_settings_approval_enabled: Wiki-godkännande aktiverat
+  text_wiki_extensions_settings_approval_version: 'Efter att ett godkännandeflöde har startats kommer det att krävas för framtida versioner av denna sida.'
+
+  wiki_extensions_approval_link_draft: Visa utkast
+  wiki_extensions_approval_link_release: Publicerad version
+
+  wiki_extensions_approval:
+    status:
+      draft: "Utkast"
+      pending: "Under godkännande"
+      rejected: "Avvisad"
+      published: "Publicerad"
+      released: "Släppt"
+      canceled: "Avbruten"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Avbruten"
+      unstarted: "Planerad"
+      pending: "Under godkännande"
+      rejected: "Avvisad"
+      approved: "Godkänd"
+
+  label_wiki_extensions_approval_workflow: Godkännandeflöde
+  label_wiki_extensions_approval_step: Steg
+  label_wiki_extensions_approval_starter: Flöde startat
+  wiki_extensions_approval_unable_start_status: Ändringar ej tillåtna, status är "%{status}".
+  wiki_extensions_approval_unable_start_user: "En användare kan inte förekomma flera gånger."
+  wiki_extensions_approval_unable_note: Kommentar krävs
+  wiki_extensions_approval_add_user: Lägg till användare
+  wiki_extensions_approval_add_step: Lägg till steg
+  wiki_extensions_and: OCH
+  wiki_extensions_or: ELLER

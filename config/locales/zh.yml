@@ -9,6 +9,11 @@ zh:
   permission_delete_wiki_comments: 删除Wiki注释
   permission_edit_wiki_comments: 编辑Wiki注释
   permission_wiki_extensions_settings: 管理Wiki Extensions
+  permission_approval_start: Start approval
+  permission_approval_grant: Grant approval
+  permission_approval_forward: Forward approval
+  permission_draft_view: View draft
+  permission_draft_create: Create draft
 
   field_auto_preview_enabled: 打开自动预览
   field_sidebar_disabled: 禁止侧栏
@@ -22,3 +27,42 @@ zh:
   label_wiki_comment_plural: 'Wiki comments'
   
   wiki_extensions_new_wiki_page: 'New page'
+
+  label_wiki_extensions_settings_projects: 'Configurable per project'
+  label_wiki_extensions_settings_tags: Tags disabled
+  label_wiki_extensions_settings_comment: Wiki comment required
+  label_wiki_extensions_settings_approval: Approval required
+  label_wiki_extensions_settings_approval_version: Approval workflow for next version
+  label_wiki_extensions_settings_draft_enabled: Wiki draft enabled
+  label_wiki_extensions_settings_approval_enabled: Wiki approval enabled
+  text_wiki_extensions_settings_approval_version: 'After starting an approval workflow, it will be required for future versions of this page.'
+
+  wiki_extensions_approval_link_draft: View draft
+  wiki_extensions_approval_link_release: Published version
+
+  wiki_extensions_approval:
+    status:
+      draft: "Draft"
+      pending: "In approval"
+      rejected: "Rejected"
+      published: "Published"
+      released: "Released"
+      canceled: "Canceled"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Canceled"
+      unstarted: "Planned"
+      pending: "In approval"
+      rejected: "Rejected"
+      approved: "Approved"
+
+  label_wiki_extensions_approval_workflow: Approval workflow
+  label_wiki_extensions_approval_step: Step
+  label_wiki_extensions_approval_starter: Workflow started
+  wiki_extensions_approval_unable_start_status: Changes not allowed, status is "%{status}".
+  wiki_extensions_approval_unable_start_user: "A user cannot appear multiple times."
+  wiki_extensions_approval_unable_note: Comment is required
+  wiki_extensions_approval_add_user: Add user
+  wiki_extensions_approval_add_step: Add step
+  wiki_extensions_and: AND
+  wiki_extensions_or: OR

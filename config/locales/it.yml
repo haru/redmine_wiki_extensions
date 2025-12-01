@@ -5,20 +5,63 @@ it:
   wiki_extensions: Estensioni del Wiki
   label_wikiextensions_tab: Tab
   wiki_extensions_add_tab: "Aggiungi dei tab al menù del progetto."
-  permission_add_wiki_comment: Add Wiki comments
-  permission_delete_wiki_comments: Delete Wiki comments
-  permission_edit_wiki_comments: Edit Wiki comments
-  permission_wiki_extensions_settings: Manage Wiki Extensions
+  permission_add_wiki_comment: Aggiungi commenti Wiki
+  permission_delete_wiki_comments: Elimina commenti Wiki
+  permission_edit_wiki_comments: Modifica commenti Wiki
+  permission_wiki_extensions_settings: Gestisci estensioni Wiki
+  permission_approval_start: Avvia approvazione
+  permission_approval_grant: Concedi approvazione
+  permission_approval_forward: Inoltra approvazione
+  permission_draft_view: Visualizza bozza
+  permission_draft_create: Crea bozza
 
-  field_auto_preview_enabled: Enable auto preview
-  field_sidebar_disabled: Disable side bar
-  wiki_extensions_vote: vote
-  
-    
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  field_auto_preview_enabled: Abilita anteprima automatica
+  field_sidebar_disabled: Disabilita barra laterale
+  wiki_extensions_vote: Vota
+
+  wiki_page_commented_header: Commento alla pagina wiki "%{page_title}" del progetto "%{project_name}" aggiunto da %{author}
+  wiki_page_commented_comment_head: 'Commento:'
+  wiki_page_commented_url: 'Puoi vedere la pagina con il commento al seguente link:'
+  label_wiki_comment_added: 'Commento Wiki aggiunto'
+  label_wiki_comment_plural: 'Commenti Wiki'
+
+  wiki_extensions_new_wiki_page: 'Nuova pagina'
+
+  label_wiki_extensions_settings_projects: 'Configurabile per progetto'
+  label_wiki_extensions_settings_tags: Tag disabilitati
+  label_wiki_extensions_settings_comment: Commento Wiki richiesto
+  label_wiki_extensions_settings_approval: Approvazione richiesta
+  label_wiki_extensions_settings_approval_version: Workflow di approvazione per la prossima versione
+  label_wiki_extensions_settings_draft_enabled: Bozza Wiki abilitata
+  label_wiki_extensions_settings_approval_enabled: Approvazione Wiki abilitata
+  text_wiki_extensions_settings_approval_version: 'Dopo l’avvio di un workflow di approvazione, sarà richiesto per le versioni future di questa pagina.'
+
+  wiki_extensions_approval_link_draft: Visualizza bozza
+  wiki_extensions_approval_link_release: Versione pubblicata
+
+  wiki_extensions_approval:
+    status:
+      draft: "Bozza"
+      pending: "In approvazione"
+      rejected: "Respinto"
+      published: "Pubblicato"
+      released: "Rilasciato"
+      canceled: "Annullato"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Annullato"
+      unstarted: "Pianificato"
+      pending: "In approvazione"
+      rejected: "Respinto"
+      approved: "Approvato"
+
+  label_wiki_extensions_approval_workflow: Workflow di approvazione
+  label_wiki_extensions_approval_step: Passaggio
+  label_wiki_extensions_approval_starter: Workflow avviato
+  wiki_extensions_approval_unable_start_status: Modifiche non consentite, lo stato è "%{status}".
+  wiki_extensions_approval_unable_start_user: "Un utente non può apparire più volte."
+  wiki_extensions_approval_unable_note: Commento richiesto
+  wiki_extensions_approval_add_user: Aggiungi utente
+  wiki_extensions_approval_add_step: Aggiungi passaggio
+  wiki_extensions_and: E
+  wiki_extensions_or: O

@@ -9,16 +9,59 @@ pl:
   permission_delete_wiki_comments: Usułmentarze Wiki
   permission_edit_wiki_comments: Edytuj komentarze Wiki
   permission_wiki_extensions_settings: Zarzłdzaj komentarzami Wiki
+  permission_approval_start: Rozpocznij zatwierdzanie
+  permission_approval_grant: Zatwierdź
+  permission_approval_forward: Przekaż zatwierdzenie
+  permission_draft_view: Wyświetl szkic
+  permission_draft_create: Utwórz szkic
 
   field_auto_preview_enabled: Włącz autopodgląd
   field_sidebar_disabled: Wyłącz panel boczny
   wiki_extensions_vote: vote
 
-  
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  wiki_page_commented_header: Komentarz do strony wiki "%{page_title}" w projekcie "%{project_name}" dodany przez %{author}
+  wiki_page_commented_comment_head: 'Komentarz:'
+  wiki_page_commented_url: 'Możesz zobaczyć stronę z komentarzem pod następującym linkiem:'
+  label_wiki_comment_added: 'Dodano komentarz Wiki'
+  label_wiki_comment_plural: 'Komentarze Wiki'
+
+  wiki_extensions_new_wiki_page: 'Nowa strona'
+
+  label_wiki_extensions_settings_projects: 'Konfigurowalne dla projektu'
+  label_wiki_extensions_settings_tags: Tagi wyłączone
+  label_wiki_extensions_settings_comment: Wymagany komentarz Wiki
+  label_wiki_extensions_settings_approval: Wymagane zatwierdzenie
+  label_wiki_extensions_settings_approval_version: Workflow zatwierdzania dla następnej wersji
+  label_wiki_extensions_settings_draft_enabled: Szkic Wiki włączony
+  label_wiki_extensions_settings_approval_enabled: Zatwierdzanie Wiki włączone
+  text_wiki_extensions_settings_approval_version: 'Po rozpoczęciu workflow zatwierdzania będzie wymagane dla przyszłych wersji tej strony.'
+
+  wiki_extensions_approval_link_draft: Wyświetl szkic
+  wiki_extensions_approval_link_release: Opublikowana wersja
+
+  wiki_extensions_approval:
+    status:
+      draft: "Szkic"
+      pending: "W trakcie zatwierdzania"
+      rejected: "Odrzucony"
+      published: "Opublikowany"
+      released: "Zatwierdzony"
+      canceled: "Anulowany"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Anulowany"
+      unstarted: "Zaplanowany"
+      pending: "W trakcie zatwierdzania"
+      rejected: "Odrzucony"
+      approved: "Zatwierdzony"
+
+  label_wiki_extensions_approval_workflow: Workflow zatwierdzania
+  label_wiki_extensions_approval_step: Krok
+  label_wiki_extensions_approval_starter: Workflow rozpoczęty
+  wiki_extensions_approval_unable_start_status: Zmiany niedozwolone, status to "%{status}".
+  wiki_extensions_approval_unable_start_user: "Użytkownik nie może pojawić się wielokrotnie."
+  wiki_extensions_approval_unable_note: Wymagany komentarz
+  wiki_extensions_approval_add_user: Dodaj użytkownika
+  wiki_extensions_approval_add_step: Dodaj krok
+  wiki_extensions_and: ORAZ
+  wiki_extensions_or: LUB

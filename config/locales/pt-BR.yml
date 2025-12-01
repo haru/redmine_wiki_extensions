@@ -9,16 +9,59 @@ pt-BR:
   permission_delete_wiki_comments: Apagar comentários Wiki
   permission_edit_wiki_comments: Editar comentários Wiki
   permission_wiki_extensions_settings: Gerenciar Extensões Wiki
+  permission_approval_start: Iniciar aprovação
+  permission_approval_grant: Conceder aprovação
+  permission_approval_forward: Encaminhar aprovação
+  permission_draft_view: Visualizar rascunho
+  permission_draft_create: Criar rascunho
 
   field_auto_preview_enabled: Habilitar auto preview
-  field_sidebar_disabled: Disable side bar
-  wiki_extensions_vote: vote
+  field_sidebar_disabled: Desativar barra lateral
+  wiki_extensions_vote: Votar
 
-  
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  wiki_page_commented_header: Comentário na página wiki "%{page_title}" do projeto "%{project_name}" adicionado por %{author}
+  wiki_page_commented_comment_head: 'Comentário:'
+  wiki_page_commented_url: 'Você pode ver a página com o comentário pelo seguinte link:'
+  label_wiki_comment_added: 'Comentário Wiki adicionado'
+  label_wiki_comment_plural: 'Comentários Wiki'
+
+  wiki_extensions_new_wiki_page: 'Nova página'
+
+  label_wiki_extensions_settings_projects: 'Configurável por projeto'
+  label_wiki_extensions_settings_tags: Tags desativadas
+  label_wiki_extensions_settings_comment: Comentário Wiki obrigatório
+  label_wiki_extensions_settings_approval: Aprovação obrigatória
+  label_wiki_extensions_settings_approval_version: Fluxo de aprovação para a próxima versão
+  label_wiki_extensions_settings_draft_enabled: Rascunho Wiki ativado
+  label_wiki_extensions_settings_approval_enabled: Aprovação Wiki ativada
+  text_wiki_extensions_settings_approval_version: 'Após iniciar um fluxo de aprovação, ele será obrigatório para versões futuras desta página.'
+
+  wiki_extensions_approval_link_draft: Visualizar rascunho
+  wiki_extensions_approval_link_release: Versão publicada
+
+  wiki_extensions_approval:
+    status:
+      draft: "Rascunho"
+      pending: "Em aprovação"
+      rejected: "Rejeitado"
+      published: "Publicado"
+      released: "Liberado"
+      canceled: "Cancelado"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Cancelado"
+      unstarted: "Planejado"
+      pending: "Em aprovação"
+      rejected: "Rejeitado"
+      approved: "Aprovado"
+
+  label_wiki_extensions_approval_workflow: Fluxo de aprovação
+  label_wiki_extensions_approval_step: Etapa
+  label_wiki_extensions_approval_starter: Fluxo iniciado
+  wiki_extensions_approval_unable_start_status: Alterações não permitidas, o status é "%{status}".
+  wiki_extensions_approval_unable_start_user: "Um usuário não pode aparecer várias vezes."
+  wiki_extensions_approval_unable_note: Comentário obrigatório
+  wiki_extensions_approval_add_user: Adicionar usuário
+  wiki_extensions_approval_add_step: Adicionar etapa
+  wiki_extensions_and: E
+  wiki_extensions_or: OU

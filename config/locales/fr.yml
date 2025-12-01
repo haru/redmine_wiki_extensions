@@ -5,20 +5,63 @@ fr:
   wiki_extensions: Extensions du Wiki
   label_wikiextensions_tab: Onglet
   wiki_extensions_add_tab: "Ajouter un onglet au menu du projet."
-  permission_add_wiki_comment: Add Wiki comments
-  permission_delete_wiki_comments: Delete Wiki comments
-  permission_edit_wiki_comments: Edit Wiki comments
-  permission_wiki_extensions_settings: Manage Wiki Extensions
+  permission_add_wiki_comment: Ajouter des commentaires Wiki
+  permission_delete_wiki_comments: Supprimer des commentaires Wiki
+  permission_edit_wiki_comments: Modifier des commentaires Wiki
+  permission_wiki_extensions_settings: Gérer les extensions Wiki
+  permission_approval_start: Démarrer l'approbation
+  permission_approval_grant: Accorder l'approbation
+  permission_approval_forward: Transférer l'approbation
+  permission_draft_view: Voir le brouillon
+  permission_draft_create: Créer un brouillon
 
-  field_auto_preview_enabled: Enable auto preview
-  field_sidebar_disabled: Disable side bar
-  wiki_extensions_vote: vote
-  
-    
-  wiki_page_commented_header: Comment to wiki page "%{page_title}" of project "%{project_name}" added by user %{author}
-  wiki_page_commented_comment_head: 'Comment:'
-  wiki_page_commented_url: 'You can see page with comment by the following link:'
-  label_wiki_comment_added: 'Wiki comment added'
-  label_wiki_comment_plural: 'Wiki comments'
-  
-  wiki_extensions_new_wiki_page: 'New page'
+  field_auto_preview_enabled: Activer l'aperçu automatique
+  field_sidebar_disabled: Désactiver la barre latérale
+  wiki_extensions_vote: Voter
+
+  wiki_page_commented_header: Commentaire ajouté à la page wiki "%{page_title}" du projet "%{project_name}" par %{author}
+  wiki_page_commented_comment_head: 'Commentaire :'
+  wiki_page_commented_url: 'Vous pouvez voir la page avec le commentaire via le lien suivant :'
+  label_wiki_comment_added: 'Commentaire Wiki ajouté'
+  label_wiki_comment_plural: 'Commentaires Wiki'
+
+  wiki_extensions_new_wiki_page: 'Nouvelle page'
+
+  label_wiki_extensions_settings_projects: 'Configurable par projet'
+  label_wiki_extensions_settings_tags: Étiquettes désactivées
+  label_wiki_extensions_settings_comment: Commentaire Wiki requis
+  label_wiki_extensions_settings_approval: Approbation requise
+  label_wiki_extensions_settings_approval_version: Flux d'approbation pour la prochaine version
+  label_wiki_extensions_settings_draft_enabled: Brouillon Wiki activé
+  label_wiki_extensions_settings_approval_enabled: Approbation Wiki activée
+  text_wiki_extensions_settings_approval_version: 'Après avoir démarré un flux d'approbation, il sera requis pour les futures versions de cette page.'
+
+  wiki_extensions_approval_link_draft: Voir le brouillon
+  wiki_extensions_approval_link_release: Version publiée
+
+  wiki_extensions_approval:
+    status:
+      draft: "Brouillon"
+      pending: "En approbation"
+      rejected: "Rejeté"
+      published: "Publié"
+      released: "Validé"
+      canceled: "Annulé"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Annulé"
+      unstarted: "Planifié"
+      pending: "En approbation"
+      rejected: "Rejeté"
+      approved: "Approuvé"
+
+  label_wiki_extensions_approval_workflow: Flux d'approbation
+  label_wiki_extensions_approval_step: Étape
+  label_wiki_extensions_approval_starter: Flux démarré
+  wiki_extensions_approval_unable_start_status: Modifications non autorisées, le statut est "%{status}".
+  wiki_extensions_approval_unable_start_user: "Un utilisateur ne peut pas apparaître plusieurs fois."
+  wiki_extensions_approval_unable_note: Commentaire requis
+  wiki_extensions_approval_add_user: Ajouter un utilisateur
+  wiki_extensions_approval_add_step: Ajouter une étape
+  wiki_extensions_and: ET
+  wiki_extensions_or: OU

@@ -6,11 +6,16 @@ ko:
   field_auto_preview_enabled: "자동 미리 보기 가능"
   label_wikiextensions_tab: "탭"
   wiki_extensions_add_tab: "프로젝트에 탭을 추가합니다."
-
   permission_add_wiki_comment: "위키 설명 추가"
   permission_delete_wiki_comments: "위키 설명 삭제"
   permission_edit_wiki_comments: "위키 설명 수정"
   permission_wiki_extensions_settings: "확장 위키 관리"
+  permission_approval_start: Start approval
+  permission_approval_grant: Grant approval
+  permission_approval_forward: Forward approval
+  permission_draft_view: View draft
+  permission_draft_create: Create draft
+
   field_sidebar_disabled: "사이드 바 금지"
   wiki_extensions_vote: "투표"
 
@@ -22,3 +27,42 @@ ko:
   label_wiki_comment_plural: "위키 설명"
   
   wiki_extensions_new_wiki_page: "새 페이지"
+
+  label_wiki_extensions_settings_projects: 'Configurable per project'
+  label_wiki_extensions_settings_tags: Tags disabled
+  label_wiki_extensions_settings_comment: Wiki comment required
+  label_wiki_extensions_settings_approval: Approval required
+  label_wiki_extensions_settings_approval_version: Approval workflow for next version
+  label_wiki_extensions_settings_draft_enabled: Wiki draft enabled
+  label_wiki_extensions_settings_approval_enabled: Wiki approval enabled
+  text_wiki_extensions_settings_approval_version: 'After starting an approval workflow, it will be required for future versions of this page.'
+
+  wiki_extensions_approval_link_draft: View draft
+  wiki_extensions_approval_link_release: Published version
+
+  wiki_extensions_approval:
+    status:
+      draft: "Draft"
+      pending: "In approval"
+      rejected: "Rejected"
+      published: "Published"
+      released: "Released"
+      canceled: "Canceled"
+  wiki_extensions_approval_steps:
+    status:
+      canceled: "Canceled"
+      unstarted: "Planned"
+      pending: "In approval"
+      rejected: "Rejected"
+      approved: "Approved"
+
+  label_wiki_extensions_approval_workflow: Approval workflow
+  label_wiki_extensions_approval_step: Step
+  label_wiki_extensions_approval_starter: Workflow started
+  wiki_extensions_approval_unable_start_status: Changes not allowed, status is "%{status}".
+  wiki_extensions_approval_unable_start_user: "A user cannot appear multiple times."
+  wiki_extensions_approval_unable_note: Comment is required
+  wiki_extensions_approval_add_user: Add user
+  wiki_extensions_approval_add_step: Add step
+  wiki_extensions_and: AND
+  wiki_extensions_or: OR
