@@ -1,0 +1,20 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  wiki_extensions_approval_id: 1
+  step: 1
+  principal_id: 1
+  principal_type: User
+  status: 70
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+two:
+  id: 2
+  wiki_extensions_approval_id: 2
+  step: 1
+  principal_id: 3
+  principal_type: User
+  status: 20
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>

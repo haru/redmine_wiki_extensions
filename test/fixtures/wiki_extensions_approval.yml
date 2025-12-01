@@ -1,0 +1,18 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+one:
+  id: 1
+  wiki_page_id: 11
+  wiki_version_id: 2
+  author_id: 1
+  status: 70
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
+
+two:
+  id: 2
+  wiki_page_id: 11
+  wiki_version_id: 3
+  author_id: 1
+  status: 20
+  created_at: <%= Time.now %>
+  updated_at: <%= Time.now %>
