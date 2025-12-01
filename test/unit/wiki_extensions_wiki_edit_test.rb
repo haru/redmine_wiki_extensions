@@ -18,7 +18,7 @@
 
 require File.expand_path('../test_helper', __dir__)
 
-class WikiExtensionsApprovalControllerTest < ActionController::TestCase
+class WikiExtensionsWikiEditTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis,
     :wiki_pages, :wiki_contents, :wiki_content_versions, :attachments,
     :wiki_extensions_comments, :wiki_extensions_tags, :wiki_extensions_menus,
