@@ -34,7 +34,7 @@ fr:
   label_wiki_extensions_settings_approval_version: Flux d'approbation pour la prochaine version
   label_wiki_extensions_settings_draft_enabled: Brouillon Wiki activé
   label_wiki_extensions_settings_approval_enabled: Approbation Wiki activée
-  text_wiki_extensions_settings_approval_version: 'Après avoir démarré un flux d'approbation, il sera requis pour les futures versions de cette page.'
+  text_wiki_extensions_settings_approval_version: "Après avoir démarré un flux d'approbation, il sera requis pour les futures versions de cette page."
 
   wiki_extensions_approval_link_draft: Voir le brouillon
   wiki_extensions_approval_link_release: Version publiée
