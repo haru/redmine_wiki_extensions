@@ -63,7 +63,7 @@ module ActionView
                 ret << "</div>\n"
               end
 
-              ret << '<h4 class="wiki_left">'
+              ret << '<b class="wiki_left">'
               ret << "#{avatar(comment.user, :size => "20")}"
               ret << "\n"
         
@@ -72,7 +72,7 @@ module ActionView
               else
                 ret << l(:label_added_time_by, :author => comment.user, :age => distance_of_time_in_words(Time.now, comment.updated_at))
               end
-              ret << "</h4>\n"
+              ret << "</b>\n"
               ret << '<div id="' + div_comment_id + '" class="wiki_left">' + "\n"
               ret << '<div id ="' + text_div_id + '">'
               ret << textilizable(comment, :comment)
