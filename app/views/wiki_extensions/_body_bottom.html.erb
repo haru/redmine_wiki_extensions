@@ -41,12 +41,4 @@
     <%= render :partial => 'wiki_extensions/tags_form', :locals => context %>
     <%= render :partial => 'wiki_extensions/wiki_comment_required_form', locals: { new_page: new_page } %>
 
-<% else %>
-
-    <script type="text/javascript">
-
-
-    </script>
-    <%= raw javascript_tag('wiki_extension_create_table_header();') %>
-
 <% end %>
