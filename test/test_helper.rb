@@ -9,10 +9,10 @@ SimpleCov::Formatter::LcovFormatter.config do |config|
   config.single_report_path = File.expand_path(File.dirname(__FILE__) + '/../coverage/lcov.info')
 end
 
-SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter[
+SimpleCov.formatter = SimpleCov::Formatter::MultiFormatter.new([
   SimpleCov::Formatter::LcovFormatter,
   SimpleCov::Formatter::HTMLFormatter
-]
+])
 
 SimpleCov.start do
   root File.expand_path(File.dirname(__FILE__) + '/..')
