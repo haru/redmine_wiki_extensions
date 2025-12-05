@@ -1,19 +1,40 @@
 #!/bin/sh
+cd `dirname $0`
+cd ..
+BASEDIR=`pwd`
+PLUGIN_NAME=`basename $BASEDIR`
+
+if [ ! -f ~/.bashrc ]; then
+    cd ~/
+    tar xfz /.home.tgz
+    cd $BASEDIR 
+fi
+
+if [ -f .devcontainer/redmine.code-workspace ] && grep -q '"/usr/local/redmine/plugins/dummy"' .devcontainer/redmine.code-workspace; then
+    sed -i.bak "s|\"/usr/local/redmine/plugins/dummy\"|\"/usr/local/redmine/plugins/$PLUGIN_NAME\"|g" .devcontainer/redmine.code-workspace
+    rm .devcontainer/redmine.code-workspace.bak
+fi
+
+if [ ! -f .devcontainer/.env ] || ! grep -q "^PLUGIN_NAME=" .devcontainer/.env; then
+    echo "PLUGIN_NAME=$PLUGIN_NAME" >> .devcontainer/.env
+    echo "##### Rebuild the container to apply the changes. #####"
+    exit 0
+fi
+
+cp Gemfile_for_test Gemfile
+
 cd $REDMINE_ROOT
 
 if [ -d .git.sv ]
 then
-    mv -s .git.sv .git
+    mv .git.sv .git
     git pull
-    rm .git
+    mv .git .git.sv
 fi
 
-ln -s /workspaces/${PLUGIN_NAME} plugins/${PLUGIN_NAME}
-if [ -f plugins/${PLUGIN_NAME}/Gemfile_for_test ]
-then
-    cp plugins/${PLUGIN_NAME}/Gemfile_for_test plugins/${PLUGIN_NAME}/Gemfile 
+if [ ! -f "$BASEDIR/init.rb" ]; then
+    bash "$BASEDIR/.devcontainer/plugin_generator.sh"
 fi
-
 
 bundle install 
 

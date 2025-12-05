@@ -4,14 +4,12 @@
 	"name": "Redmine plugin",
 	"dockerComposeFile": "docker-compose.yml",
 	"service": "app",
-	
 	"mounts": [
 		"source=${localWorkspaceFolder},target=/workspaces/${localWorkspaceFolderBasename},type=bind"
 	],
 	"workspaceFolder": "/workspaces/${localWorkspaceFolderBasename}",
-    
 	// Set *default* container specific settings.json values on container create.
-	"settings": { 
+	"settings": {
 		"sqltools.connections": [
 			{
 				"name": "Rails Development Database",
@@ -19,7 +17,6 @@
 				"previewLimit": 50,
 				"server": "localhost",
 				"port": 5432,
-
 				// update this to match config/database.yml
 				"database": "app_development",
 				"username": "vscode"
@@ -30,14 +27,12 @@
 				"previewLimit": 50,
 				"server": "localhost",
 				"port": 5432,
-
 				// update this to match config/database.yml
 				"database": "app_test",
 				"username": "vscode"
 			}
 		]
 	},
-
 	// Add the IDs of extensions you want installed when the container is created.
 	"extensions": [
 		"mtxr.sqltools",
@@ -54,22 +49,16 @@
 		"Shopify.ruby-extensions-pack",
 		"ritwickdey.LiveServer"
 	],
-
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [3000, 5432],
-
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sh -x /post-create.sh",
-
+	"postCreateCommand": "sh -x .devcontainer/post-create.sh",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
 	"features": {
 		// "git": "latest"
 	},
-
-	"containerEnv": {
-		"PLUGIN_NAME": "${localWorkspaceFolderBasename}"
-	},
-
-	"forwardPorts": [3000]
+	"forwardPorts": [
+		3000
+	]
 }

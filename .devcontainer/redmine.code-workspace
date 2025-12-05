@@ -1,11 +1,15 @@
 {
 	"folders": [
 		{
-			"path": ".."
+			"path": "/usr/local/redmine/plugins/redmine_wiki_extensions",
 		},
 		{
-			"path": "../../../usr/local/redmine"
+			"path": "/usr/local/redmine",
 		}
 	],
-	"settings": {}
+	"settings": {
+		"git.ignoredRepositories": [
+			"/usr/local/redmine",
+		]
+	}
 }
