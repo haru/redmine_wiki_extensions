@@ -226,14 +226,6 @@ See [GPL.txt](GPL.txt) for full license details.
 - **Documentation**: [Project Wiki](https://www.r-labs.org/projects/r-labs/wiki/Wiki_Extensions_en)
 - **Author**: [Haruyuki Iida](http://twitter.com/haru_iida)
 
-## 📈 Changelog
-
-### Version 1.0.2
-- Compatible with Redmine 6.0+
-- Improved test coverage
-- Enhanced CI/CD pipeline
-- Bug fixes and performance improvements
-
 ---
 
 **Note**: This plugin is designed to work in production mode. For development and testing, please refer to the build scripts and testing documentation.
