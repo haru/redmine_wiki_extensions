@@ -33,6 +33,7 @@ A comprehensive Redmine plugin that extends wiki functionality with powerful mac
 - **Emoticons Support** - Add emotional expressions to content
 - **Footnotes** - Create academic-style footnotes
 - **Responsive Design** - Mobile-friendly interface
+- **Approval Workflow** - A multi-step approval workflow for releasing a wiki page
 
 ### Internationalization
 Supports 14+ languages including:
@@ -84,13 +85,16 @@ Restart your Redmine server to load the plugin.
 
 After enabling the module, configure plugin settings:
 
-1. Navigate to **Project Settings → Wiki Extensions**
-2. Available options:
-   - Enable/disable auto preview
+1. Navigate to **Administation → Plugins → Configure**
+   - Settings can be configured per project or system-wide
+2. Navigate to **Project Settings → Wiki Extensions**
+3. Available options:
    - Configure sidebar display
    - Enable/disable tagging functionality
    - Set up voting permissions
    - Configure comment notifications
+   - Comment required for wiki edits
+   - Enable/disable Draft or Approval
 
 ### Permissions
 
@@ -100,6 +104,11 @@ Configure user permissions for:
 - **Delete Wiki Comments** - Remove comments
 - **Edit Wiki Comments** - Modify existing comments
 - **Manage Wiki Extensions** - Configure plugin settings
+- **Start approval** - Begin multi-step review process
+- **Grant approval** - Approve current workflow step
+- **Forward approval** - Send request to next approver
+- **View draft** - Display unpublished page version
+- **Create draft** - Prepare unpublished page version
 
 ## 📖 Usage Examples
 
@@ -111,7 +120,7 @@ Configure user permissions for:
 {{recent(10)}}               # Show 10 most recent pages
 {{new}}                      # Highlight new pages
 {{tags}}                     # Display page tags
-{{vote}}                     # Add voting interface
+{{vote(apple)}}              # Add voting interface
 ```
 
 ### Advanced Macros
@@ -122,6 +131,7 @@ Configure user permissions for:
 {{wiki(PageName)}}           # Enhanced wiki page link
 {{twitter(username)}}        # Embed Twitter feed
 {{iframe(http://example.com)}} # Embed external content
+{{video_tag(https://path.mp4, 320, 240, controls autoplay muted)}} # video empeded from a http link
 ```
 
 ### Formatting Enhancements
@@ -180,7 +190,9 @@ redmine_wiki_extensions/
 ├── init.rb                 # Plugin registration and configuration
 ├── app/                    # Rails MVC structure
 │   ├── controllers/        # Plugin controllers
+│   ├── helpers/            # Helper classes
 │   ├── models/             # Data models (comments, tags, votes)
+│   ├── overrides/          # Extend core Redmine templates
 │   └── views/              # UI templates
 ├── lib/                    # Core functionality
 │   ├── *_macro.rb          # Wiki macro implementations
