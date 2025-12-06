@@ -55,7 +55,7 @@ module WikiExtensionsWikiControllerPatch
     # Parameter is set client-side via JavaScript to trigger standard Rails flash error
     if params[:comment_required_error].present?
       flash[:error] = l(:field_comments) + ' ' + l(:label_required_lower)
-      redirect_back(fallback_location: root_path) and return
+      redirect_back(fallback_location: home_path) and return
     end
   end
 
