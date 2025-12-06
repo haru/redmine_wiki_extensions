@@ -55,6 +55,8 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
   test "should render wiki edit" do
     @request.session[:user_id] = User.current.id
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] = 'true'
+    Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] = 'false'
+    Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] = 'true'
     get :edit, params: { project_id: @project.id, id: @page.title }
     assert_response :success
 
