@@ -47,24 +47,16 @@
 		"Serhioromano.vscode-gitflow",
 		"github.vscode-github-actions",
 		"Shopify.ruby-extensions-pack",
-		"ritwickdey.LiveServer",
-		"aliariff.vscode-erb-beautify",
-		"bysabi.prettier-vscode-standard",
-		"GitHub.copilot",
-		"Shunqian.prettier-plus",
-		"Gruntfuggly.todo-tree"
+		"ritwickdey.LiveServer"
 	],
 	// Use 'forwardPorts' to make a list of ports inside the container available locally.
 	// "forwardPorts": [3000, 5432],
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "sh -x /post-create.sh",
+	"postCreateCommand": "sh -x .devcontainer/post-create.sh",
 	// Comment out connect as root instead. More info: https://aka.ms/vscode-remote/containers/non-root.
 	"remoteUser": "vscode",
 	"features": {
 		// "git": "latest"
-	},
-	"containerEnv": {
-		"PLUGIN_NAME": "${localWorkspaceFolderBasename}"
 	},
 	"forwardPorts": [
 		3000
