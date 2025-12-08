@@ -38,41 +38,61 @@ if WikiExtensionsUtil.wiki_comment_required?(@project, @wiki_extension_data&.dig
 
         document.addEventListener("DOMContentLoaded", function () {
             // set hidden parameter field, when no comment
-            const updateButton = document.querySelector('input[type="submit"][name="commit"]');
+            const form    = document.querySelector('form#wiki_form');
             const contentText = document.getElementById("content_text");
             const contentComments = document.getElementById("content_comments");
 
-            if (updateButton && contentText && contentComments) {
-
-                // hidden create
-                const hiddenField = document.createElement("input");
-                hiddenField.type = "hidden";
-                hiddenField.name = "comment_required_error";
-                hiddenField.value = "";
-
-                // add field without value
-                contentComments.insertAdjacentElement("afterend", hiddenField)
+            if (form && contentText && contentComments) {
 
                 // Store the original value
                 const originalText = contentText.value;
 
-                updateButton.addEventListener("click", function (event) {
+                form.addEventListener("submit", function (event) {
                     const currentText = contentText.value;
                     const comment = contentComments.value.trim();
 
-                    // value in hiddenField for flash error on serverside
+                    // prevent Submit
                     <% if new_page %>
                         if (comment === "") {
-                            hiddenField.value = "true"
+                            return preventForm(event);
                         }
                     <% else %>
                         if (currentText !== originalText && comment === "") {
-                            hiddenField.value = "true"
+                            return preventForm(event);
                         }
                     <% end %>
                 });
+
             }
         });
+
+
+        function preventForm(e) {
+            e.preventDefault();
+            e.stopImmediatePropagation();
+
+            const input = document.getElementById("content_comments");
+            if (input) {
+                const label = input.previousElementSibling;
+                if (label && label.tagName.toLowerCase() === "label") {
+                    label.className = "error";
+                }
+            }
+
+            let errorBox = document.getElementById('clientErrorExplanation');
+            if (!errorBox) {
+                const content = document.getElementById('content')
+                if (content) {
+                    errorBox = document.createElement('div');
+                    errorBox.id = 'errorExplanation';
+                    errorBox.innerHTML = '<%= j(l(:field_comments) + ' ' + l(:label_required_lower)) %>';
+                    content.prepend(errorBox);
+                }
+            }
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            return false;
+        }
+
 
     </script>
 <% end %>

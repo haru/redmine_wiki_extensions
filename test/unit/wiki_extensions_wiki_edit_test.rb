@@ -76,8 +76,7 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
       },
       extension: { tags: { '0' => 'MyString', '1' => 'MyString2', '2' => 'newtag' } },
       status_disabled: 'true',
-      status: 'draft',
-      comment_required_error: ''}
+      status: 'draft'}
 
     assert_response :redirect
 
@@ -97,7 +96,7 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
     assert_equal 'draft', approval.status
   end
 
-  test "should render wiki edit error with no comment" do
+  test "should render wiki edit with no tags no draft checked" do
     @request.session[:user_id] = User.current.id
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] = 'true'
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] = 'true'
@@ -113,18 +112,5 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
     end
     # 2. no tags found
     assert_select 'p#wiki_extensions_tag_form', false
-
-    # update page, should be flash error because of no comment
-    put :update, params: { project_id: @project.id, id: @page.title,
-      content: {
-        text: 'new text in textarea',
-        comments: ''
-      },
-      status_disabled: 'false',
-      status: 'published',
-      comment_required_error: 'error'}
-
-    assert_response :redirect
-    assert flash[:error].present?
   end
 end
