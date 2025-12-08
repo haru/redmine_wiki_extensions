@@ -57,6 +57,7 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] = 'true'
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] = 'false'
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] = 'true'
+    Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'] = 'true'
     get :edit, params: { project_id: @project.id, id: @page.title }
     assert_response :success
 
@@ -101,6 +102,7 @@ class WikiExtensionsWikiEditTest < ActionController::TestCase
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_comment'] = 'true'
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_tags'] = 'true'
     Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_approval'] = 'false'
+    Setting.plugin_redmine_wiki_extensions['wiki_extensions_settings_draft_enabled'] = 'true'
     get :edit, params: { project_id: @project.id, id: @page.title }
     assert_response :success
 

@@ -1,4 +1,4 @@
-# Redmine Wiki Extensions Plugin
+# Redmine Wiki Extensions Plugin + Approval Workflow
 
 [![build](https://github.com/haru/redmine_wiki_extensions/actions/workflows/build.yml/badge.svg)](https://github.com/haru/redmine_wiki_extensions/actions/workflows/build.yml)
 [![Maintainability](https://api.codeclimate.com/v1/badges/35932ef513dece9c304c/maintainability)](https://codeclimate.com/github/haru/redmine_wiki_extensions/maintainability)
