@@ -64,6 +64,7 @@ de:
   wiki_extensions_approval_unable_note: Kommentar ist erforderlich
   wiki_extensions_approval_add_user: Benutzer hinzufügen
   wiki_extensions_approval_add_step: Schritt hinzufügen
-  wiki_extensions_and: UND
-  wiki_extensions_or: ODER
+  wiki_extensions_and: und
+  wiki_extensions_or: oder
+  label_wiki_approval_plural: Wiki-Freigabe Workflows
 

@@ -63,5 +63,6 @@ pl:
   wiki_extensions_approval_unable_note: Wymagany komentarz
   wiki_extensions_approval_add_user: Dodaj użytkownika
   wiki_extensions_approval_add_step: Dodaj krok
-  wiki_extensions_and: ORAZ
-  wiki_extensions_or: LUB
+  wiki_extensions_and: oraz
+  wiki_extensions_or: lub
+  label_wiki_approval_plural: Wiki Workflowy zatwierdzania

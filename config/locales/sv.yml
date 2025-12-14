@@ -63,5 +63,6 @@ sv:
   wiki_extensions_approval_unable_note: Kommentar krävs
   wiki_extensions_approval_add_user: Lägg till användare
   wiki_extensions_approval_add_step: Lägg till steg
-  wiki_extensions_and: OCH
-  wiki_extensions_or: ELLER
+  wiki_extensions_and: och
+  wiki_extensions_or: eller
+  label_wiki_approval_plural: Wiki Godkännandeflöden

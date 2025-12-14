@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-
+# frozen_string_literal: true
 class WikiExtensionsApproval < ApplicationRecord
   self.table_name = 'wiki_extensions_approval'
 
@@ -81,7 +81,7 @@ class WikiExtensionsApproval < ApplicationRecord
     old_ids = WikiExtensionsApproval
                 .where(wiki_page_id: wiki_page_id)
                 .where('wiki_version_id < ?', wiki_version_id)
-                .where(status: WikiExtensionsApproval.statuses[:pending])
+                .where('status BETWEEN ? AND ?', WikiExtensionsApproval.statuses[:draft], WikiExtensionsApproval.statuses[:pending])
                 .pluck(:id)
 
     return if old_ids.empty?
@@ -89,8 +89,7 @@ class WikiExtensionsApproval < ApplicationRecord
     ActiveRecord::Base.transaction do
       # old Approvals canceln
       WikiExtensionsApproval.where(id: old_ids)
-                            .update_all(status: WikiExtensionsApproval.statuses[:canceled],
-                                        updated_at: Time.current)
+                            .update_all(status: WikiExtensionsApproval.statuses[:canceled])
 
       # Steps canceln
       WikiExtensionsApprovalSteps.where(wiki_extensions_approval_id: old_ids)
@@ -99,4 +98,95 @@ class WikiExtensionsApproval < ApplicationRecord
                                     updated_at: Time.current)
     end
   end
+
+  def project
+    wiki_page.wiki.project
+  end
+  
+  def event_group
+    "wiki_page:#{wiki_page_id}"
+  end
+
+  # activity how it look like
+  acts_as_event \
+    title: ->(o) do
+      label    = I18n.t(:label_wiki_extensions_approval_workflow, default: 'Approval workflow')
+      ver_num  = o.wiki_version_id
+      "Wiki-#{label}: #{o.wiki_page.title} #{ver_num ? " (##{ver_num})" : ''}"
+    end,
+    author:      :author,
+    description: ->(o) do
+      ver_num = o.wiki_version_id
+      version_from = WikiExtensionsApproval.latest_public_from_version(o.wiki_page_id, o.wiki_version_id)
+      diff_path = "/projects/#{o.wiki_page.project.identifier}/wiki/#{ERB::Util.url_encode(o.wiki_page.title)}/diff" \
+                  "?version=#{ver_num}&version_from=#{version_from}"
+      desc = +""
+      desc << "#{I18n.t("wiki_extensions_approval.status.#{o.status}", default: o.status)} · "
+      if Setting.text_formatting == 'textile'
+        desc << "(\"#{I18n.t(:label_diff)}\":#{diff_path})"
+      else
+        desc << "(<a href=\"#{diff_path}\">#{I18n.t(:label_diff)}</a>)"
+      end
+      desc << "\n\n#{o.note}" if o.note.present?
+      
+      grouped = o.approval_steps.group_by(&:step)
+      # grouped sorted Step-Nr 
+      grouped.sort_by { |step, _| step.to_i }.map do |step, steps|
+        step_type = I18n.t("wiki_extensions_#{steps.first&.step_type}", default: '')
+        #Step 1* User 1* User 2 
+        #Step 2* User 3* User 4
+        desc << "\n\n#{I18n.t(:label_wiki_extensions_approval_step, default: 'Step')} #{step} #{step_type ? " - (#{step_type})" : ''}"
+        steps.map do |s|
+          desc << "\n* #{s.principal&.name}"
+          desc << " (#{I18n.t("wiki_extensions_approval_steps.status.#{s.status}", default: 'rejected')})" if s.rejected?
+          desc << "\n #{s.note}" if s.note.present?
+        end
+      end
+
+      desc.html_safe
+
+    end,
+    datetime:    :updated_at,  
+    project: ->(o) { o.wiki_page.wiki.project }, 
+    url: ->(o) do
+      {
+        controller:  'wiki',
+        action:      'show',
+        project_id:  o.wiki_page.wiki.project,  
+        id:          o.wiki_page.title,
+        version:     o.wiki_version_id                   
+      }.compact
+    end,
+    group: ->(o) { "wiki_page:#{o.wiki_page_id}" }
+
+  # activity which entrys filtering
+  acts_as_activity_provider \
+    type:       'wiki_approval',
+    permission: :draft_view,
+    author_key: :author_id,
+    timestamp:  :updated_at,
+    scope: Proc.new { |options = {}, _user = nil|
+      rel = joins(wiki_page: { wiki: :project })
+            .includes(wiki_page: { wiki: :project })
+
+      if (project = options[:project]).present?
+        ids = options[:with_subprojects] ? project.self_and_descendants.select(:id) : project.id
+        rel = rel.where(projects: { id: ids })
+      elsif options[:projects].present?
+        rel = rel.where(projects: { id: Array(options[:projects]).map(&:id) })
+      end
+
+      from, to = options.values_at(:from, :to)
+      if from && to
+        rel = rel.where(updated_at: from..to)
+      elsif from
+        rel = rel.where(arel_table[:updated_at].gteq(from))
+      elsif to
+        rel = rel.where(arel_table[:updated_at].lteq(to))
+      end
+
+      rel.order(:wiki_page_id, wiki_version_id: :desc)
+
+    }
+
 end

@@ -62,5 +62,6 @@
   wiki_extensions_approval_unable_note: Kommentar kreves
   wiki_extensions_approval_add_user: Legg til bruker
   wiki_extensions_approval_add_step: Legg til steg
-  wiki_extensions_and: OG
-  wiki_extensions_or: ELLER
+  wiki_extensions_and: og
+  wiki_extensions_or: eller
+  label_wiki_approval_plural: Wiki Godkjenningsflyter

@@ -95,4 +95,5 @@ Redmine::Plugin.register :redmine_wiki_extensions do
   RedCloth3::ALLOWED_TAGS << 'div'
 
   activity_provider :wiki_comment, :class_name => 'WikiExtensionsComment', :default => false
+  activity_provider :wiki_approval, :class_name => 'WikiExtensionsApproval', :default => false
 end

@@ -98,7 +98,7 @@ class WikiExtensionsUtil
     return false unless is_allowed_to_show_last_version?(project)
 
     user = User.current.logged? ? User.current : User.anonymous
-    user.allowed_to?(:draft_view, project)
+    user.allowed_to?(:draft_view, project) || user.allowed_to?(:approval_grant, project)
   end
 
   def self.wiki_extensions_approval_badge(status)
