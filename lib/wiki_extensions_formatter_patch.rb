@@ -18,8 +18,6 @@
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
 module WikiExtensionsFormatterPatch
-  Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
-
   private
 
   def inline_smiles(text)
@@ -42,4 +40,22 @@ module WikiExtensionsFormatterPatch
   end
 end
 
-Redmine::WikiFormatting::Textile::Formatter.prepend(WikiExtensionsFormatterPatch)
+# Redmine refactored textile formatting in master (Jan 2026, commit f7f585a6d).
+# Before: Formatter < RedCloth3 (RULES defined in Formatter)
+# After:  Filter < RedCloth3 (RULES defined in Filter), Formatter is a wrapper
+#
+# Use direct constant reference (triggers autoload) instead of defined?() which
+# does not trigger Zeitwerk autoloading and can cause incorrect fallback.
+filter_class = begin
+  Redmine::WikiFormatting::Textile::Filter
+rescue NameError
+  nil
+end
+
+if filter_class
+  filter_class::RULES << :inline_smiles
+  filter_class.prepend(WikiExtensionsFormatterPatch)
+else
+  Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
+  Redmine::WikiFormatting::Textile::Formatter.prepend(WikiExtensionsFormatterPatch)
+end
