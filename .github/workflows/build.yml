@@ -56,7 +56,7 @@ jobs:
         run: bash -x ./build-scripts/build.sh
       - name: Enforce YARD Documentation Coverage
         run: |
-          output=$(bundle exec yard stats --list-undoc | tee /dev/stderr)
+          output=$(yard stats --list-undoc | tee /dev/stderr)
           if ! printf '%s' "$output" | grep -q "100.00%"; then
             echo "YARD documentation coverage is below 100%. See report above." >&2
             exit 1
