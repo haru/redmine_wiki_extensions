@@ -20,6 +20,7 @@ class WikiExtensionsTagRelation < ApplicationRecord
   validates_presence_of :wiki_page_id, :tag_id
   validates_uniqueness_of :tag_id, :scope => :wiki_page_id
 
+  # Destroys the relation and removes the tag if it is no longer used by any page.
   def destroy
     ret = super
     target_tag = WikiExtensionsTag.find(tag_id) if tag_id

@@ -10,6 +10,9 @@ if [ ! -f ~/.bashrc ]; then
     cd $BASEDIR 
 fi
 
+curl -fsSL https://claude.ai/install.sh | bash
+curl -fsSL https://opencode.ai/install | bash
+
 if [ -f .devcontainer/redmine.code-workspace ] && grep -q '"/usr/local/redmine/plugins/dummy"' .devcontainer/redmine.code-workspace; then
     sed -i.bak "s|\"/usr/local/redmine/plugins/dummy\"|\"/usr/local/redmine/plugins/$PLUGIN_NAME\"|g" .devcontainer/redmine.code-workspace
     rm .devcontainer/redmine.code-workspace.bak

@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +wiki+ macro for linking to another project's wiki page.
 module WikiExtensionsWikiMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Link to wiki page of other project.\n\n"+

@@ -17,8 +17,10 @@
 
 require_dependency 'projects_helper'
 
+# Patch that adds a wiki extensions settings tab to the project settings page.
 module WikiExtensionsProjectsHelperPatch
-
+  # Appends the wiki extensions tab to the project settings tabs if the user is authorized.
+  # @return [Array<Hash>]
   def project_settings_tabs
     tabs = super
     action = {:name => 'wiki_extensions',

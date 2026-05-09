@@ -54,6 +54,13 @@ jobs:
         run: bash -x ./build-scripts/install.sh
       - name: Build
         run: bash -x ./build-scripts/build.sh
+      - name: Enforce YARD Documentation Coverage
+        run: |
+          output=$(yard stats --list-undoc | tee /dev/stderr)
+          if ! printf '%s' "$output" | grep -q "100.00%"; then
+            echo "YARD documentation coverage is below 100%. See report above." >&2
+            exit 1
+          fi
       - name: Clean
         run: bash -x ./build-scripts/cleanup.sh
       - uses: codecov/codecov-action@v5

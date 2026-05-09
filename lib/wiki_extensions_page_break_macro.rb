@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +page_break+ wiki macro for CSS print page breaks.
 module WikiExtensionsPageBreakMacro
   Redmine::WikiFormatting::Macros.register do
     desc 'Page break here.'

@@ -1,6 +1,10 @@
 require 'mailer'
 
+# Mailer for wiki comment notifications.
 class WikiExtensionsCommentsMailer < Mailer
+  # Delivers a comment notification to all page watchers and contributors.
+  # @param comment [WikiExtensionsComment]
+  # @param wiki_page [WikiPage]
   def self.deliver_wiki_commented(comment, wiki_page)
     # Send notification to watchers and author of wiki page
     users = wiki_page.watchers.collect { |watcher|watcher.user} | wiki_page.content.notified_users
@@ -9,6 +13,10 @@ class WikiExtensionsCommentsMailer < Mailer
     end
   end
 
+  # Builds the comment notification mail for a single recipient.
+  # @param user [User] recipient
+  # @param comment [WikiExtensionsComment]
+  # @param wiki_page [WikiPage]
   def wiki_commented(user, comment, wiki_page)
     project = wiki_page.project
     author = comment.user

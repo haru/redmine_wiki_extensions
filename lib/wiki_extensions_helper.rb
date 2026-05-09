@@ -1,12 +1,16 @@
 #Author: Dmitry Manayev
 
 require 'redmine'
+# Placeholder that ensures WikiExtensionsHelper is defined for the controller.
 module WikiExtensionsHelper
-  #This needed to define WikiExtensionsHelper for WikiExtensionsController.
 end
-module ActionView  
+
+# Rails ActionView namespace; reopened to add plugin helpers.
+module ActionView
+  # Rails ActionView helpers namespace; reopened to add plugin helpers.
   module Helpers
-    module WikiExtensionsHelper  
+    # View helper providing the hierarchical comment tree renderer.
+    module WikiExtensionsHelper
      
      
       ## Method for displaying tree of comments\n

@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +twitter+ wiki macro for linking to a Twitter/X account.
 module WikiExtensionsTwitterMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Creates link to twitter account page.\n\n" +

@@ -17,6 +17,7 @@
 
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
+# Patch that adds emoticon rendering to Redmine's textile formatter.
 module WikiExtensionsFormatterPatch
   private
 
@@ -31,9 +32,13 @@ module WikiExtensionsFormatterPatch
     }
   end
 
+  # Helper that provides URL path resolution for emoticon images.
   class WikiExtentionEmoticonPath
     include Rails.application.routes.url_helpers
 
+    # Returns the URL path for the given emoticon image filename.
+    # @param emoticon [String] image filename
+    # @return [String]
     def get_emoticon_path(emoticon)
       wiki_extensions_emoticon_path(emoticon)
     end

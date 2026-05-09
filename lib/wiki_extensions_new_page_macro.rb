@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +new_page+ wiki macro for rendering a new-page creation form.
 module WikiExtensionsNewPageMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Create new page.\n\n"
