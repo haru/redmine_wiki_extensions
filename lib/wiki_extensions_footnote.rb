@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +fn+ and +fnlist+ wiki macros for footnote support.
 module WikiExtensionsFootnote
@@ -36,36 +36,36 @@ module WikiExtensionsFootnote
       page = WikiExtensionsFootnote.preview_page unless page
       data = page.wiki_extension_data
       data[:footnotes] ||= []
-      data[:footnotes] << {'word' => word, 'description' => description}
-      
+      data[:footnotes] << { "word" => word, "description" => description }
+
 
       o = ""
       o << word
-      o << '<a href="#wiki_extensins_fn_' +"#{data[:footnotes].length}" + '" class="wiki_extensions_fn" title="' + h(description) + '" name="wiki_extensins_fn_src_' +"#{data[:footnotes].length}" + '">'
+      o << ('<a href="#wiki_extensins_fn_' +"#{data[:footnotes].length}" + '" class="wiki_extensions_fn" title="' + h(description) + '" name="wiki_extensins_fn_src_' +"#{data[:footnotes].length}" + '">')
       o << "*#{data[:footnotes].length}"
-      o << '</a>'
+      o << "</a>"
       return o.html_safe
     end
   end
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays footnotes of the page."
-    macro :fnlist do |obj, args|
+    macro :fnlist do |obj, _args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       page = obj.page if obj
       page = WikiExtensionsFootnote.preview_page unless page
       data = page.wiki_extension_data
-      return '' if data[:footnotes].blank? or data[:footnotes].empty?
+      return "" if data[:footnotes].blank? or data[:footnotes].empty?
       o = '<div class="wiki_extensions_fnlist">'
       o << "<hr/>\n"
-      o << '<ul>'
+      o << "<ul>"
       cnt = 0
-      data[:footnotes].each {|fn|
+      data[:footnotes].each { |fn|
         cnt += 1
-        o << '<li><span class="wiki_extensions_fn">'+ "*#{cnt}</span> " +'<a name="wiki_extensins_fn_' + "#{cnt}" + '" href="#wiki_extensins_fn_src_' + "#{cnt}" + '"' + ">#{fn['word']}</a>:#{h fn['description']}</li>"
+        o << ('<li><span class="wiki_extensions_fn">'+ "*#{cnt}</span> " +'<a name="wiki_extensins_fn_' + "#{cnt}" + '" href="#wiki_extensins_fn_src_' + "#{cnt}" + '"' + ">#{fn['word']}</a>:#{h fn['description']}</li>")
       }
-      o << '</ul>'
-      o << '</div>'
+      o << "</ul>"
+      o << "</div>"
       WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
       return o.html_safe
     end

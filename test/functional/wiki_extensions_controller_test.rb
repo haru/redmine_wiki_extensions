@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis,
@@ -25,51 +25,51 @@ class WikiExtensionsControllerTest < ActionController::TestCase
   def setup
     @controller = WikiExtensionsController.new
     @request = ActionController::TestRequest.create(self.class.controller_class)
-    #@response   = ActionController::TestResponse.new
-    @request.env['HTTP_REFERER'] = '/'
+    # @response   = ActionController::TestResponse.new
+    @request.env["HTTP_REFERER"] = "/"
     @project = Project.find(1)
     @wiki = @project.wiki
-    @page_name = 'macro_test'
+    @page_name = "macro_test"
     @page = @wiki.find_or_new_page(@page_name)
     @page.content = WikiContent.new
-    @page.content.text = '{{comments}}'
+    @page.content.text = "{{comments}}"
     @page.save!
-    side_bar = @wiki.find_or_new_page('SideBar')
+    side_bar = @wiki.find_or_new_page("SideBar")
     side_bar.content = WikiContent.new
-    side_bar.content.text = 'test'
+    side_bar.content.text = "test"
     side_bar.save!
-    style_sheet = @wiki.find_or_new_page('StyleSheet')
+    style_sheet = @wiki.find_or_new_page("StyleSheet")
     style_sheet.content = WikiContent.new
-    style_sheet.content.text = 'test'
+    style_sheet.content.text = "test"
     style_sheet.save!
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
-    enabled_module.name = 'wiki_extensions'
+    enabled_module.name = "wiki_extensions"
     enabled_module.save
   end
 
   def test_add_comment
     @request.session[:user_id] = 1
-    post :add_comment, :params => { :id => 1, :wiki_page_id => @page.id, :comment => 'aaa' }
+    post :add_comment, params: { id: 1, wiki_page_id: @page.id, comment: "aaa" }
     assert_response :redirect
   end
 
   def test_tag
     @request.session[:user_id] = 1
-    get :tag, :params => { :id => 1, :tag_id => 1 }
-    #assert assigns[:tag]
+    get :tag, params: { id: 1, tag_id: 1 }
+    # assert assigns[:tag]
   end
 
   def test_destroy_comment
     comment = WikiExtensionsComment.new
     comment.wiki_page_id = @page.id
     comment.user_id = 1
-    comment.comment = 'aaa'
+    comment.comment = "aaa"
     comment.save!
     @request.session[:user_id] = 1
-    post :destroy_comment, :params => { :id => 1, :comment_id => comment.id }
+    post :destroy_comment, params: { id: 1, comment_id: comment.id }
     assert_response :redirect
-    comment = WikiExtensionsComment.where(:id => comment.id).first
+    comment = WikiExtensionsComment.where(id: comment.id).first
     assert_nil(comment)
   end
 
@@ -77,11 +77,11 @@ class WikiExtensionsControllerTest < ActionController::TestCase
     comment = WikiExtensionsComment.new
     comment.wiki_page_id = @page.id
     comment.user_id = 1
-    comment.comment = 'aaa'
+    comment.comment = "aaa"
     comment.save!
-    message = 'newcomment'
+    message = "newcomment"
     @request.session[:user_id] = 1
-    post :update_comment, :params => { :id => 1, :comment_id => comment.id, :comment => message }
+    post :update_comment, params: { id: 1, comment_id: comment.id, comment: message }
     assert_response :redirect
     comment = WikiExtensionsComment.find(comment.id)
     assert_equal(message, comment.comment)
@@ -89,30 +89,30 @@ class WikiExtensionsControllerTest < ActionController::TestCase
 
   def test_forwad_wiki_page
     @request.session[:user_id] = 1
-    get :forward_wiki_page, :params => { :id => 1, :menu_id => 1 }
+    get :forward_wiki_page, params: { id: 1, menu_id: 1 }
     assert_response :redirect
   end
 
   def test_stylesheet
     @project.is_public = false
     @project.save!
-    get :stylesheet, :params => { :id => 1 }
-    assert_response 403
+    get :stylesheet, params: { id: 1 }
+    assert_response :forbidden
 
     @request.session[:user_id] = 1
-    get :stylesheet, :params => { :id => 1 }
+    get :stylesheet, params: { id: 1 }
     assert_response :success
 
-    get :stylesheet, :params => { :id => 2 }
-    assert_response 404
+    get :stylesheet, params: { id: 2 }
+    assert_response :not_found
   end
 
-  context 'vote' do
-    should 'success if new vote.' do
+  context "vote" do
+    should "success if new vote." do
       @request.session[:user_id] = 1
       count = WikiExtensionsVote.all.length
-      post :vote, :params => { :id => 1, :target_class_name => 'Project', :target_id => 1,
-                               :key => 'aaa', :url => 'http://localhost:3000' }
+      post :vote, params: { id: 1, target_class_name: "Project", target_id: 1,
+                               key: "aaa", url: "http://localhost:3000" }
       assert_equal(count + 1, WikiExtensionsVote.all.length)
       assert_response :success
     end

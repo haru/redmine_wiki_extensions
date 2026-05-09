@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiControllerTest < ActionController::TestCase
   fixtures :projects, :users, :roles, :members, :enabled_modules, :wikis,
@@ -24,57 +24,57 @@ class WikiControllerTest < ActionController::TestCase
   def setup
     @controller = WikiController.new
     @request = ActionController::TestRequest.create(self.class.controller_class)
-    #@response   = ActionController::TestResponse.new
-    @request.env['HTTP_REFERER'] = '/'
+    # @response   = ActionController::TestResponse.new
+    @request.env["HTTP_REFERER"] = "/"
     @project = Project.find(1)
     @wiki = @project.wiki
-    @page_name = 'macro_test'
+    @page_name = "macro_test"
     @page = @wiki.find_or_new_page(@page_name)
     @page.content = WikiContent.new
-    @page.content.text = 'test'
+    @page.content.text = "test"
     @page.save!
-    side_bar = @wiki.find_or_new_page('SideBar')
+    side_bar = @wiki.find_or_new_page("SideBar")
     side_bar.content = WikiContent.new
-    side_bar.content.text = 'test'
+    side_bar.content.text = "test"
     side_bar.save!
-    header = @wiki.find_or_new_page('Header')
+    header = @wiki.find_or_new_page("Header")
     header.content = WikiContent.new
-    header.content.text = 'test'
+    header.content.text = "test"
     header.save!
-    footer = @wiki.find_or_new_page('Footer')
+    footer = @wiki.find_or_new_page("Footer")
     footer.content = WikiContent.new
-    footer.content.text = 'test'
+    footer.content.text = "test"
     footer.save!
-    style_sheet = @wiki.find_or_new_page('StyleSheet')
+    style_sheet = @wiki.find_or_new_page("StyleSheet")
     style_sheet.content = WikiContent.new
-    style_sheet.content.text = 'test'
+    style_sheet.content.text = "test"
     style_sheet.save!
     enabled_module = EnabledModule.new
     enabled_module.project_id = 1
-    enabled_module.name = 'wiki_extensions'
+    enabled_module.name = "wiki_extensions"
     enabled_module.save
   end
 
   def test_comment_form
-    text = '{{comment_form}}'
+    text = "{{comment_form}}"
     text << "\n"
-    text << '{{comments}}'
+    text << "{{comments}}"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_comments
-    text = '{{comments}}'
+    text = "{{comments}}"
     setContent(text)
     comment = WikiExtensionsComment.new
     comment.wiki_page_id = @page.id
     comment.user_id = 1
-    comment.comment = 'aaa'
+    comment.comment = "aaa"
     comment.save!
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
@@ -86,7 +86,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{div_end_tag}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
@@ -96,18 +96,18 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{fnlist}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_new
-    text = "{{new(#{Date.today.to_s})}}\n"
-    text << "{{new(#{(Date.today - 1).to_s})}}\n"
-    text << "{{new(#{(Date.today - 2).to_s})}}\n"
+    text = "{{new(#{Time.zone.today})}}\n"
+    text << "{{new(#{(Time.zone.today - 1)})}}\n"
+    text << "{{new(#{(Time.zone.today - 2)})}}\n"
     text << "{{new(2009-03-01, 4)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
@@ -118,7 +118,7 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{project(#{@project.id}), bar}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
@@ -130,183 +130,183 @@ class WikiControllerTest < ActionController::TestCase
     text << "{{tagcloud}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_wiki
-    text = ''
+    text = ""
     text << "{{wiki(#{@project.name}, #{@page_name})}}\n"
     text << "{{wiki(#{@project.name}, #{@page_name}, foo)}}\n"
     text << "{{wiki(#{@project.id}, #{@page_name})}}\n"
     text << "{{wiki(#{@project.id}, #{@page_name}, bar)}}\n"
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_edit
     @request.session[:user_id] = 1
-    get :edit, :params => { :project_id => 1, :id => @page_name }
+    get :edit, params: { project_id: 1, id: @page_name }
     assert_response :success
 
-    post :edit, :params => { :project_id => 1, :id => @page_name, :content => { :text => 'aaa' },
-                             :extension => { :tags => { '0' => 'aaa', '1' => 'bbb' } } }
+    post :edit, params: { project_id: 1, id: @page_name, content: { text: "aaa" },
+                             extension: { tags: { "0" => "aaa", "1" => "bbb" } } }
     assert_response :success
   end
 
   def test_recent
-    text = ''
+    text = ""
     text << "{{recent}}\n"
     text << "{{recent(10)}}\n"
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_lastupdated_by
-    text = ''
+    text = ""
     text << "{{lastupdated_by}}\n"
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_lastupdated_at
-    text = ''
+    text = ""
     text << "{{lastupdated_at}}\n"
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
   def test_iframe
-    text = ''
+    text = ""
     text << "{{iframe(http://google.com, 200, 400)}}\n"
     text << "{{iframe(http://google.com, 200, 400, no)}}\n"
 
     setContent(text)
     @request.session[:user_id] = 1
-    get :show, :params => { :project_id => 1, :id => @page_name }
+    get :show, params: { project_id: 1, id: @page_name }
     assert_response :success
   end
 
-  context 'count' do
-    should 'success' do
+  context "count" do
+    should "success" do
       @request.session[:user_id] = 1
-      text = ''
+      text = ""
       text << "{{count}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'show_count' do
-    should 'success' do
-      text = ''
+  context "show_count" do
+    should "success" do
+      text = ""
       text << "{{show_count}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'popularity' do
-    should 'success if there is no count data' do
-      text = ''
+  context "popularity" do
+    should "success if there is no count data" do
+      text = ""
       text << "{{popularity}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
 
-    should 'success if there is count data' do
-      text = ''
+    should "success if there is count data" do
+      text = ""
       text << "{{count}}\n"
       text << "{{popularity}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'vote' do
-    should 'success' do
-      text = ''
+  context "vote" do
+    should "success" do
+      text = ""
       text << "{{vote(aaa)}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'show_vote' do
-    should 'success' do
-      text = ''
+  context "show_vote" do
+    should "success" do
+      text = ""
       text << "{{show_vote(aaa)}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'twitter' do
-    should 'success' do
-      text = ''
+  context "twitter" do
+    should "success" do
+      text = ""
       text << "{{twitter(haru_iida)}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'taggedpages' do
-    should 'success' do
-      text = ''
+  context "taggedpages" do
+    should "success" do
+      text = ""
       text << "{{taggedpages(aaa)}}\n"
 
       setContent(text)
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
       assert_response :success
     end
   end
 
-  context 'page_break' do
+  context "page_break" do
     setup do
       setContent("{{page_break}}\n")
 
       @request.session[:user_id] = 1
-      get :show, :params => { :project_id => 1, :id => @page_name }
+      get :show, params: { project_id: 1, id: @page_name }
     end
 
-    should 'success' do
+    should "success" do
       assert_response :success
     end
 
-    should 'be rendered correctly' do
+    should "be rendered correctly" do
       assert response.body.include?('<div class="wikiext-page-break">')
     end
   end

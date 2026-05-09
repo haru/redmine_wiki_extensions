@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +project+ wiki macro for linking to a Redmine project.
 module WikiExtensionsProjectMacro
@@ -24,21 +24,20 @@ module WikiExtensionsProjectMacro
       " \{{project(project_identifire}}\n" +
       " \{{project(project_name, alias)}}\n" +
       " \{{project(project_identifire, alias}}\n"
-    macro :project do |obj, args|
-      
+    macro :project do |_obj, args|
       return nil if args.length < 1
       project_name = args[0].strip
-      project = Project.find_by_name(project_name)
-      project = Project.find_by_identifier(project_name) unless project
+      project = Project.find_by(name: project_name)
+      project = Project.find_by(identifier: project_name) unless project
       return nil unless project
       return nil unless WikiExtensionsUtil.is_enabled?(@project) if @project
-      if (args[1])
+      if args[1]
         alias_name = args[1].strip
       else
         alias_name = project.name
       end
 
-      o = link_to(alias_name, :controller => 'projects', :action => 'show', :id => project)
+      o = link_to(alias_name, controller: "projects", action: "show", id: project)
       return o.html_safe
     end
   end

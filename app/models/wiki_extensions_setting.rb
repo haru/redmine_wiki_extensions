@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsSetting < ApplicationRecord
   belongs_to :project
-  #attr_accessible :auto_preview_enabled, :tag_disabled
+  # attr_accessible :auto_preview_enabled, :tag_disabled
 
   def self.find_or_create(pj_id)
     setting = WikiExtensionsSetting.find_by(project_id: pj_id)
@@ -28,7 +28,7 @@ class WikiExtensionsSetting < ApplicationRecord
     5.times do |i|
       WikiExtensionsMenu.find_or_create(pj_id, i + 1)
     end
-    return setting
+    setting
   end
 
   # Returns false; auto-preview is not supported.
@@ -40,6 +40,6 @@ class WikiExtensionsSetting < ApplicationRecord
   # Returns the ordered menu settings for this project.
   # @return [ActiveRecord::Relation<WikiExtensionsMenu>]
   def menus
-    WikiExtensionsMenu.where(:project_id => project_id).order("menu_no")
+    WikiExtensionsMenu.where(project_id: project_id).order("menu_no")
   end
 end

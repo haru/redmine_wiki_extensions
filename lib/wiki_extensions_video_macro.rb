@@ -32,18 +32,18 @@ module WikiExtensionsVideoMacro
          "      ...video empeded tag to the attachment nr 20 with a control pannel, max dimensions widht/resolution \n" +
          "      {{video_tag(https://samplelib.com/lib/preview/mp4/sample-5s.mp4, 320, 240, controls autoplay muted)}}\n" +
          "      ...video empeded from a http link, dimension 320x240, with control pannel in autoplay mode and muted"
-    macro :video_tag do |obj, args|
+    macro :video_tag do |_obj, args|
       return nil if args.empty?
 
       attachment = Attachment.find_by(id: h(args[0].strip))
-      attachment_path = !attachment ? h(args[0].strip) : url_for(controller: 'attachments', action: 'download', id: attachment.id, filename: attachment.filename)
+      attachment_path = !attachment ? h(args[0].strip) : url_for(controller: "attachments", action: "download", id: attachment.id, filename: attachment.filename)
 
       # video html tag
       o = '<video src="' + attachment_path + '"'
       o += ' width="' + h(args[1].strip) + '"' if args.length >= 2
       o += ' height="' + h(args[2].strip) + '"' if args.length >= 3
-      o += args.length >= 4 ? ' ' + h(args[3].strip) : ' controls'
-      o += '>'
+      o += args.length >= 4 ? " " + h(args[3].strip) : " controls"
+      o += ">"
 
       o.html_safe
     end

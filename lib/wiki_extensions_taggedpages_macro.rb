@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +taggedpages+ wiki macro for listing pages by tag.
 module WikiExtensionsTaggedpagesMacro
@@ -24,7 +24,7 @@ module WikiExtensionsTaggedpagesMacro
       "  !{{taggedpages(tagname, tagname, project)}}\n" +
       "  !{{taggedpages(tagname, tagname, project=all, operator=AND)}}\n" +
       "  !{{taggedpages(tagname, tagname, project=proj1 proj2)}}"
-    macro :taggedpages do |obj, args|
+    macro :taggedpages do |_obj, args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       return nil unless WikiExtensionsUtil.tag_enabled?(@project)
 
@@ -40,9 +40,9 @@ module WikiExtensionsTaggedpagesMacro
       tag_names = []
       if args.length == 1
         tag_names << args[0].strip
-        project_arg = [@project.identifier] if project_arg.nil?
+        project_arg = [ @project.identifier ] if project_arg.nil?
       else
-        project_arg = [args.pop.strip] if project_arg.nil?
+        project_arg = [ args.pop.strip ] if project_arg.nil?
         args.each do |arg|
           tag_names << arg.strip
         end
@@ -51,15 +51,15 @@ module WikiExtensionsTaggedpagesMacro
       projects = []
       # projects fill with id's
       project_arg.each do |name|
-        find = Project.find_by_identifier(name)
-        find = Project.find_by_name(name) if find.nil?
-        find = Project.find_by_id(name.to_i) if find.nil?
+        find = Project.find_by(identifier: name)
+        find = Project.find_by(name: name) if find.nil?
+        find = Project.find_by(id: name.to_i) if find.nil?
         projects << find.id if find
       end
 
       # if no project was found
       if projects.empty?
-        projects = [@project.id]
+        projects = [ @project.id ]
         # if last parameter was not a project, just a tag
         tag_names += project_arg if options.empty?
       end
@@ -67,10 +67,10 @@ module WikiExtensionsTaggedpagesMacro
       # find tags from all projects
       if !project_arg.empty? && project_arg[0].is_a?(String) && (project_arg[0] == "all" || project_arg[0] == "*")
         # all projects AND IN tagnames
-        tags = WikiExtensionsTag.where(:name => tag_names).order(:project_id)
+        tags = WikiExtensionsTag.where(name: tag_names).order(:project_id)
       else
         # IN projects AND IN tagnames
-        tags = WikiExtensionsTag.where(:project_id => projects).where(:name => tag_names).order(:project_id)
+        tags = WikiExtensionsTag.where(project_id: projects).where(name: tag_names).order(:project_id)
 
       end
 
@@ -106,9 +106,9 @@ module WikiExtensionsTaggedpagesMacro
 
       o = '<ul class="wikiext-taggedpages">'
       tagged_pages.uniq.sort_by(&:pretty_title).each do |page|
-        o << '<li>' + link_to(page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => page.project, :id => page.title) + '</li>'
+        o << ("<li>" + link_to(page.pretty_title, controller: "wiki", action: "show", project_id: page.project, id: page.title) + "</li>")
       end
-      o << '</ul>'
+      o << "</ul>"
       return o.html_safe
     end
   end

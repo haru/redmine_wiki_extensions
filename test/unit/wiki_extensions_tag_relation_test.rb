@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_tag_relations, :wiki_extensions_tags,
@@ -27,10 +27,10 @@ class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
   # Replace this with your real tests.
   def test_create
     relation = WikiExtensionsTagRelation.new
-    assert !relation.save
-    
+    assert_not relation.save
 
-    tag = WikiExtensionsTag.find_or_create(1, 'bbb')
+
+    tag = WikiExtensionsTag.find_or_create(1, "bbb")
     relation.tag = tag
     relation.wiki_page_id = 1
     assert relation.save!
@@ -39,18 +39,18 @@ class WikiExtensionsTagRelationTest < ActiveSupport::TestCase
   end
 
   def test_destroy
-    tag_name = 'adfafdfadfafdaf'
+    tag_name = "adfafdfadfafdaf"
     tag = WikiExtensionsTag.find_or_create(1, tag_name)
     relation = WikiExtensionsTagRelation.new
     relation.tag = tag
     relation.wiki_page_id = 1
     assert relation.save!
     relation_id = relation.id
-    tag_id = tag.id
-    assert_not_nil(WikiExtensionsTag.where(:name => tag_name).first)
-    assert_not_nil(WikiExtensionsTagRelation.where(:id => relation_id).first)
+    tag.id
+    assert_not_nil(WikiExtensionsTag.where(name: tag_name).first)
+    assert_not_nil(WikiExtensionsTagRelation.where(id: relation_id).first)
     relation.destroy
-    assert_nil(WikiExtensionsTagRelation.where(:id => relation_id).first)
-    assert_nil(WikiExtensionsTag.where(:name => tag_name).first)
+    assert_nil(WikiExtensionsTagRelation.where(id: relation_id).first)
+    assert_nil(WikiExtensionsTag.where(name: tag_name).first)
   end
 end

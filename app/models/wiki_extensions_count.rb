@@ -16,19 +16,19 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsCount < ApplicationRecord
   belongs_to :project
-  belongs_to :page, :foreign_key => :page_id, :class_name => 'WikiPage'
-  validates_presence_of :project
-  validates_presence_of :page
-  validates_presence_of :date
-  validates_presence_of :count
-  validates_uniqueness_of :page_id, :scope => :date
+  belongs_to :page, class_name: "WikiPage"
+  validates :project, presence: true
+  validates :page, presence: true
+  validates :date, presence: true
+  validates :count, presence: true
+  validates :page_id, uniqueness: { scope: :date }
 
   # Increments the access count for a wiki page on the given date.
   # @param wiki_page_id [Integer]
   # @param date [Date] defaults to today
   def self.countup(wiki_page_id, date = nil)
-    date = Date.today unless date
-    count = WikiExtensionsCount.where(:date => date).where(:page_id => wiki_page_id).first
+    date = Time.zone.today unless date
+    count = WikiExtensionsCount.where(date: date).where(page_id: wiki_page_id).first
     unless count
       page = WikiPage.find(wiki_page_id)
       count = WikiExtensionsCount.new
@@ -46,9 +46,9 @@ class WikiExtensionsCount < ApplicationRecord
   # @param date [Date, nil] if given, only counts from this date onward
   # @return [Integer]
   def self.access_count(wiki_page_id, date = nil)
-    conditions = ['page_id = ?', wiki_page_id] unless date
-    conditions = ['date >= ? and page_id = ?', date, wiki_page_id] if date
-    #total = WikiExtensionsCount.sum(:count, :conditions => conditions)
+    conditions = [ "page_id = ?", wiki_page_id ] unless date
+    conditions = [ "date >= ? and page_id = ?", date, wiki_page_id ] if date
+    # total = WikiExtensionsCount.sum(:count, :conditions => conditions)
     WikiExtensionsCount.where(conditions).sum(:count)
   end
 
@@ -57,8 +57,8 @@ class WikiExtensionsCount < ApplicationRecord
   # @param term [Integer] number of days to look back; 0 means all time
   # @return [Array<Array(Integer, Integer)>] pairs of [page_id, count]
   def self.popularity(project_id, term = 0)
-    conditions = ['project_id = ?', project_id] if term == 0
-    conditions = ['project_id = ? and date > ?', project_id, Date.today - term.to_i] if term > 0
-    WikiExtensionsCount.where(conditions).group(:page_id).sum(:count).to_a.sort_by{|x|0 - x[1]}.map{|x| [x[0], x[1].to_i]}
+    conditions = [ "project_id = ?", project_id ] if term == 0
+    conditions = [ "project_id = ? and date > ?", project_id, Time.zone.today - term.to_i ] if term > 0
+    WikiExtensionsCount.where(conditions).group(:page_id).sum(:count).to_a.sort_by { |x|0 - x[1] }.map { |x| [ x[0], x[1].to_i ] }
   end
 end

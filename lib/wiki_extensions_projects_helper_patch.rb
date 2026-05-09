@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require_dependency 'projects_helper'
+require_dependency "projects_helper"
 
 # Patch that adds a wiki extensions settings tab to the project settings page.
 module WikiExtensionsProjectsHelperPatch
@@ -23,11 +23,11 @@ module WikiExtensionsProjectsHelperPatch
   # @return [Array<Hash>]
   def project_settings_tabs
     tabs = super
-    action = {:name => 'wiki_extensions',
-      :controller => 'wiki_extensions_settings',
-      :action => :show,
-      :partial => 'wiki_extensions_settings/show',
-      :label => :wiki_extensions}
+    action = { name: "wiki_extensions",
+      controller: "wiki_extensions_settings",
+      action: :show,
+      partial: "wiki_extensions_settings/show",
+      label: :wiki_extensions }
 
     tabs << action if User.current.allowed_to?(action, @project)
 

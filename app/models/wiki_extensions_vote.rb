@@ -16,8 +16,8 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WikiExtensionsVote < ApplicationRecord
-  validates_presence_of :target_class_name, :target_id, :keystr, :count
-  validates_uniqueness_of :keystr, :scope => [:target_class_name, :target_id]
+  validates :target_class_name, :target_id, :keystr, :count, presence: true
+  validates :keystr, uniqueness: { scope: [ :target_class_name, :target_id ] }
 
   # Returns the voted-on ActiveRecord object.
   # @return [Object, nil]
@@ -47,7 +47,7 @@ class WikiExtensionsVote < ApplicationRecord
   # @param key_str [String] vote key (allows multiple vote types per object)
   # @return [WikiExtensionsVote]
   def self.find_or_create(class_name, obj_id, key_str)
-    vote = WikiExtensionsVote.where(:target_class_name => class_name).where(:target_id => obj_id).where(:keystr => key_str).first
+    vote = WikiExtensionsVote.where(target_class_name: class_name).where(target_id: obj_id).where(keystr: key_str).first
     unless vote
       vote = WikiExtensionsVote.new
       vote.count = 0
@@ -55,6 +55,6 @@ class WikiExtensionsVote < ApplicationRecord
       vote.target_id = obj_id
       vote.keystr = key_str
     end
-    return vote
+    vote
   end
 end

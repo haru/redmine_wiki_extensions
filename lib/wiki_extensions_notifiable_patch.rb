@@ -31,7 +31,7 @@ module WikiExtensionsNotifiablePatch
     # @return [Array<Redmine::Notifiable>]
     def all
       notifications = super
-      notifications << Redmine::Notifiable.new('wiki_comment_added')
+      notifications << Redmine::Notifiable.new("wiki_comment_added")
       notifications
     end
   end

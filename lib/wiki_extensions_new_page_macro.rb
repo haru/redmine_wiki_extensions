@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +new_page+ wiki macro for rendering a new-page creation form.
 module WikiExtensionsNewPageMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Create new page.\n\n"
-    macro :new_page do |obj, args|
-      @_controller.send(:render_to_string, {:partial => "wiki_extensions/new_page_macro"}).html_safe
+    macro :new_page do |_obj, _args|
+      @_controller.send(:render_to_string, { partial: "wiki_extensions/new_page_macro" }).html_safe
     end
   end
 end
