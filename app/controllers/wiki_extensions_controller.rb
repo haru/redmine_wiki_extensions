@@ -19,7 +19,7 @@
 class WikiExtensionsController < ApplicationController
   menu_item :wiki
   before_action :find_project, :find_user
-  before_action :authorize, except: [:stylesheet, :emoticon]
+  before_action :authorize, except: [ :stylesheet, :emoticon ]
 
   # Adds a new comment to a wiki page.
   def add_comment
@@ -31,7 +31,7 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
   # Adds a reply to an existing comment.
@@ -45,7 +45,7 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
   # Displays wiki pages that have the specified tag.
@@ -58,7 +58,7 @@ class WikiExtensionsController < ApplicationController
   def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => menu.page_name
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: menu.page_name
   end
 
   # Deletes a comment; only admin or the comment author may delete.
@@ -72,7 +72,7 @@ class WikiExtensionsController < ApplicationController
 
     page = WikiPage.find(comment.wiki_page_id)
     comment.destroy
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
   # Updates a comment's text; only admin or the comment author may edit.
@@ -87,7 +87,7 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     comment.comment = params[:comment]
     comment.save
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
   # Records a vote (once per session) and renders the updated count inline.
@@ -103,7 +103,7 @@ class WikiExtensionsController < ApplicationController
       session[:wiki_extension_voted][vote.id] = 1
     end
 
-    render :inline => " #{vote.count}"
+    render plain: " #{vote.count}"
   end
 
   # Serves the wiki page named "StyleSheet" as CSS content.
@@ -139,7 +139,7 @@ class WikiExtensionsController < ApplicationController
 
   def find_project
     # @project variable must be set before calling the authorize filter
-    @project = Project.find(params[:id]) unless params[:id].blank?
+    @project = Project.find(params[:id]) if params[:id].present?
   end
 
   def find_user

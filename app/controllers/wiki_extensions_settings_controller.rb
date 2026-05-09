@@ -16,7 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
 class WikiExtensionsSettingsController < ApplicationController
-  layout 'base'
+  layout "base"
 
   before_action :find_project, :authorize, :find_user
 
@@ -27,7 +27,7 @@ class WikiExtensionsSettingsController < ApplicationController
     setting = WikiExtensionsSetting.find_or_create @project.id
     begin
       setting.transaction do
-        menus.each_pair {|menu_no, menu|
+        menus.each_pair { |_menu_no, menu|
           menu_setting = WikiExtensionsMenu.find_or_create(@project.id, menu[:menu_no].to_i)
           menu_setting.enabled = false
           menu_setting.attributes = menu.permit(:enabled, :menu_no, :title, :page_name)
@@ -39,8 +39,8 @@ class WikiExtensionsSettingsController < ApplicationController
       flash[:error] = "Updating failed." + e.message
       throw e
     end
-    
-    redirect_to :controller => 'projects', :action => "settings", :id => @project, :tab => 'wiki_extensions'
+
+    redirect_to controller: "projects", action: "settings", id: @project, tab: "wiki_extensions"
   end
 
   private

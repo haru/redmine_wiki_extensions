@@ -14,28 +14,28 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +tags+ and +tagcloud+ wiki macros.
 module WikiExtensionsTagsMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays tags.\n\n"+
       "  !{{tags}}\n"
-    macro :tags do |obj, args|
+    macro :tags do |obj, _args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       return nil unless WikiExtensionsUtil.tag_enabled?(@project)
       page = obj.page
       return unless page
       project = page.project
 
-      return '' if page.wiki_ext_tags.empty?
+      return "" if page.wiki_ext_tags.empty?
 
       o = '<ul class="wikiext-tags">'
-      page.wiki_ext_tags.each{|tag|
-        o << '<li>' + link_to("#{tag.name}", {:controller => 'wiki_extensions',
-              :action => 'tag', :id => project, :tag_id => tag.id}) + '</li>'
+      page.wiki_ext_tags.each { |tag|
+        o << ("<li>" + link_to("#{tag.name}", { controller: "wiki_extensions",
+              action: "tag", id: project, tag_id: tag.id }) + "</li>")
       }
-      o << '</ul>'
+      o << "</ul>"
       return o.html_safe
     end
   end
@@ -43,22 +43,22 @@ module WikiExtensionsTagsMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays tagcloud.\n\n"+
       "  !{{tagcloud}}\n"
-    macro :tagcloud do |obj, args|
+    macro :tagcloud do |obj, _args|
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       return nil unless WikiExtensionsUtil.tag_enabled?(@project)
-      classes = %w(tag_level1 tag_level2 tag_level3 tag_level4 tag_level5)
+      classes = %w[tag_level1 tag_level2 tag_level3 tag_level4 tag_level5]
       page = obj.page
       return unless page
       project = page.project
-      o = '<h3>' + l(:label_wikiextensions_tags) + '</h3>'
-      tags = WikiExtensionsTag.where(:project_id => project.id).all
-      return '' if tags.empty?
-      max_count = tags.sort{|a, b| a.page_count <=> b.page_count}.last.page_count.to_f
-      tags.sort.each{|tag|
+      o = "<h3>" + l(:label_wikiextensions_tags) + "</h3>"
+      tags = WikiExtensionsTag.where(project_id: project.id).all
+      return "" if tags.empty?
+      max_count = tags.sort { |a, b| a.page_count <=> b.page_count }.last.page_count.to_f
+      tags.sort.each { |tag|
         index = ((tag.page_count / max_count) * (classes.size - 1)).round
-        o << link_to("#{tag.name}(#{tag.page_count})", {:controller => 'wiki_extensions',
-              :action => 'tag', :id => project, :tag_id => tag.id}, :class => classes[index])
-        o << ' '
+        o << link_to("#{tag.name}(#{tag.page_count})", { controller: "wiki_extensions",
+              action: "tag", id: project, tag_id: tag.id }, class: classes[index])
+        o << " "
       }
       return o.html_safe
     end

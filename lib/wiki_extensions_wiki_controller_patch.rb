@@ -15,11 +15,11 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require_dependency 'wiki_controller'
+require_dependency "wiki_controller"
 
 # Redmine's wiki controller; extended by this plugin to save tags on edit/update.
 class WikiController
-  after_action :wiki_extensions_save_tags, :only => [:edit, :update]
+  after_action :wiki_extensions_save_tags, only: [ :edit, :update ]
 end
 
 # Patch that injects wiki page headers, footers, and footnote lists.
@@ -28,7 +28,7 @@ module WikiExtensionsWikiControllerPatch
   # @param args [Hash, nil]
   def render(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project) and @content
-      if (args.class == Hash and args[:partial] == 'common/preview')
+      if args.class == Hash and args[:partial] == "common/preview"
         WikiExtensionsFootnote.preview_page.wiki_extension_data[:footnotes] = []
       end
     end
@@ -38,7 +38,7 @@ module WikiExtensionsWikiControllerPatch
   # Overrides respond_to to inject header, footer, and footnote list on show.
   def respond_to(&block)
     if @project and WikiExtensionsUtil.is_enabled?(@project) and @content
-      if (@_action_name == 'show')
+      if @_action_name == "show"
         wiki_extensions_include_header
         wiki_extensions_add_fnlist
         wiki_extensions_include_footer
@@ -72,8 +72,8 @@ module WikiExtensionsWikiControllerPatch
   end
 
   def wiki_extensions_include_header
-    return if @page.title == 'Header' || @page.title == 'Footer'
-    header = @wiki.find_page('Header')
+    return if @page.title == "Header" || @page.title == "Footer"
+    header = @wiki.find_page("Header")
     return unless header
     text = "\n"
     text << '<div id="wiki_extentions_header">'
@@ -83,12 +83,11 @@ module WikiExtensionsWikiControllerPatch
     text << "\n\n"
     text << @content.text
     @content.text = text
-
   end
 
   def wiki_extensions_include_footer
-    return if @page.title == 'Footer' || @page.title == 'Header'
-    footer = @wiki.find_page('Footer')
+    return if @page.title == "Footer" || @page.title == "Header"
+    footer = @wiki.find_page("Footer")
     return unless footer
     text = @content.text
     text << "\n"
@@ -96,10 +95,7 @@ module WikiExtensionsWikiControllerPatch
     text << "\n\n"
     text << footer.content.text
     text << "\n\n</div>"
-
   end
 end
 
 WikiController.prepend(WikiExtensionsWikiControllerPatch)
-
-

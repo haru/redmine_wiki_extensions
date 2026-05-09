@@ -15,16 +15,16 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsSettingTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_settings, :wiki_extensions_menus
 
   def test_find_or_create
-    assert(!WikiExtensionsSetting.find_by_project_id(5))
+    assert_not(WikiExtensionsSetting.find_by(project_id: 5))
     setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
-    assert(WikiExtensionsSetting.find_by_project_id(5))
+    assert(WikiExtensionsSetting.find_by(project_id: 5))
     setting = WikiExtensionsSetting.find_or_create(5)
     assert_equal(5, setting.project_id)
   end

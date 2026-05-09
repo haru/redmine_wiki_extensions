@@ -14,14 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +page_break+ wiki macro for CSS print page breaks.
 module WikiExtensionsPageBreakMacro
   Redmine::WikiFormatting::Macros.register do
-    desc 'Page break here.'
-    macro :page_break do |obj, args|
-      content_tag(:div, nil, :class => 'wikiext-page-break')
+    desc "Page break here."
+    macro :page_break do |_obj, _args|
+      content_tag(:div, nil, class: "wikiext-page-break")
     end
   end
 end

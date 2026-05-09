@@ -48,8 +48,8 @@ module WikiExtensionsHelperPatch
   private
 
   def ie6_or_ie7?
-    useragent = request.env['HTTP_USER_AGENT'].to_s
-    return useragent.match(/IE[ ]+[67]./) != nil
+    useragent = request.env["HTTP_USER_AGENT"].to_s
+    useragent.match(/IE[ ]+[67]./) != nil
   end
 end
 

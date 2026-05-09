@@ -14,15 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
 # Provides the +twitter+ wiki macro for linking to a Twitter/X account.
 module WikiExtensionsTwitterMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Creates link to twitter account page.\n\n" +
       " !{{twitter(user_name)}}\n"
-    macro :twitter do |obj, args|
-      
+    macro :twitter do |_obj, args|
       return nil if args.length < 1
       user_name = args[0].strip
       o = ""

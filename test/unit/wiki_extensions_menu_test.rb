@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsMenuTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_menus, :wiki_extensions_settings
@@ -31,28 +31,28 @@ class WikiExtensionsMenuTest < ActiveSupport::TestCase
 
   def test_title
     menu = WikiExtensionsMenu.find_or_create(10, 5)
-    assert(!WikiExtensionsMenu.title(10, 5))
+    assert_not(WikiExtensionsMenu.title(10, 5))
     menu.page_name = "aaa"
     menu.save!
     assert_equal("aaa", WikiExtensionsMenu.title(10, 5))
     menu.title = "bbb"
     menu.save!
     assert_equal("bbb", WikiExtensionsMenu.title(10, 5))
-    assert(!WikiExtensionsMenu.title(100, 5))
+    assert_not(WikiExtensionsMenu.title(100, 5))
   end
 
   def test_enabled?
     menu = WikiExtensionsMenu.find_or_create(11, 5)
-    assert(!WikiExtensionsMenu.enabled?(11, 5))
+    assert_not(WikiExtensionsMenu.enabled?(11, 5))
     menu.enabled = true
     menu.save!
-    assert(!WikiExtensionsMenu.enabled?(11, 5))
+    assert_not(WikiExtensionsMenu.enabled?(11, 5))
     menu.page_name = "aaa"
     menu.save!
     assert(WikiExtensionsMenu.enabled?(11, 5))
     menu.enabled = false
     menu.save!
-    assert(!WikiExtensionsMenu.enabled?(11, 5))
-    assert(!WikiExtensionsMenu.enabled?(111, 5))
+    assert_not(WikiExtensionsMenu.enabled?(11, 5))
+    assert_not(WikiExtensionsMenu.enabled?(111, 5))
   end
 end

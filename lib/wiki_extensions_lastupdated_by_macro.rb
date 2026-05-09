@@ -18,12 +18,12 @@
 module WikiExtensionsLastupdatedByMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a user who updated the page.\n\n" +
-      " !{{lastupdated_by}}" 
-    macro :lastupdated_by do |obj, args|
+      " !{{lastupdated_by}}"
+    macro :lastupdated_by do |obj, _args|
       o = '<span class="wiki_extensions_lastupdated_by">'
-      o << "#{avatar(obj.author, :size => "14")}"
+      o << "#{avatar(obj.author, size: "14")}"
       o << link_to_user(obj.author)
-      o << '</span>'
+      o << "</span>"
       o.html_safe
     end
   end

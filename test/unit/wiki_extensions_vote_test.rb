@@ -15,7 +15,7 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsVoteTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_votes, :projects
@@ -35,7 +35,7 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
     end
 
     should "return nil if target_id is nil" do
-      @vote.target_class_name = 'Issue'
+      @vote.target_class_name = "Issue"
       assert_nil(@vote.target)
     end
 
@@ -107,16 +107,16 @@ class WikiExtensionsVoteTest < ActiveSupport::TestCase
       @vote = WikiExtensionsVote.new
       @vote.target = @project
       @vote.count = 1
-      @vote.keystr = 'aaa'
+      @vote.keystr = "aaa"
       @vote.save!
     end
 
     should "return new instance which count is 0 if target not found." do
-      vote = WikiExtensionsVote.find_or_create('Hoge', 3, 'keystr')
+      vote = WikiExtensionsVote.find_or_create("Hoge", 3, "keystr")
       assert_not_nil(vote)
-      assert_equal('Hoge', vote.target_class_name)
+      assert_equal("Hoge", vote.target_class_name)
       assert_equal(3, vote.target_id)
-      assert_equal('keystr', vote.keystr)
+      assert_equal("keystr", vote.keystr)
       assert_equal(0, vote.count)
     end
 

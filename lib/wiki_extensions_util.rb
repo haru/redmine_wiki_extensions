@@ -18,7 +18,7 @@
 class WikiExtensionsUtil
   def WikiExtensionsUtil.is_enabled?(project)
     return false unless project
-    project.module_enabled? 'wiki_extensions'
+    project.module_enabled? "wiki_extensions"
   end
 
   def WikiExtensionsUtil.tag_enabled?(project)

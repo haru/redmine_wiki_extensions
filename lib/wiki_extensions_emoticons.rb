@@ -5,7 +5,7 @@ require "yaml"
 # Loads emoticon definitions from the plugin's YAML configuration.
 module WikiExtensionsEmoticons
   # Path to the emoticons YAML configuration file.
-  YAML_FILE = File.join(File.dirname(__FILE__), '../config/emoticons.yml')
+  YAML_FILE = File.join(File.dirname(__FILE__), "../config/emoticons.yml")
 
   # Provides lazy-loaded access to the emoticon list.
   class Emoticons

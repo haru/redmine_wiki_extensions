@@ -10,6 +10,8 @@ if [ ! -f ~/.bashrc ]; then
     cd $BASEDIR 
 fi
 
+rm -f /usr/local/redmine/.rubocop.yml 
+
 curl -fsSL https://claude.ai/install.sh | bash
 curl -fsSL https://opencode.ai/install | bash
 

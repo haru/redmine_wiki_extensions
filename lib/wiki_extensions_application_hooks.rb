@@ -21,6 +21,6 @@ require "application_helper"
 class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   include ApplicationHelper
 
-  render_on :view_layouts_base_html_head, :partial => "wiki_extensions/html_header"
-  render_on :view_layouts_base_body_bottom, :partial => "wiki_extensions/body_bottom"
+  render_on :view_layouts_base_html_head, partial: "wiki_extensions/html_header"
+  render_on :view_layouts_base_body_bottom, partial: "wiki_extensions/body_bottom"
 end
