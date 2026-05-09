@@ -16,17 +16,23 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require_dependency 'wiki_page'
 
+# Redmine's WikiPage model; extended by this plugin to add tag associations.
 class WikiPage
   has_many :wiki_extensions_tag_relations, :dependent => :destroy
   has_many :wiki_ext_tags, :class_name => 'WikiExtensionsTag', :through => :wiki_extensions_tag_relations, :source => :tag
   has_one :wiki_extensions_count, :foreign_key => :page_id, :dependent => :destroy
 end
 
+# Patch adding tag management and per-request storage to WikiPage.
 module WikiExtensionsWikiPagePatch
+  # Returns or initializes a per-request data hash for the page.
+  # @return [Hash]
   def wiki_extension_data
     @wiki_extension_data ||= {}
   end
 
+  # Replaces the page's tag list with the provided name map.
+  # @param tag_list [Hash] map of position => tag name strings
   def set_tags(tag_list = {})
     tag_array = []
     tag_list.each_pair{|num, name|

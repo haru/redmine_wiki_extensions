@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +vote+ and +show_vote+ wiki macros.
 module WikiExtensionsVoteMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Vote macro.\n\n"+

@@ -23,6 +23,9 @@ class WikiExtensionsCount < ApplicationRecord
   validates_presence_of :count
   validates_uniqueness_of :page_id, :scope => :date
 
+  # Increments the access count for a wiki page on the given date.
+  # @param wiki_page_id [Integer]
+  # @param date [Date] defaults to today
   def self.countup(wiki_page_id, date = nil)
     date = Date.today unless date
     count = WikiExtensionsCount.where(:date => date).where(:page_id => wiki_page_id).first
@@ -38,6 +41,10 @@ class WikiExtensionsCount < ApplicationRecord
     count.save!
   end
 
+  # Returns the total access count for a wiki page, optionally from a start date.
+  # @param wiki_page_id [Integer]
+  # @param date [Date, nil] if given, only counts from this date onward
+  # @return [Integer]
   def self.access_count(wiki_page_id, date = nil)
     conditions = ['page_id = ?', wiki_page_id] unless date
     conditions = ['date >= ? and page_id = ?', date, wiki_page_id] if date
@@ -45,6 +52,10 @@ class WikiExtensionsCount < ApplicationRecord
     WikiExtensionsCount.where(conditions).sum(:count)
   end
 
+  # Returns pages sorted by access count descending.
+  # @param project_id [Integer]
+  # @param term [Integer] number of days to look back; 0 means all time
+  # @return [Array<Array(Integer, Integer)>] pairs of [page_id, count]
   def self.popularity(project_id, term = 0)
     conditions = ['project_id = ?', project_id] if term == 0
     conditions = ['project_id = ? and date > ?', project_id, Date.today - term.to_i] if term > 0

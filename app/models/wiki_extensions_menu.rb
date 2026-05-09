@@ -44,6 +44,10 @@ class WikiExtensionsMenu < ApplicationRecord
     end
   end
 
+  # Returns the display title for a menu item, falling back to page name.
+  # @param pj_id [Integer]
+  # @param no [Integer] menu item number (1–5)
+  # @return [String, nil]
   def self.title(pj_id, no)
     begin
       menu = find_or_create(pj_id, no)
@@ -55,6 +59,7 @@ class WikiExtensionsMenu < ApplicationRecord
     end
   end
 
+  # Validates that an enabled menu item is properly configured.
   def validate
     return true unless enabled
     #errors.add("title", "is empty") unless attribute_present?("title")

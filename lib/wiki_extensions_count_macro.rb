@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +count+, +show_count+, and +popularity+ wiki macros.
 module WikiExtensionsCountMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Count access to the pages.\n\n"+

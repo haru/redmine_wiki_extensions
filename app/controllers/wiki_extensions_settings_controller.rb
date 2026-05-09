@@ -20,6 +20,7 @@ class WikiExtensionsSettingsController < ApplicationController
 
   before_action :find_project, :authorize, :find_user
 
+  # Saves project-level wiki extensions menu settings.
   def update
     menus = params[:menus]
 

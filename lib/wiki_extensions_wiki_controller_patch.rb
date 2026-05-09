@@ -17,11 +17,15 @@
 
 require_dependency 'wiki_controller'
 
+# Redmine's wiki controller; extended by this plugin to save tags on edit/update.
 class WikiController
   after_action :wiki_extensions_save_tags, :only => [:edit, :update]
 end
 
+# Patch that injects wiki page headers, footers, and footnote lists.
 module WikiExtensionsWikiControllerPatch
+  # Overrides render to clear footnote state when rendering a preview.
+  # @param args [Hash, nil]
   def render(args = nil)
     if args and @project and WikiExtensionsUtil.is_enabled?(@project) and @content
       if (args.class == Hash and args[:partial] == 'common/preview')
@@ -31,6 +35,7 @@ module WikiExtensionsWikiControllerPatch
     super(args)
   end
 
+  # Overrides respond_to to inject header, footer, and footnote list on show.
   def respond_to(&block)
     if @project and WikiExtensionsUtil.is_enabled?(@project) and @content
       if (@_action_name == 'show')
@@ -42,6 +47,8 @@ module WikiExtensionsWikiControllerPatch
     super(&block)
   end
 
+  # Returns the current wiki page instance.
+  # @return [WikiPage, nil]
   def wiki_extensions_get_current_page
     @page
   end

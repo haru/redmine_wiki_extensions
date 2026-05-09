@@ -16,8 +16,10 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +fn+ and +fnlist+ wiki macros for footnote support.
 module WikiExtensionsFootnote
-
+  # Returns a singleton WikiPage used as a scratch space during preview rendering.
+  # @return [WikiPage]
   def WikiExtensionsFootnote.preview_page
     @@preview_page ||= WikiPage.new
   end

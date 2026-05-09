@@ -31,10 +31,14 @@ class WikiExtensionsSetting < ApplicationRecord
     return setting
   end
 
+  # Returns false; auto-preview is not supported.
+  # @return [false]
   def auto_preview_enabled
     false
   end
 
+  # Returns the ordered menu settings for this project.
+  # @return [ActiveRecord::Relation<WikiExtensionsMenu>]
   def menus
     WikiExtensionsMenu.where(:project_id => project_id).order("menu_no")
   end

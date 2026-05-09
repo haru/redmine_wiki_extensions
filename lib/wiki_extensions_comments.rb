@@ -16,6 +16,7 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 require 'redmine'
 
+# Provides the +comment_form+ and +comments+ wiki macros.
 module WikiExtensionsComments
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a comment form."

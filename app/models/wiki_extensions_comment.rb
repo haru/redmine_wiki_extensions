@@ -19,10 +19,15 @@ class WikiExtensionsComment < ApplicationRecord
   belongs_to :wiki_page
   validates_presence_of :comment, :wiki_page_id, :user_id
 
+  # Returns the direct child comments of this comment from the provided list.
+  # @param comments [Array<WikiExtensionsComment>] flat list of all comments for the page
+  # @return [Array<WikiExtensionsComment>]
   def children(comments)
     comments.select { |comment| comment.parent_id == id }
   end
 
+  # Returns the project this comment belongs to.
+  # @return [Project]
   def project
     wiki_page.wiki.project
   end

@@ -105,6 +105,17 @@ bundle exec rake redmine:plugins:test NAME=redmine_wiki_extensions COVERAGE=true
 3. Add tests in `test/unit/`
 4. If new permissions are needed, add to `init.rb`
 
+## After Modifying Code
+
+After every code change, run YARD to confirm no documentation errors were introduced:
+
+```bash
+cd /usr/local/redmine/plugins/redmine_wiki_extensions
+yard stats --list-undoc
+```
+
+This must exit without errors before the change is considered complete.
+
 ## Git and Language Conventions
 
 - All commit messages must be in **English**

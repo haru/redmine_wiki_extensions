@@ -17,6 +17,7 @@
 require "redmine"
 require "application_helper"
 
+# Redmine view hook listener that injects plugin HTML partials into the layout.
 class WikiExtensionsApplicationHooks < Redmine::Hook::ViewListener
   include ApplicationHelper
 

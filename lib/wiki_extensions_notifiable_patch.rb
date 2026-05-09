@@ -15,14 +15,20 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# Patch that registers the +wiki_comment_added+ notification event.
 module WikiExtensionsNotifiablePatch
+  # Sets up ClassMethods on the prepended base class.
+  # @param base [Class]
   def self.prepended(base)
     class << base
       self.prepend(ClassMethods)
     end
   end
 
+  # Class-level methods added to Redmine::Notifiable.
   module ClassMethods
+    # Returns all notifiables, including +wiki_comment_added+.
+    # @return [Array<Redmine::Notifiable>]
     def all
       notifications = super
       notifications << Redmine::Notifiable.new('wiki_comment_added')
