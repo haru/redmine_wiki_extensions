@@ -44,6 +44,7 @@ fi
 bundle install 
 
 initdb() {
+    rm -f db/schema.rb
     bundle exec rake db:create
     bundle exec rake db:migrate
     bundle exec rake redmine:plugins:migrate
