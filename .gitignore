@@ -2,3 +2,5 @@ coverage
 Gemfile
 Gemfile.lock
 .yardoc/
+tmp/
+.claude/settings.local.json
