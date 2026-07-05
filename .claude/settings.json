@@ -11,7 +11,17 @@
       "Bash(python3 -c ' *)",
       "Bash(bundle list *)",
       "Bash(ls /usr/local/redmine/plugins/redmine_wiki_extensions/redmine_wiki_extensions/ 2>/dev/null | head -5 || echo \"does not exist\")",
-      "Read(//workspaces/redmine_wiki_extensions/**)"
+      "Read(//workspaces/redmine_wiki_extensions/**)",
+      "Bash(gh label *)",
+      "Bash(gh pr *)",
+      "Bash(git log *)",
+      "Bash(mkdir -p /usr/local/redmine/plugins/redmine_wiki_extensions/.claude/skills/create-pr/scripts)",
+      "Bash(mkdir -p /usr/local/redmine/plugins/redmine_wiki_extensions/.claude/skills/create-pr/evals)",
+      "Edit(/.claude/skills/create-pr/**)",
+      "Bash(chmod +x /usr/local/redmine/plugins/redmine_wiki_extensions/.claude/skills/create-pr/scripts/get_plugin_version.sh)",
+      "Bash(/usr/local/redmine/plugins/redmine_wiki_extensions/.claude/skills/create-pr/scripts/get_plugin_version.sh /usr/local/redmine/plugins/redmine_wiki_extensions/init.rb)",
+      "Bash(git fetch *)",
+      "Bash(.claude/skills/create-pr/scripts/get_plugin_version.sh init.rb)"
     ]
   },
   "enabledPlugins": {
