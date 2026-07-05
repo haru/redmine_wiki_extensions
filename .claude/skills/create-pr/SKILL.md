@@ -1,6 +1,6 @@
 ---
 name: create-pr
-description: Open a GitHub pull request for the current branch of this repository using the gh CLI, following this repo's branch conventions — release/* branches target main with a title/body of "Release <version>" (version read from init.rb), while every other branch targets develop with an auto-generated title, a bullet-point summary of the branch's changes, and an enhancement/bug/documentation label. Use this whenever the user asks to open, create, or submit a pull request or PR, says "gh pr create", or asks in Japanese to "PRを作って" / "プルリクを作成して" / "プルリクエストを出して".
+description: Open a GitHub pull request for the current branch of this repository using the gh CLI, following this repo's branch conventions — release/* branches target main with a title/body of "Release <version>" (version read from init.rb), while every other branch targets develop with an auto-generated title, a bullet-point summary of the branch's changes, and an enhancement/bug/documentation label where one fits (left unlabeled for pure CI/tooling changes). Use this whenever the user asks to open, create, or submit a pull request or PR, says "gh pr create", or asks in Japanese to "PRを作って" / "プルリクを作成して" / "プルリクエストを出して".
 ---
 
 # Create a pull request for this repo

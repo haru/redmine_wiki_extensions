@@ -12,7 +12,7 @@ permissions:
 
 jobs:
   prevent-main-pr:
-    if: ${{ !startsWith(github.event.pull_request.head.ref, 'release/') }}
+    if: ${{ !(startsWith(github.event.pull_request.head.ref, 'release/') && github.event.pull_request.head.repo.full_name == github.repository) }}
     runs-on: ubuntu-latest
     steps:
       - name: Comment and close PR
