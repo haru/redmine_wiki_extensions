@@ -14,8 +14,9 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
+# Provides the +vote+ and +show_vote+ wiki macros.
 module WikiExtensionsVoteMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Vote macro.\n\n"+
@@ -32,14 +33,14 @@ module WikiExtensionsVoteMacro
       vote = WikiExtensionsVote.find_or_create(obj.class.name, obj.id, key)
 
       o = '<span class="wikiext-vote">'
-      url = url_for({:controller => 'wiki_extensions', :action => 'vote',
-          :id => @project, :target_class_name => obj.class.name, :target_id => obj.id,
-          :key => key, :url => @_request.url})
+      url = url_for({ controller: "wiki_extensions", action: "vote",
+          id: @project, target_class_name: obj.class.name, target_id: obj.id,
+          key: key, url: @_request.url })
       o << link_to_function(label, "$('##{voteid}').load('#{url}')")
-      o << '<span id="' + voteid + '"> '
+      o << ('<span id="' + voteid + '"> ')
       o << " #{vote.count}"
-      o << '</span>'
-      o << '</span>'
+      o << "</span>"
+      o << "</span>"
       return o.html_safe
     end
   end
@@ -56,7 +57,7 @@ module WikiExtensionsVoteMacro
 
       o = '<span class="wikiext-show-vote">'
       o << "#{vote.count}"
-      o << '</span>'
+      o << "</span>"
       return o.html_safe
     end
   end

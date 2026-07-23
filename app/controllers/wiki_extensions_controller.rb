@@ -15,11 +15,13 @@
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 
+# Controller for wiki extension actions (comments, tags, votes, emoticons).
 class WikiExtensionsController < ApplicationController
   menu_item :wiki
   before_action :find_project, :find_user
-  before_action :authorize, except: [:stylesheet, :emoticon]
+  before_action :authorize, except: [ :stylesheet, :emoticon ]
 
+  # Adds a new comment to a wiki page.
   def add_comment
     comment = WikiExtensionsComment.new
     comment.wiki_page_id = params[:wiki_page_id].to_i
@@ -29,9 +31,10 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
+  # Adds a reply to an existing comment.
   def reply_comment
     comment = WikiExtensionsComment.new
     comment.parent_id = params[:comment_id].to_i
@@ -42,20 +45,23 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     # Send email-notification to watchers of wiki page
     WikiExtensionsCommentsMailer.deliver_wiki_commented(comment, page) if Setting.notified_events.include? "wiki_comment_added"
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
+  # Displays wiki pages that have the specified tag.
   def tag
     tag_id = params[:tag_id].to_i
     @tag = WikiExtensionsTag.find(tag_id)
   end
 
+  # Redirects to the wiki page configured for the specified menu item.
   def forward_wiki_page
     menu_id = params[:menu_id].to_i
     menu = WikiExtensionsMenu.find_or_create(@project.id, menu_id)
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => menu.page_name
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: menu.page_name
   end
 
+  # Deletes a comment; only admin or the comment author may delete.
   def destroy_comment
     comment_id = params[:comment_id].to_i
     comment = WikiExtensionsComment.find(comment_id)
@@ -66,9 +72,10 @@ class WikiExtensionsController < ApplicationController
 
     page = WikiPage.find(comment.wiki_page_id)
     comment.destroy
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
+  # Updates a comment's text; only admin or the comment author may edit.
   def update_comment
     comment_id = params[:comment_id].to_i
     comment = WikiExtensionsComment.find(comment_id)
@@ -80,9 +87,10 @@ class WikiExtensionsController < ApplicationController
     page = WikiPage.find(comment.wiki_page_id)
     comment.comment = params[:comment]
     comment.save
-    redirect_to :controller => "wiki", :action => "show", :project_id => @project, :id => page.title
+    redirect_to controller: "wiki", action: "show", project_id: @project, id: page.title
   end
 
+  # Records a vote (once per session) and renders the updated count inline.
   def vote
     target_class_name = params[:target_class_name]
     target_id = params[:target_id].to_i
@@ -95,9 +103,10 @@ class WikiExtensionsController < ApplicationController
       session[:wiki_extension_voted][vote.id] = 1
     end
 
-    render :inline => " #{vote.count}"
+    render plain: " #{vote.count}"
   end
 
+  # Serves the wiki page named "StyleSheet" as CSS content.
   def stylesheet
     stylesheet = WikiPage.find_by(wiki_id: @project.wiki.id, title: "StyleSheet")
     unless stylesheet
@@ -112,6 +121,7 @@ class WikiExtensionsController < ApplicationController
     render plain: stylesheet.content.text, content_type: "text/css"
   end
 
+  # Serves an emoticon PNG from the plugin's assets directory.
   def emoticon
     icon_name = params[:icon_name]
     icon_name += ".#{params[:format]}" if params[:format].present?
@@ -129,7 +139,7 @@ class WikiExtensionsController < ApplicationController
 
   def find_project
     # @project variable must be set before calling the authorize filter
-    @project = Project.find(params[:id]) unless params[:id].blank?
+    @project = Project.find(params[:id]) if params[:id].present?
   end
 
   def find_user

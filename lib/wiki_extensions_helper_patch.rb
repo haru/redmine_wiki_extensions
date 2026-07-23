@@ -17,7 +17,9 @@
 
 require_dependency "redmine/wiki_formatting/textile/helper"
 
+# Patch that extends Redmine's textile wiki formatter helper.
 module WikiExtensionsHelperPatch
+  # Extends the base implementation to include wiki extensions stylesheet assets.
   def heads_for_wiki_formatter
     super
     return if ie6_or_ie7?
@@ -46,8 +48,8 @@ module WikiExtensionsHelperPatch
   private
 
   def ie6_or_ie7?
-    useragent = request.env['HTTP_USER_AGENT'].to_s
-    return useragent.match(/IE[ ]+[67]./) != nil
+    useragent = request.env["HTTP_USER_AGENT"].to_s
+    useragent.match(/IE[ ]+[67]./) != nil
   end
 end
 

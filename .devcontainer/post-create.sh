@@ -10,6 +10,11 @@ if [ ! -f ~/.bashrc ]; then
     cd $BASEDIR 
 fi
 
+rm -f /usr/local/redmine/.rubocop.yml 
+
+curl -fsSL https://claude.ai/install.sh | bash
+curl -fsSL https://opencode.ai/install | bash
+
 if [ -f .devcontainer/redmine.code-workspace ] && grep -q '"/usr/local/redmine/plugins/dummy"' .devcontainer/redmine.code-workspace; then
     sed -i.bak "s|\"/usr/local/redmine/plugins/dummy\"|\"/usr/local/redmine/plugins/$PLUGIN_NAME\"|g" .devcontainer/redmine.code-workspace
     rm .devcontainer/redmine.code-workspace.bak
@@ -39,6 +44,7 @@ fi
 bundle install 
 
 initdb() {
+    rm -f db/schema.rb
     bundle exec rake db:create
     bundle exec rake db:migrate
     bundle exec rake redmine:plugins:migrate

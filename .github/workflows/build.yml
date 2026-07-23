@@ -15,13 +15,19 @@ jobs:
     strategy:
       matrix:
         db: [sqlite3, mysql, postgres]
-        ruby_version: ["3.1", "3.2", "3.3", "3.4"]
-        redmine_version: [6.0-stable, 6.1-stable, master]
+        ruby_version: ["3.1", "3.2", "3.3", "3.4", "4.0"]
+        redmine_version: [6.0-stable, 6.1-stable, 7.0-stable, master]
         exclude:
           - ruby_version: "3.4"
             redmine_version: 6.0-stable
+          - ruby_version: "4.0"
+            redmine_version: 6.0-stable
           - ruby_version: "3.1"
             redmine_version: 6.1-stable
+          - ruby_version: "4.0"
+            redmine_version: 6.1-stable
+          - ruby_version: "3.1"
+            redmine_version: 7.0-stable
           - ruby_version: "3.1"
             redmine_version: master
     services:
@@ -54,6 +60,13 @@ jobs:
         run: bash -x ./build-scripts/install.sh
       - name: Build
         run: bash -x ./build-scripts/build.sh
+      - name: Enforce YARD Documentation Coverage
+        run: |
+          output=$(yard stats --list-undoc | tee /dev/stderr)
+          if ! printf '%s' "$output" | grep -q "100.00%"; then
+            echo "YARD documentation coverage is below 100%. See report above." >&2
+            exit 1
+          fi
       - name: Clean
         run: bash -x ./build-scripts/cleanup.sh
       - uses: codecov/codecov-action@v5

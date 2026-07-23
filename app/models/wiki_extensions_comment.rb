@@ -17,31 +17,35 @@
 class WikiExtensionsComment < ApplicationRecord
   belongs_to :user
   belongs_to :wiki_page
-  validates_presence_of :comment, :wiki_page_id, :user_id
+  validates :comment, :wiki_page_id, :user_id, presence: true
 
+  # Returns the direct child comments of this comment from the provided list.
+  # @param comments [Array<WikiExtensionsComment>] flat list of all comments for the page
+  # @return [Array<WikiExtensionsComment>]
   def children(comments)
     comments.select { |comment| comment.parent_id == id }
   end
 
+  # Returns the project this comment belongs to.
+  # @return [Project]
   def project
     wiki_page.wiki.project
   end
 
-  acts_as_event :title => Proc.new { |o| "Wiki comment: #{o.wiki_page.title}" },
-                :author => :user,
-                :description => :comment,
-                :datetime => :updated_at,
-                :url => Proc.new { |o| {:controller => 'wiki', :action => 'show', :id => o.wiki_page.title, :project_id => o.project} }
+  acts_as_event title: Proc.new { |o| "Wiki comment: #{o.wiki_page.title}" },
+                author: :user,
+                description: :comment,
+                datetime: :updated_at,
+                url: Proc.new { |o| { controller: "wiki", action: "show", id: o.wiki_page.title, project_id: o.project } }
 
-  acts_as_activity_provider :type => 'wiki_comment',
-                            :permission => :view_wiki_edits,
-                            :timestamp => "updated_at",
-                            :author_key => "user_id",
-                            :scope => select("#{WikiExtensionsComment.table_name}.updated_at, #{WikiExtensionsComment.table_name}.comment, #{WikiExtensionsComment.table_name}.user_id, #{WikiExtensionsComment.table_name}.wiki_page_id")
+  acts_as_activity_provider type: "wiki_comment",
+                            permission: :view_wiki_edits,
+                            timestamp: "updated_at",
+                            author_key: "user_id",
+                            scope: select("#{WikiExtensionsComment.table_name}.updated_at, #{WikiExtensionsComment.table_name}.comment, #{WikiExtensionsComment.table_name}.user_id, #{WikiExtensionsComment.table_name}.wiki_page_id")
                                           .joins("LEFT JOIN #{WikiPage.table_name} ON #{WikiPage.table_name}.id = #{WikiExtensionsComment.table_name}.wiki_page_id " +
                                 "LEFT JOIN #{Wiki.table_name} ON #{Wiki.table_name}.id = #{WikiPage.table_name}.wiki_id " +
    "LEFT JOIN #{Project.table_name} ON #{Project.table_name}.id = #{Wiki.table_name}.project_id")
 
-  #:find_options => {:include => {:wiki_page => {:wiki => :project}}}
-
+  # :find_options => {:include => {:wiki_page => {:wiki => :project}}}
 end

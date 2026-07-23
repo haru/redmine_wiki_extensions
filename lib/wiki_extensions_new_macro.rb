@@ -14,38 +14,39 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
+# Provides the +new+ wiki macro for highlighting recently-added content.
 module WikiExtensionsNewMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Displays a string 'new'.\n\n" +
       "  !{{new(yyyy-mm-dd)}}\n" +
       "  !{{new(yyyy-mm-dd, expire)}}\n\n" +
       "Default of expire is 5."
-    macro :new do |obj, args|
+    macro :new do |_obj, args|
       return nil if args.length < 1
       return nil unless WikiExtensionsUtil.is_enabled?(@project)
       date_string = args[0].strip
       expire = args[1].strip.to_i if args[1]
       expire = 5 unless expire
       date = Date.parse(date_string)
-      today = Date.today
-      
+      today = Time.zone.today
+
       o = '<span class="wiki_ext_new_date">'
-      o << '[' + format_date(date) + ']'
-      if (today - date < expire)
-        o << '<span class="wiki_ext_new_mark">' + l(:label_wikiextensions_new)
+      o << ("[" + format_date(date) + "]")
+      if today - date < expire
+        o << ('<span class="wiki_ext_new_mark">' + l(:label_wikiextensions_new))
         case today - date
         when -100 .. 0
-          o << '!!!'
+          o << "!!!"
         when 1
-          o << '!!'
+          o << "!!"
         when 2
-          o << '!'
+          o << "!"
         end
-        o << '</span>'
+        o << "</span>"
       end
-      o << '</span>'
+      o << "</span>"
       return o.html_safe
     end
   end

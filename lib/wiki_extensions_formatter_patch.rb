@@ -17,9 +17,8 @@
 
 require_dependency "redmine/wiki_formatting/textile/formatter"
 
+# Patch that adds emoticon rendering to Redmine's textile formatter.
 module WikiExtensionsFormatterPatch
-  Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
-
   private
 
   def inline_smiles(text)
@@ -33,13 +32,35 @@ module WikiExtensionsFormatterPatch
     }
   end
 
+  # Helper that provides URL path resolution for emoticon images.
   class WikiExtentionEmoticonPath
     include Rails.application.routes.url_helpers
 
+    # Returns the URL path for the given emoticon image filename.
+    # @param emoticon [String] image filename
+    # @return [String]
     def get_emoticon_path(emoticon)
       wiki_extensions_emoticon_path(emoticon)
     end
   end
 end
 
-Redmine::WikiFormatting::Textile::Formatter.prepend(WikiExtensionsFormatterPatch)
+# Redmine refactored textile formatting in master (Jan 2026, commit f7f585a6d).
+# Before: Formatter < RedCloth3 (RULES defined in Formatter)
+# After:  Filter < RedCloth3 (RULES defined in Filter), Formatter is a wrapper
+#
+# Use direct constant reference (triggers autoload) instead of defined?() which
+# does not trigger Zeitwerk autoloading and can cause incorrect fallback.
+filter_class = begin
+  Redmine::WikiFormatting::Textile::Filter
+rescue NameError
+  nil
+end
+
+if filter_class
+  filter_class::RULES << :inline_smiles
+  filter_class.prepend(WikiExtensionsFormatterPatch)
+else
+  Redmine::WikiFormatting::Textile::Formatter::RULES << :inline_smiles
+  Redmine::WikiFormatting::Textile::Formatter.prepend(WikiExtensionsFormatterPatch)
+end

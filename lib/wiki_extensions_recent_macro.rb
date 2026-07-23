@@ -28,25 +28,24 @@ module WikiExtensionsRecentMacro
       days = 5
       days = args[0].strip.to_i if args.length > 0
 
-      return nil if days < 1      
+      return nil if days < 1
 
-      pages = WikiPage.includes(:content).where([" #{WikiPage.table_name}.wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Date.today - days])
+      pages = WikiPage.includes(:content).where([ " #{WikiPage.table_name}.wiki_id = ? and #{WikiContent.table_name}.updated_on > ?", page.wiki_id, Time.zone.today - days ])
                                   .order("#{WikiContent.table_name}.updated_on desc")
       o = '<div class="wiki_extensions_recent">'
       date = nil
-      pages.each {|page|
+      pages.each { |page|
         content = page.content
         updated_on = Date.new(content.updated_on.year, content.updated_on.month, content.updated_on.day)
         if date != updated_on
           date = updated_on
-          o << "<b>" + format_date(date) + "</b><br/>"
+          o << ("<b>" + format_date(date) + "</b><br/>")
         end
-        o << link_to(content.page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => content.page.project, :id => content.page.title)
-        o << '<br/>'
+        o << link_to(content.page.pretty_title, controller: "wiki", action: "show", project_id: content.page.project, id: content.page.title)
+        o << "<br/>"
       }
-      o << '</div>'
+      o << "</div>"
       return o.html_safe
     end
   end
 end
-

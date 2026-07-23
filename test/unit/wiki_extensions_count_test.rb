@@ -14,7 +14,7 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require File.dirname(__FILE__) + '/../test_helper'
+require File.dirname(__FILE__) + "/../test_helper"
 
 class WikiExtensionsCountTest < ActiveSupport::TestCase
   fixtures :wiki_extensions_counts, :projects, :wikis, :wiki_pages
@@ -26,19 +26,19 @@ class WikiExtensionsCountTest < ActiveSupport::TestCase
     assert_equal(1, WikiExtensionsCount.access_count(page_id))
     WikiExtensionsCount.countup(page_id)
     assert_equal(2, WikiExtensionsCount.access_count(page_id))
-    WikiExtensionsCount.countup(page_id, Date.today - 2)
-    WikiExtensionsCount.countup(page_id, Date.today - 2)
-    WikiExtensionsCount.countup(page_id, Date.today - 2)
-    
+    WikiExtensionsCount.countup(page_id, Time.zone.today - 2)
+    WikiExtensionsCount.countup(page_id, Time.zone.today - 2)
+    WikiExtensionsCount.countup(page_id, Time.zone.today - 2)
+
     assert_equal(5, WikiExtensionsCount.access_count(page_id))
-    assert_equal(2, WikiExtensionsCount.access_count(page_id, Date.today))
+    assert_equal(2, WikiExtensionsCount.access_count(page_id, Time.zone.today))
   end
 
   def test_popular
     WikiExtensionsCount.countup(2)
-    WikiExtensionsCount.countup(2, Date.today - 1)
-    WikiExtensionsCount.countup(2, Date.today - 2)
-    WikiExtensionsCount.countup(2, Date.today - 3)
+    WikiExtensionsCount.countup(2, Time.zone.today - 1)
+    WikiExtensionsCount.countup(2, Time.zone.today - 2)
+    WikiExtensionsCount.countup(2, Time.zone.today - 3)
     list = WikiExtensionsCount.popularity(1)
     assert_equal(2, list.length)
     assert_equal(4, list.to_a[0][1])
@@ -46,6 +46,5 @@ class WikiExtensionsCountTest < ActiveSupport::TestCase
     list = WikiExtensionsCount.popularity(1, 2)
     assert_equal(1, list.length)
     assert_equal(2, list.to_a[0][1])
-    
   end
 end

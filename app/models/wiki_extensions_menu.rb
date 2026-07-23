@@ -17,13 +17,13 @@
 class WikiExtensionsMenu < ApplicationRecord
   include Redmine::SafeAttributes
   belongs_to :project
-  validates_presence_of :project_id
-  validates_presence_of :menu_no
+  validates :project_id, presence: true
+  validates :menu_no, presence: true
 
-  #attr_accessible 'enabled', 'menu_no', 'title', 'page_name'
+  # attr_accessible 'enabled', 'menu_no', 'title', 'page_name'
 
   def self.find_or_create(pj_id, no)
-    menu = WikiExtensionsMenu.where(:project_id => pj_id).where(:menu_no => no).first
+    menu = WikiExtensionsMenu.where(project_id: pj_id).where(menu_no: no).first
     unless menu
       menu = WikiExtensionsMenu.new
       menu.project_id = pj_id
@@ -31,7 +31,7 @@ class WikiExtensionsMenu < ApplicationRecord
       menu.enabled = false
       menu.save!
     end
-    return menu
+    menu
   end
 
   def self.enabled?(pj_id, no)
@@ -40,25 +40,29 @@ class WikiExtensionsMenu < ApplicationRecord
       return false if menu.page_name.blank?
       menu.enabled
     rescue
-      return false
+      false
     end
   end
 
+  # Returns the display title for a menu item, falling back to page name.
+  # @param pj_id [Integer]
+  # @param no [Integer] menu item number (1–5)
+  # @return [String, nil]
   def self.title(pj_id, no)
     begin
       menu = find_or_create(pj_id, no)
-      return menu.title unless menu.title.blank?
-      return menu.page_name unless menu.page_name.blank?
-      return nil
+      return menu.title if menu.title.present?
+      return menu.page_name if menu.page_name.present?
+      nil
     rescue
-      return nil
+      nil
     end
   end
 
+  # Validates that an enabled menu item is properly configured.
   def validate
-    return true unless enabled
-    #errors.add("title", "is empty") unless attribute_present?("title")
-    #errors.add("page_name", "is empty") unless attribute_present?("page_name")
-
+    true unless enabled
+    # errors.add("title", "is empty") unless attribute_present?("title")
+    # errors.add("page_name", "is empty") unless attribute_present?("page_name")
   end
 end

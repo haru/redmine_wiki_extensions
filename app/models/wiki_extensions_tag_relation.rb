@@ -16,15 +16,17 @@
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
 class WikiExtensionsTagRelation < ApplicationRecord
   belongs_to :wiki_page
-  belongs_to :tag, :class_name => 'WikiExtensionsTag', :foreign_key => :tag_id
-  validates_presence_of :wiki_page_id, :tag_id
-  validates_uniqueness_of :tag_id, :scope => :wiki_page_id
+  belongs_to :tag, class_name: "WikiExtensionsTag"
+  validates :wiki_page_id, :tag_id, presence: true
+  validates :tag_id, uniqueness: { scope: :wiki_page_id }
 
-  def destroy
-    ret = super
-    target_tag = WikiExtensionsTag.find(tag_id) if tag_id
-    target_tag.destroy if target_tag.page_count.zero?
-    ret
+  after_destroy :cleanup_orphaned_tag
+
+  private
+
+  def cleanup_orphaned_tag
+    return unless tag_id
+    target_tag = WikiExtensionsTag.find_by(id: tag_id)
+    target_tag.destroy if target_tag&.page_count&.zero?
   end
-
 end

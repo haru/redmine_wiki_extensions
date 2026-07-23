@@ -14,13 +14,14 @@
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, write to the Free Software
 # Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02110-1301, USA.
-require 'redmine'
+require "redmine"
 
+# Provides the +count+, +show_count+, and +popularity+ wiki macros.
 module WikiExtensionsCountMacro
   Redmine::WikiFormatting::Macros.register do
     desc "Count access to the pages.\n\n"+
       "  !{{count}}\n"
-    macro :count do |obj, args|
+    macro :count do |obj, _args|
       return nil unless obj
       page = obj.page
       session[:access_count_table] = Hash.new unless session[:access_count_table]
@@ -28,15 +29,15 @@ module WikiExtensionsCountMacro
         WikiExtensionsCount.countup(page.id)
         session[:access_count_table][page.id] = 1
       end
-      
-      return ''
+
+      return ""
     end
   end
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays an access count of the page.\n\n"+
       "  !{{show_count}}\n"
-    macro :show_count do |obj, args|
+    macro :show_count do |obj, _args|
       return nil unless obj
       page = obj.page
       count = WikiExtensionsCount.access_count(page.id)
@@ -47,7 +48,7 @@ module WikiExtensionsCountMacro
 
   Redmine::WikiFormatting::Macros.register do
     desc "Displays list of the popular pages.\n\n"+
-      "  !{{popularity}}\n" + 
+      "  !{{popularity}}\n" +
       "  !{{popularity(max)}}\n" +
       "  !{{popularity(max, term)}}\n"
     macro :popularity do |obj, args|
@@ -57,21 +58,21 @@ module WikiExtensionsCountMacro
       list = WikiExtensionsCount.popularity(@project.id, term)
       max = 0
       max = args[0].to_i if args.length
-      
-      o = ''
+
+      o = ""
       o << '<ol class="wikiext-popularity">'
       cnt = 0
-      list.each{|value|
-        page = WikiPage.where(:id => value[0]).first
+      list.each { |value|
+        page = WikiPage.where(id: value[0]).first
         next unless page
-        o << '<li>'
-        o << link_to(page.pretty_title, :controller => 'wiki', :action => 'show', :project_id => page.project, :id => page.title)
+        o << "<li>"
+        o << link_to(page.pretty_title, controller: "wiki", action: "show", project_id: page.project, id: page.title)
         o << "(#{value[1]})"
-        o << '</li>'
+        o << "</li>"
         cnt = cnt + 1
-        break if (cnt >= max and max > 0)
+        break if cnt >= max and max > 0
       }
-      o << '</ol>'
+      o << "</ol>"
       return o.html_safe
     end
   end
