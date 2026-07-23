@@ -1,0 +1,92 @@
+name: Auto Tag and Release on Release Merge
+
+on:
+  pull_request:
+    branches:
+      - main
+    types: [closed]
+
+jobs:
+  tag-release-backmerge:
+    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Extract version from init.rb
+        id: get_version
+        run: |
+          VERSION=$(grep -oP "version\s+['\"]\K[0-9.]+" init.rb)
+          if [ -z "$VERSION" ]; then
+            echo "Error: Could not extract version from init.rb"
+            exit 1
+          fi
+          echo "VERSION=$VERSION" >> $GITHUB_ENV
+          REPOSITORY=$(echo ${{ github.repository }} | sed -e "s#.*/##")
+          echo "REPOSITORY=$REPOSITORY" >> $GITHUB_ENV
+          echo "FILENAME=$REPOSITORY-$VERSION" >> $GITHUB_ENV
+
+      - name: Create and Push Tag
+        run: |
+          git checkout main
+          if git rev-parse --verify "refs/tags/${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Tag ${{ env.VERSION }} already exists, skipping"
+          else
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git tag "${{ env.VERSION }}"
+            git push origin "${{ env.VERSION }}" || echo "Tag push failed, possibly already exists"
+          fi
+
+      - name: Create Archive
+        run: |
+          git archive --format=zip --prefix="${{ env.REPOSITORY }}/" "${{ env.VERSION }}" -o "${{ env.FILENAME }}.zip"
+
+      - name: Create Release and Upload Asset
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if gh release view "${{ env.VERSION }}" >/dev/null 2>&1; then
+            echo "Release ${{ env.VERSION }} already exists, uploading asset with clobber"
+            gh release upload "${{ env.VERSION }}" "${{ env.FILENAME }}.zip" --clobber
+          else
+            gh release create "${{ env.VERSION }}" \
+              "${{ env.FILENAME }}.zip" \
+              --title "${{ env.VERSION }}" \
+              --prerelease
+          fi
+
+      - name: Create backmerge PR to develop
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          git fetch origin develop
+
+          if git merge-base --is-ancestor origin/main origin/develop; then
+            echo "main is already merged into develop, skipping PR creation"
+            exit 0
+          fi
+
+          EXISTING_PR=$(gh pr list --base develop --head main --state open --json number --jq '.[0].number')
+          if [ -n "$EXISTING_PR" ]; then
+            echo "Backmerge PR #$EXISTING_PR already exists, skipping"
+            exit 0
+          fi
+
+          BODY="Automated backmerge of main to develop after release ${{ env.VERSION }}.
+
+          This PR was created automatically by GitHub Actions."
+
+          PR_URL=$(gh pr create \
+            --base develop \
+            --head main \
+            --title "Backmerge main to develop (${{ env.VERSION }})" \
+            --body "$BODY")
+
+          gh pr edit "$PR_URL" --add-label "ignore-for-release"
